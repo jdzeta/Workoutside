@@ -1,33 +1,25 @@
-package com.ecolem.workoutside;
+package com.ecolem.workoutside.activities;
 
-import android.app.Activity;
-import android.content.SharedPreferences;
+import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.firebase.client.Firebase;
+import com.ecolem.workoutside.R;
 
-
-public class MyActivity extends Activity {
-
-    protected Firebase ref = new Firebase("https://workout-side.firebaseio.com/");
-    protected SharedPreferences preferences;
+public class ListMouvementActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_std);
-
-        PreferenceManager.getDefaultSharedPreferences(this);
+        setContentView(R.layout.activity_list_mouvement);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_std, menu);
+        getMenuInflater().inflate(R.menu.menu_list_mouvement, menu);
         return true;
     }
 

@@ -13,22 +13,15 @@ import java.util.HashMap;
 /**
  * Created by akawa_000 on 24/10/2015.
  */
-public class UserManager {
+public class UserManager extends MyManager {
 
-    private Firebase ref;
     public UserManager(Firebase ref) {
-        this.ref = ref;
+        super(ref);
     }
 
     public void sendUserData(User user){
-        HashMap<String, String> userData = user.userMap();
-        HashMap<String, HashMap<String, String>> usersData = new HashMap<String, HashMap<String, String>>();
-        usersData.put(user.getPseudo(), userData);
 
-        ref.setValue(usersData);
-
-        Firebase userRef = ref.child(user.getPseudo());
-        userRef.setValue("amis", user.getAmis());
+        ref.setValue(user);
     }
 
     public void setCompteData(String pseudo, final HashMap<String, TextView> userFields){
@@ -45,7 +38,7 @@ public class UserManager {
                 userFields.get("prenom").setText(user.getPrenom());
                 userFields.get("email").setText(user.getEmail());
                 userFields.get("sexe").setText(user.getSexe());
-                userFields.get("date").setText(user.getDateNaissance());
+                userFields.get("date").setText(user.getDateNaissance().toString());
                 userFields.get("ville").setText(user.getVille());
                 userFields.get("niveau").setText(user.getNiveau());
 

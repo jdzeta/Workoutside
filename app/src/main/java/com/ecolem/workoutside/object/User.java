@@ -1,5 +1,6 @@
 package com.ecolem.workoutside.object;
 
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -13,16 +14,16 @@ public class User
     private String nom;
     private String prenom;
     private String sexe;
-    private String dateNaissance;
+    private Date dateNaissance;
     private String ville;
     private String niveau;
     private String photo;
     private String description;
-    private String poids;
-    private String taille;
+    private Float poids;
+    private Float taille;
     private HashMap<String, User> amis;
 
-    public User(String pseudo, String email, String mdp, String nom, String prenom, String sexe, String dateNaissance, String ville, String niveau) {
+    public User(String pseudo, String email, String mdp, String nom, String prenom, String sexe, Date dateNaissance, String ville, String niveau) {
         this.pseudo = pseudo;
         this.email = email;
         this.mdp = mdp;
@@ -35,12 +36,12 @@ public class User
 
         this.photo = "";
         this.description = "";
-        this.poids = "";
-        this.taille = "";
+        this.poids = null;
+        this.taille = null;
         this.amis = null;
     }
 
-    public User(String pseudo, String email, String mdp, String nom, String prenom, String sexe, String dateNaissance, String ville, String niveau, String photo, String description, String poids, String taille) {
+    public User(String pseudo, String email, String mdp, String nom, String prenom, String sexe, Date dateNaissance, String ville, String niveau, String photo, String description, Float poids, Float taille) {
         this.pseudo = pseudo;
         this.email = email;
         this.mdp = mdp;
@@ -56,19 +57,6 @@ public class User
         this.taille = taille;
 
         this.amis = null;
-    }
-
-    public HashMap<String, String> userMap(){
-        HashMap<String, String> userM = new HashMap<String, String>();
-        userM.put("email", this.email);
-        userM.put("mdp", this.mdp);
-        userM.put("nom", this.nom);
-        userM.put("prenom", this.prenom);
-        userM.put("sexe", this.sexe);
-        userM.put("date de naissance", this.dateNaissance);
-        userM.put("ville", this.ville);
-        userM.put("niveau", this.niveau);
-        return userM;
     }
 
     public String getPseudo() {
@@ -119,11 +107,11 @@ public class User
         this.sexe = sexe;
     }
 
-    public String getDateNaissance() {
+    public Date getDateNaissance() {
         return dateNaissance;
     }
 
-    public void setDateNaissance(String dateNaissance) {
+    public void setDateNaissance(Date dateNaissance) {
         this.dateNaissance = dateNaissance;
     }
 
@@ -159,19 +147,19 @@ public class User
         this.description = description;
     }
 
-    public String getPoids() {
+    public Float getPoids() {
         return poids;
     }
 
-    public void setPoids(String poids) {
+    public void setPoids(Float poids) {
         this.poids = poids;
     }
 
-    public String getTaille() {
+    public Float getTaille() {
         return taille;
     }
 
-    public void setTaille(String taille) {
+    public void setTaille(Float taille) {
         this.taille = taille;
     }
 

@@ -1,6 +1,9 @@
-package com.ecolem.workoutside;
+package com.ecolem.workoutside.activities;
 
 import android.os.Bundle;
+
+import com.ecolem.workoutside.MyActivity;
+import com.ecolem.workoutside.R;
 
 
 public class CompteActivity extends MyActivity {
