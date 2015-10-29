@@ -1,7 +1,13 @@
 <resources>
-    <string name="app_name">Workoutside</string>
-
+    <string name="app_name">Workout side</string>
+    <string name="facebook_app_id">1047191685312128</string>
+    <string name="action_bar_title">WORKOUT SIDE</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_compte">CompteActivity</string>
+    <string name="username">Pseudo</string>
+    <string name="password">Mot de passe</string>
+    <string name="login">Connexion</string>
+    <string name="subscribe">Inscription</string>
 </resources>

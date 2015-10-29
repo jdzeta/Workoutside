@@ -1,9 +1,12 @@
-package com.ecolem.workoutside;
+package com.ecolem.workoutside.activities;
 
+import android.app.Activity;
 import android.os.Bundle;
 
+import com.ecolem.workoutside.R;
 
-public class CompteActivity extends MyActivity {
+
+public class CompteActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
