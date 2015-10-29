@@ -1,17 +1,19 @@
 package com.ecolem.workoutside.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-import com.ecolem.workoutside.MyActivity;
 import com.ecolem.workoutside.R;
+import com.ecolem.workoutside.WorkoutSide;
+import com.ecolem.workoutside.database.FirebaseManager;
 import com.ecolem.workoutside.manager.MouvementManager;
 import com.ecolem.workoutside.object.Mouvement;
 
-public class NewMouvementActivity extends MyActivity {
+public class NewMouvementActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +22,7 @@ public class NewMouvementActivity extends MyActivity {
     }
 
     public void onSubmit(View view) {
-        MouvementManager mouvementManager = new MouvementManager(ref.child("mouvements"));
+        MouvementManager mouvementManager = new MouvementManager(FirebaseManager.getInstance().getFirebaseRef().child("mouvements"));
 
         EditText nom = (EditText) findViewById(R.id.new_mouvement_nom);
         EditText description = (EditText) findViewById(R.id.new_mouvement_description);
@@ -29,7 +31,7 @@ public class NewMouvementActivity extends MyActivity {
         Mouvement newMouvement = new Mouvement(nom.getText().toString(), image.getText().toString(), description.getText().toString());
         mouvementManager.sendData(newMouvement);
 
-        SharedPreferences.Editor edit = preferences.edit();
+        SharedPreferences.Editor edit = WorkoutSide.SHARED_PREFS.edit();
         edit.putString("current_mouvement", newMouvement.getNom());
         edit.commit();
 

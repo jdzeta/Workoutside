@@ -1,7 +1,9 @@
 package com.ecolem.workoutside;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.preference.PreferenceManager;
 
 import com.firebase.client.Firebase;
 
@@ -11,8 +13,9 @@ import com.firebase.client.Firebase;
 public class WorkoutSide  extends Application {
 
     public static final String FIREBASE_URL = "https://workout-side.firebaseio.com/";
-
     public static Resources APP_RESOURCES;
+
+    public static SharedPreferences SHARED_PREFS;
 
     @Override
     public void onCreate() {
@@ -21,6 +24,8 @@ public class WorkoutSide  extends Application {
         APP_RESOURCES = getResources();
 
         Firebase.setAndroidContext(this);
+
+        SHARED_PREFS = PreferenceManager.getDefaultSharedPreferences(this);
 
     }
 }

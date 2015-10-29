@@ -61,10 +61,7 @@
             android:name=".activities.CatalogueActivity"
             android:label="@string/title_activity_catalogue" >
         </activity>
-        <activity
-            android:name=".activities.ListCatalogueActivity"
-            android:label="@string/title_activity_list_catalogue" >
-        </activity>
+
     </application>
 
 </manifest>

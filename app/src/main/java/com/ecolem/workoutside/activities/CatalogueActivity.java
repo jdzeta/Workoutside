@@ -1,16 +1,18 @@
 package com.ecolem.workoutside.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ecolem.workoutside.MyActivity;
 import com.ecolem.workoutside.R;
+import com.ecolem.workoutside.WorkoutSide;
+import com.ecolem.workoutside.database.FirebaseManager;
 import com.ecolem.workoutside.manager.CatalogueManager;
 
-public class CatalogueActivity extends MyActivity {
+public class CatalogueActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,9 +26,9 @@ public class CatalogueActivity extends MyActivity {
         TextView description = ((TextView) findViewById(R.id.catalogue_description));
         ImageView image = ((ImageView) findViewById(R.id.catalogue_image));
 
-        String cat_name = preferences.getString("cat_name", "");
+        String cat_name = WorkoutSide.SHARED_PREFS.getString("cat_name", "");
 
-        CatalogueManager catalogueManager = new CatalogueManager(ref.child(cat_name));
+        CatalogueManager catalogueManager = new CatalogueManager(FirebaseManager.getInstance().getFirebaseRef().child(cat_name));
         catalogueManager.setCatalogueData(cat_name);
     }
 
