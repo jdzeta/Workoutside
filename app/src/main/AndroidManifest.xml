@@ -43,7 +43,28 @@
         </activity>
         <activity
             android:name=".activities.CompteActivity"
-            android:label="@string/title_activity_compte"></activity>
+            android:label="@string/title_activity_compte" >
+        </activity>
+        <activity
+            android:name=".activities.MouvementActivity"
+            android:label="@string/title_activity_mouvement" >
+        </activity>
+        <activity
+            android:name=".activities.NewMouvementActivity"
+            android:label="@string/title_activity_new_mouvement" >
+        </activity>
+        <activity
+            android:name=".activities.ListMouvementActivity"
+            android:label="@string/title_activity_list_mouvement" >
+        </activity>
+        <activity
+            android:name=".activities.CatalogueActivity"
+            android:label="@string/title_activity_catalogue" >
+        </activity>
+        <activity
+            android:name=".activities.ListCatalogueActivity"
+            android:label="@string/title_activity_list_catalogue" >
+        </activity>
     </application>
 
 </manifest>

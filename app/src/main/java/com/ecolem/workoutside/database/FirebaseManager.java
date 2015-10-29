@@ -8,6 +8,7 @@ import com.firebase.client.Firebase;
  */
 public class FirebaseManager {
 
+
     public static FirebaseManager sInstance = null;
     private Firebase mFirebaseRef = null;
 
