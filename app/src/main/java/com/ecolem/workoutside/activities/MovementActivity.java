@@ -5,14 +5,11 @@ import android.os.Bundle;
 
 import com.ecolem.workoutside.R;
 
-
-
-public class CompteActivity extends Activity {
+public class MovementActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_compte);
+        setContentView(R.layout.activity_mouvement);
     }
-
 }

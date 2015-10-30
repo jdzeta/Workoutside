@@ -1,4 +1,4 @@
-package com.ecolem.workoutside.object;
+package com.ecolem.workoutside.model;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ public class Event
     private Integer limiteP;
     private HashMap<Integer,User> participants;
     private float note;
-    private HashMap<Integer,Commentaire> commentaires;
+    private HashMap<Integer,Comment> commentaires;
 
     public Event(String nom, Date date, String lieu, String description, Integer niveauMin) {
         this.nom = nom;
@@ -90,11 +90,11 @@ public class Event
         this.note = note;
     }
 
-    public HashMap<Integer, Commentaire> getCommentaires() {
+    public HashMap<Integer, Comment> getCommentaires() {
         return commentaires;
     }
 
-    public void setCommentaires(HashMap<Integer, Commentaire> commentaires) {
+    public void setCommentaires(HashMap<Integer, Comment> commentaires) {
         this.commentaires = commentaires;
     }
 }

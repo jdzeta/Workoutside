@@ -2,7 +2,8 @@ package com.ecolem.workoutside.manager;
 
 import android.widget.TextView;
 
-import com.ecolem.workoutside.object.Mouvement;
+import com.ecolem.workoutside.database.FirebaseManager;
+import com.ecolem.workoutside.model.Mouvement;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -13,20 +14,25 @@ import java.util.HashMap;
 /**
  * Created by akawa_000 on 25/10/2015.
  */
-public class MouvementManager extends MyManager {
+public class MouvementManager  {
 
-    public MouvementManager(Firebase ref) {
-        super(ref);
+    public static MouvementManager sInstance = null;
 
-        // ref = https://workout-side.firebaseio.com/categorieName/catalogueName/
+    public static MouvementManager getInstance(){
+        if(sInstance == null){
+            sInstance = new MouvementManager();
+        }
+
+        return sInstance;
     }
 
+
     public void sendData(Mouvement mouvement){
-        ref.setValue(mouvement);
+        FirebaseManager.getInstance().getFirebaseRef().setValue(mouvement);
     }
 
     public void getData(String mouvementName, final HashMap<String, TextView> mouvFields){
-        Firebase mouvRef = ref.child(mouvementName);
+        Firebase mouvRef = FirebaseManager.getInstance().getFirebaseRef().child(mouvementName);
 
         mouvRef.addValueEventListener(new ValueEventListener() {
             @Override

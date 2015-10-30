@@ -4,7 +4,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.ecolem.workoutside.activities.CatalogueActivity">
+    tools:context="com.ecolem.workoutside.activities.CatalogActivity">
 
     <TextView android:text="@string/title_activity_catalogue"
         android:layout_width="wrap_content"

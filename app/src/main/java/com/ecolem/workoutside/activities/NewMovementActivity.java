@@ -11,9 +11,9 @@ import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.WorkoutSide;
 import com.ecolem.workoutside.database.FirebaseManager;
 import com.ecolem.workoutside.manager.MouvementManager;
-import com.ecolem.workoutside.object.Mouvement;
+import com.ecolem.workoutside.model.Mouvement;
 
-public class NewMouvementActivity extends Activity {
+public class NewMovementActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,20 +22,19 @@ public class NewMouvementActivity extends Activity {
     }
 
     public void onSubmit(View view) {
-        MouvementManager mouvementManager = new MouvementManager(FirebaseManager.getInstance().getFirebaseRef().child("mouvements"));
 
         EditText nom = (EditText) findViewById(R.id.new_mouvement_nom);
         EditText description = (EditText) findViewById(R.id.new_mouvement_description);
         EditText image = (EditText) findViewById(R.id.new_mouvement_image);
 
         Mouvement newMouvement = new Mouvement(nom.getText().toString(), image.getText().toString(), description.getText().toString());
-        mouvementManager.sendData(newMouvement);
+        MouvementManager.getInstance().sendData(newMouvement);
 
         SharedPreferences.Editor edit = WorkoutSide.SHARED_PREFS.edit();
         edit.putString("current_mouvement", newMouvement.getNom());
         edit.commit();
 
-        Intent intent = new Intent(getApplicationContext(), MouvementActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MovementActivity.class);
         startActivity(intent);
         finish();
     }

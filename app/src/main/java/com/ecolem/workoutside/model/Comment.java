@@ -1,15 +1,15 @@
-package com.ecolem.workoutside.object;
+package com.ecolem.workoutside.model;
 
 /**
  * Created by akawa_000 on 23/10/2015.
  */
-public class Commentaire
+public class Comment
 {
     private User user;
     private float note;
     private String comment;
 
-    public Commentaire(User user, float note) {
+    public Comment(User user, float note) {
         this.user = user;
         this.note = note;
     }

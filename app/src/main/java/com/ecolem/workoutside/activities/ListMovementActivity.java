@@ -7,7 +7,7 @@ import android.view.MenuItem;
 
 import com.ecolem.workoutside.R;
 
-public class ListMouvementActivity extends ActionBarActivity {
+public class ListMovementActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

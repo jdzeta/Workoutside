@@ -1,18 +1,20 @@
-package com.ecolem.workoutside.object;
+package com.ecolem.workoutside.model;
+
+import java.util.HashMap;
 
 /**
- * Created by akawa_000 on 22/10/2015.
+ * Created by akawa_000 on 23/10/2015.
  */
-public class Mouvement
+public class Catalog
 {
     private String nom;
     private String image;
     private String description;
+    private HashMap<String, Mouvement> mouvements;
 
-    public Mouvement(String nom, String image, String description) {
+    public Catalog(String nom) {
         this.nom = nom;
-        this.image = image;
-        this.description = description;
+        this.mouvements = new HashMap<String, Mouvement>();
     }
 
     public String getNom() {
@@ -37,5 +39,13 @@ public class Mouvement
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public HashMap<String, Mouvement> getMouvements() {
+        return mouvements;
+    }
+
+    public void setMouvements(HashMap<String, Mouvement> mouvements) {
+        this.mouvements = mouvements;
     }
 }
