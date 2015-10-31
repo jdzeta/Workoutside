@@ -23,4 +23,8 @@ public class FirebaseManager {
 
         return sInstance;
     }
+
+    public Firebase getFirebaseRef(){
+        return mFirebaseRef;
+    }
 }

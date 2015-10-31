@@ -2,7 +2,8 @@ package com.ecolem.workoutside.manager;
 
 import android.widget.TextView;
 
-import com.ecolem.workoutside.object.User;
+import com.ecolem.workoutside.database.FirebaseManager;
+import com.ecolem.workoutside.model.User;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -13,19 +14,26 @@ import java.util.HashMap;
 /**
  * Created by akawa_000 on 24/10/2015.
  */
-public class UserManager extends MyManager {
+public class UserManager  {
 
-    public UserManager(Firebase ref) {
-        super(ref);
+    public static UserManager sInstance = null;
+
+    public static UserManager getInstance(){
+        if(sInstance == null){
+            sInstance = new UserManager();
+        }
+
+        return sInstance;
     }
+
 
     public void sendUserData(User user){
 
-        ref.setValue(user);
+        FirebaseManager.getInstance().getFirebaseRef().setValue(user);
     }
 
     public void setCompteData(String pseudo, final HashMap<String, TextView> userFields){
-        Firebase userRef = ref.child(pseudo);
+        Firebase userRef = FirebaseManager.getInstance().getFirebaseRef().child(pseudo);
 
         userRef.addValueEventListener(new ValueEventListener() {
             @Override

@@ -15,33 +15,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title"
-        android:id="@+id/new_mouvement_nom"
+        android:id="@+id/movement_nom"
         android:hint="Nom"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="20dp"
-        android:layout_alignRight="@+id/new_mouvement_description"
-        android:layout_alignEnd="@+id/new_mouvement_description" />
+        android:layout_alignRight="@+id/movement_description"
+        android:layout_alignEnd="@+id/movement_description" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/new_mouvement_nom"
-        android:id="@+id/new_mouvement_image"
+        android:layout_below="@+id/movement_nom"
+        android:id="@+id/movement_image"
         android:hint="Image"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="20dp"
-        android:layout_alignRight="@+id/new_mouvement_description"
-        android:layout_alignEnd="@+id/new_mouvement_description" />
+        android:layout_alignRight="@+id/movement_description"
+        android:layout_alignEnd="@+id/movement_description" />
 
     <!--@TODO Define image file field-->
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/new_mouvement_description"
-        android:layout_below="@+id/new_mouvement_image"
+        android:id="@+id/movement_description"
+        android:layout_below="@+id/movement_image"
         android:hint="Description"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:text="Envoyer"
         android:id="@+id/new_mouvement_submit"
-        android:layout_below="@+id/new_mouvement_description"
+        android:layout_below="@+id/movement_description"
         android:layout_marginTop="20dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"

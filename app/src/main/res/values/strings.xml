@@ -14,7 +14,15 @@
     <string name="title_activity_mouvement">MouvementActivity</string>
     <string name="title_activity_new_mouvement">Nouveau mouvement</string>
     <string name="title_activity_list_mouvement">ListMouvementActivity</string>
-    <string name="title_activity_new_catalogue">Nouveau catalogue de mouvements</string>
+    <string name="title_activity_new_catalogue">Nouveau catalog de mouvements</string>
     <string name="title_activity_catalogue">CatalogueActivity</string>
+
+    <!-- MAIN -->
+    <string name="around_me">Autout de moi...</string>
+    <string name="menu_events">Agenda</string>
+    <string name="menu_exos">Exercices</string>
+    <string name="menu_settings">Paramètres</string>
+    <string name="menu_logout">Déconnexion</string>
+
 
 </resources>

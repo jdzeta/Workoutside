@@ -2,7 +2,8 @@ package com.ecolem.workoutside.manager;
 
 import android.widget.TextView;
 
-import com.ecolem.workoutside.object.Mouvement;
+import com.ecolem.workoutside.database.FirebaseManager;
+import com.ecolem.workoutside.model.Movement;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -13,30 +14,35 @@ import java.util.HashMap;
 /**
  * Created by akawa_000 on 25/10/2015.
  */
-public class MouvementManager extends MyManager {
+public class MovementManager {
 
-    public MouvementManager(Firebase ref) {
-        super(ref);
+    public static MovementManager sInstance = null;
 
-        // ref = https://workout-side.firebaseio.com/categorieName/catalogueName/
+    public static MovementManager getInstance(){
+        if(sInstance == null){
+            sInstance = new MovementManager();
+        }
+
+        return sInstance;
     }
 
-    public void sendData(Mouvement mouvement){
-        ref.setValue(mouvement);
+
+    public void sendData(Movement movement){
+        FirebaseManager.getInstance().getFirebaseRef().setValue(movement);
     }
 
     public void getData(String mouvementName, final HashMap<String, TextView> mouvFields){
-        Firebase mouvRef = ref.child(mouvementName);
+        Firebase mouvRef = FirebaseManager.getInstance().getFirebaseRef().child(mouvementName);
 
         mouvRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 System.out.println("Found " + snapshot.getChildrenCount() + " mouvement(s)");
-                Mouvement mouvement = snapshot.getValue(Mouvement.class);
+                Movement movement = snapshot.getValue(Movement.class);
 
-                mouvFields.get("nom").setText(mouvement.getNom());
-                mouvFields.get("image").setText(mouvement.getImage());
-                mouvFields.get("description").setText(mouvement.getDescription());
+                mouvFields.get("nom").setText(movement.getNom());
+                mouvFields.get("image").setText(movement.getImage());
+                mouvFields.get("description").setText(movement.getDescription());
             }
             @Override
             public void onCancelled(FirebaseError firebaseError) {

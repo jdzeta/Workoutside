@@ -7,7 +7,7 @@ import com.ecolem.workoutside.R;
 
 
 
-public class CompteActivity extends Activity {
+public class AccountActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

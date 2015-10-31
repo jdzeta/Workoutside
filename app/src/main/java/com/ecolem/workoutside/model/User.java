@@ -1,4 +1,4 @@
-package com.ecolem.workoutside.object;
+package com.ecolem.workoutside.model;
 
 import java.util.Date;
 import java.util.HashMap;
