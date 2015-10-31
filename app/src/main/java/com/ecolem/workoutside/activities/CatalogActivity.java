@@ -6,9 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.WorkoutSide;
@@ -31,14 +29,12 @@ public class CatalogActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_catalogue);
+        setContentView(R.layout.activity_catalog);
+
+        initCatalogue();
     }
     
     public void initCatalogue(){
-
-        TextView nom = ((TextView) findViewById(R.id.catalogue_nom));
-        TextView description = ((TextView) findViewById(R.id.catalogue_description));
-        ImageView image = ((ImageView) findViewById(R.id.catalogue_image));
 
         String cat_name = WorkoutSide.SHARED_PREFS.getString("cat_name", "");
 
