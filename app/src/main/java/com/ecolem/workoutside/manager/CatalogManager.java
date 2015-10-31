@@ -22,4 +22,21 @@ public class CatalogManager {
         FirebaseManager.getInstance().getFirebaseRef().setValue(catalog.getNom(), catalog);
     }
 
+    /*public void setCatalogueData(String catalogueName){
+        Firebase catalogueRef = FirebaseManager.getInstance().getFirebaseRef().child(catalogueName);
+
+        catalogueRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                System.out.println("Found " + snapshot.getChildrenCount() + " catalog(s)");
+                Catalog catalog = snapshot.getValue(Catalog.class);
+
+                //@TODO Set catalog activity data
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                System.out.println("The read failed: " + firebaseError.getMessage());
+            }
+        });
+    }*/
 }
