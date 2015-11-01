@@ -2,7 +2,6 @@ package com.ecolem.workoutside.activities;
 
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -11,7 +10,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.ecolem.workoutside.R;
-import com.ecolem.workoutside.WorkoutSide;
+import com.firebase.client.Firebase;
 
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
@@ -23,6 +22,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Firebase.setAndroidContext(this);
 
         ActionBar actionbar = getSupportActionBar();
         actionbar.setTitle(getResources().getString(R.string.action_bar_title));
@@ -38,7 +39,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.menu_catalog:
-                Intent intent = new Intent(MainActivity.this, MovementActivity.class);
+                Intent intent = new Intent(MainActivity.this, CatalogActivity.class);
                 startActivity(intent);
                 break;
             default:

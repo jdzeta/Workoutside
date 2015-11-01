@@ -27,5 +27,7 @@ public class WorkoutSide  extends Application {
 
         SHARED_PREFS = PreferenceManager.getDefaultSharedPreferences(this);
 
+        System.out.println("STARTING APPLICATION");
+
     }
 }

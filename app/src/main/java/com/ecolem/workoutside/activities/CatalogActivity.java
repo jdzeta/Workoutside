@@ -12,7 +12,6 @@ import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.WorkoutSide;
 import com.ecolem.workoutside.adapter.MovementListAdapter;
 import com.ecolem.workoutside.database.FirebaseManager;
-import com.ecolem.workoutside.model.Catalog;
 import com.ecolem.workoutside.model.Movement;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -36,7 +35,7 @@ public class CatalogActivity extends Activity {
     
     public void initCatalogue(){
 
-        String cat_name = WorkoutSide.SHARED_PREFS.getString("cat_name", "");
+        String cat_name = "catalog";//WorkoutSide.SHARED_PREFS.getString("cat_name", "");
 
         setCatalogueData(cat_name);
 
@@ -67,9 +66,12 @@ public class CatalogActivity extends Activity {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 System.out.println("Found " + snapshot.getChildrenCount() + " catalog(s)");
-                Catalog catalog = snapshot.getValue(Catalog.class);
 
-                ArrayList<Movement> movements = catalog.getMovements();
+                ArrayList<Movement> movements = new ArrayList<Movement>();
+
+                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                    movements.add(postSnapshot.getValue(Movement.class));
+                }
 
                 Collections.reverse(movements);
 

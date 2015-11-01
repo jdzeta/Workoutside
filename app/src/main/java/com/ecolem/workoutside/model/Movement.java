@@ -9,6 +9,8 @@ public class Movement
     private String image;
     private String description;
 
+    public Movement() {}
+
     public Movement(String nom, String image, String description) {
         this.nom = nom;
         this.image = image;

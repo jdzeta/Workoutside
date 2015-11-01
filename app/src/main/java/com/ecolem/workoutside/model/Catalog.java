@@ -12,6 +12,8 @@ public class Catalog
     private String description;
     private ArrayList<Movement> movements;
 
+    public Catalog() {}
+
     public Catalog(String nom) {
         this.nom = nom;
         this.movements = new ArrayList<>();
