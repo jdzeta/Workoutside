@@ -25,4 +25,9 @@
     <string name="menu_logout">Déconnexion</string>
 
 
+    <!-- Errors -->
+    <string name="invalid_email">L\'email est invalide.</string>
+    <string name="invalid_password">Le mot de passe est invalide.</string>
+    <string name="invalid_id">Les identifiants sont incorrects.</string>
+
 </resources>

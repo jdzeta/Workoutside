@@ -21,7 +21,12 @@ public class WorkoutSide  extends Application {
 
     public static SharedPreferences SHARED_PREFS;
 
-    private WorkoutSide(Context context) {
+
+    public WorkoutSide(){
+
+    }
+
+    public WorkoutSide(Context context) {
         mCtx = context;
     }
 

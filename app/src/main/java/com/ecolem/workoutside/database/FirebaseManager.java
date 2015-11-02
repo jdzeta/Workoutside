@@ -14,6 +14,7 @@ public class FirebaseManager {
 
     public FirebaseManager(){
         mFirebaseRef = new Firebase(WorkoutSide.FIREBASE_URL);
+
     }
 
     public static FirebaseManager getInstance(){

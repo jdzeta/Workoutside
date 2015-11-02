@@ -18,7 +18,6 @@ import java.util.HashMap;
 public class UserManager {
 
     public static UserManager sInstance = null;
-    private LoginListener mListener = null;
 
     public static UserManager getInstance() {
         if (sInstance == null) {
@@ -32,6 +31,24 @@ public class UserManager {
         FirebaseManager.getInstance().getFirebaseRef().setValue(user);
     }
 
+    public void createUser(String email, String password, final UserListener listener) {
+        FirebaseManager.getInstance().getFirebaseRef().createUser(email, password, new Firebase.ResultHandler() {
+            @Override
+            public void onSuccess() {
+                if (listener != null){
+                    listener.onCreateUserSuccess();
+                }
+            }
+
+            @Override
+            public void onError(FirebaseError firebaseError) {
+                if (listener != null){
+                    listener.onFail(firebaseError);
+                }
+            }
+        });
+    }
+
     public void getUser(String pseudo, final UserListener listener) {
         Firebase userRef = FirebaseManager.getInstance().getFirebaseRef().child(pseudo);
 
@@ -41,7 +58,7 @@ public class UserManager {
                 System.out.println("Found " + snapshot.getChildrenCount() + " user(s)");
                 User user = snapshot.getValue(User.class);
 
-                if(listener != null){
+                if (listener != null) {
                     listener.onGetUserSuccess(user);
                 }
 
@@ -66,11 +83,11 @@ public class UserManager {
             @Override
             public void onCancelled(FirebaseError firebaseError) {
                 System.out.println("The read failed: " + firebaseError.getMessage());
-                if(listener != null){
+                if (listener != null) {
                     listener.onFail(firebaseError);
                 }
 
-               // userFields.get("erreur").setText("Utilisateur inconnu");
+                // userFields.get("erreur").setText("Utilisateur inconnu");
             }
         });
     }
@@ -89,7 +106,7 @@ public class UserManager {
 
             @Override
             public void onAuthenticationError(FirebaseError firebaseError) {
-                if (mListener != null) {
+                if (listener != null) {
                     listener.onLoginFail(firebaseError);
                 }
             }
@@ -108,6 +125,7 @@ public class UserManager {
 
     public interface UserListener {
         void onGetUserSuccess(User user);
+        void onCreateUserSuccess();
         void onFail(FirebaseError error);
     }
 

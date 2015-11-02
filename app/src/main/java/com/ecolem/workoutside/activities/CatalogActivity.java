@@ -22,7 +22,7 @@ import java.util.Collections;
 public class CatalogActivity extends Activity {
 
     ListView mListView;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,8 +30,8 @@ public class CatalogActivity extends Activity {
 
         initCatalogue();
     }
-    
-    public void initCatalogue(){
+
+    public void initCatalogue() {
 
         String cat_name = "catalog";//WorkoutSide.SHARED_PREFS.getString("cat_name", "");
 
@@ -49,12 +49,12 @@ public class CatalogActivity extends Activity {
                 Intent intent = new Intent(getApplicationContext(), MovementActivity.class);
                 intent.putExtra("mName", sMovement.getNom());
                 startActivity(intent);
-                finish();
+
             }
         });
     }
 
-    public void setCatalogueData(String catalogueName){
+    public void setCatalogueData(String catalogueName) {
         Firebase catalogueRef = FirebaseManager.getInstance().getFirebaseRef().child(catalogueName);
 
         catalogueRef.addValueEventListener(new ValueEventListener() {
@@ -64,7 +64,7 @@ public class CatalogActivity extends Activity {
 
                 ArrayList<Movement> movements = new ArrayList<Movement>();
 
-                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     movements.add(postSnapshot.getValue(Movement.class));
                 }
 
@@ -72,6 +72,7 @@ public class CatalogActivity extends Activity {
 
                 setMouvementListAdapter(movements);
             }
+
             @Override
             public void onCancelled(FirebaseError firebaseError) {
                 System.out.println("The read failed: " + firebaseError.getMessage());
