@@ -6,65 +6,40 @@ import java.util.HashMap;
 /**
  * Created by akawa_000 on 21/10/2015.
  */
-public class User
-{
-    private String pseudo;
+public class User {
+    private String uid;
+    private String login;
     private String email;
-    private String mdp;
-    private String nom;
-    private String prenom;
-    private String sexe;
-    private Date dateNaissance;
-    private String ville;
-    private String niveau;
-    private String photo;
+    private String password;
+    private String lastname;
+    private String firstname;
+    private int gender;
+    private Date birthdate;
+    private String city;
+    private int level;
+    private String picture;
     private String description;
-    private Float poids;
-    private Float taille;
-    private HashMap<String, User> amis;
+    private Float weight;
+    private int size;
+    private HashMap<String, User> friends = new HashMap<>();
 
-    public User(String pseudo, String email, String mdp, String nom, String prenom, String sexe, Date dateNaissance, String ville, String niveau) {
-        this.pseudo = pseudo;
-        this.email = email;
-        this.mdp = mdp;
-        this.nom = nom;
-        this.prenom = prenom;
-        this.sexe = sexe;
-        this.dateNaissance = dateNaissance;
-        this.ville = ville;
-        this.niveau = niveau;
-
-        this.photo = "";
-        this.description = "";
-        this.poids = null;
-        this.taille = null;
-        this.amis = null;
+    public User() {
     }
 
-    public User(String pseudo, String email, String mdp, String nom, String prenom, String sexe, Date dateNaissance, String ville, String niveau, String photo, String description, Float poids, Float taille) {
-        this.pseudo = pseudo;
-        this.email = email;
-        this.mdp = mdp;
-        this.nom = nom;
-        this.prenom = prenom;
-        this.sexe = sexe;
-        this.dateNaissance = dateNaissance;
-        this.ville = ville;
-        this.niveau = niveau;
-        this.photo = photo;
-        this.description = description;
-        this.poids = poids;
-        this.taille = taille;
-
-        this.amis = null;
+    public String getUID() {
+        return uid;
     }
 
-    public String getPseudo() {
-        return pseudo;
+    public void setUID(String uid){
+        this.uid = uid;
     }
 
-    public void setPseudo(String pseudo) {
-        this.pseudo = pseudo;
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getEmail() {
@@ -75,99 +50,99 @@ public class User
         this.email = email;
     }
 
-    public String getMdp() {
-        return mdp;
+    public String getPassword() {
+        return this.password;
     }
 
-    public void setMdp(String mdp) {
-        this.mdp = mdp;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getNom() {
-        return nom;
+    public String getLastname() {
+        return this.lastname;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
-    public String getPrenom() {
-        return prenom;
+    public String getFirstname() {
+        return this.firstname;
     }
 
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
-    public String getSexe() {
-        return sexe;
+    public int getGender() {
+        return this.gender;
     }
 
-    public void setSexe(String sexe) {
-        this.sexe = sexe;
+    public void setGender(int gender) {
+        this.gender = gender;
     }
 
-    public Date getDateNaissance() {
-        return dateNaissance;
+    public Date getBirthdate() {
+        return this.birthdate;
     }
 
-    public void setDateNaissance(Date dateNaissance) {
-        this.dateNaissance = dateNaissance;
+    public void setBirthdate(Date date) {
+        this.birthdate = date;
     }
 
-    public String getVille() {
-        return ville;
+    public String getCity() {
+        return city;
     }
 
-    public void setVille(String ville) {
-        this.ville = ville;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public String getNiveau() {
-        return niveau;
+    public int getLevel() {
+        return this.level;
     }
 
-    public void setNiveau(String niveau) {
-        this.niveau = niveau;
+    public void setLevel(int level) {
+        this.level = level;
     }
 
-    public String getPhoto() {
-        return photo;
+    public String getPicture() {
+        return this.picture;
     }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
+    public void setPicture(String pic) {
+        this.picture = pic;
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public Float getPoids() {
-        return poids;
+    public Float getWeight() {
+        return this.weight;
     }
 
-    public void setPoids(Float poids) {
-        this.poids = poids;
+    public void setWeight(Float weight) {
+        this.weight = weight;
     }
 
-    public Float getTaille() {
-        return taille;
+    public int getSize() {
+        return this.size;
     }
 
-    public void setTaille(Float taille) {
-        this.taille = taille;
+    public void setSize(int size) {
+        this.size = size;
     }
 
-    public HashMap<String, User> getAmis() {
-        return amis;
+    public HashMap<String, User> getFriends() {
+        return friends;
     }
 
-    public void setAmis(HashMap<String, User> amis) {
-        this.amis = amis;
+    public void setFriends(HashMap<String, User> friends) {
+        this.friends = friends;
     }
 }

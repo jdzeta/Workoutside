@@ -6,5 +6,9 @@
     <color name="gray">#8C8C8C</color>
     <color name="gray_medium">#c2c2c2</color>
     <color name="gray_light">#e1e1e1</color>
+    <color name="level_0">#4be240</color>
+    <color name="level_1">#f7ff00</color>
+    <color name="level_2">#ffb730</color>
+    <color name="level_3">#ff0000</color>
 
 </resources>

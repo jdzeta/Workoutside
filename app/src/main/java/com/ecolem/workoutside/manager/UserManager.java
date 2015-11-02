@@ -28,21 +28,22 @@ public class UserManager {
     }
 
     public void saveUser(User user) {
-        FirebaseManager.getInstance().getFirebaseRef().setValue(user);
+        FirebaseManager.getInstance().getFirebaseRef().child("users").child(user.getUID()).setValue(user);
     }
 
-    public void createUser(String email, String password, final UserListener listener) {
+    public void createAccount(final String email, final String password, final UserListener listener) {
+
         FirebaseManager.getInstance().getFirebaseRef().createUser(email, password, new Firebase.ResultHandler() {
             @Override
             public void onSuccess() {
-                if (listener != null){
-                    listener.onCreateUserSuccess();
+                if (listener != null) {
+                    listener.onAccountSuccess(email, password);
                 }
             }
 
             @Override
             public void onError(FirebaseError firebaseError) {
-                if (listener != null){
+                if (listener != null) {
                     listener.onFail(firebaseError);
                 }
             }
@@ -62,7 +63,7 @@ public class UserManager {
                     listener.onGetUserSuccess(user);
                 }
 
-                /*userFields.get("pseudo").setText(user.getPseudo());
+                /*userFields.get("pseudo").setText(user.getmLogin());
                 userFields.get("nom").setText(user.getNom());
                 userFields.get("prenom").setText(user.getPrenom());
                 userFields.get("email").setText(user.getEmail());
@@ -93,21 +94,21 @@ public class UserManager {
     }
 
 
-    public void login(String email, String password, final LoginListener listener) {
+    public void login(String email, String password, final UserListener listener) {
 
 
         Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
             @Override
             public void onAuthenticated(AuthData authData) {
                 if (listener != null) {
-                    listener.onLoginSuccess();
+                    listener.onLoginSuccess(authData.getUid());
                 }
             }
 
             @Override
             public void onAuthenticationError(FirebaseError firebaseError) {
                 if (listener != null) {
-                    listener.onLoginFail(firebaseError);
+                    listener.onFail(firebaseError);
                 }
             }
         };
@@ -124,16 +125,13 @@ public class UserManager {
      **/
 
     public interface UserListener {
+        void onLoginSuccess(String uid);
+
         void onGetUserSuccess(User user);
-        void onCreateUserSuccess();
+
+        void onAccountSuccess(String email, String password);
+
         void onFail(FirebaseError error);
     }
-
-    public interface LoginListener {
-        void onLoginSuccess();
-
-        void onLoginFail(FirebaseError error);
-    }
-
 
 }

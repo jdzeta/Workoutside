@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/step_1_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/who_are_you"
+            android:textAllCaps="true"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/secondary" />
+
+
+        <EditText
+            android:id="@+id/account_firstname"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:hint="@string/account_firstname"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/account_lastname"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:hint="@string/account_lastname"
+            android:singleLine="true" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:padding="4dp"
+                    android:text="Date de naissance"
+                    android:textSize="8pt" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/account_birthdate"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".7"
+                        android:singleLine="true" />
+
+                    <RelativeLayout
+                        android:id="@+id/account_birthdate_button"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".3">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_centerInParent="true"
+                            android:src="@mipmap/menu_events" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_weight=".5"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:padding="4dp"
+                    android:text="Sexe"
+                    android:textSize="8pt" />
+
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></Spinner>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <EditText
+            android:id="@+id/account_city"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:hint="@string/account_city"
+            android:singleLine="true" />
+
+
+        <Button
+            android:id="@+id/account_next_button"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/primary"
+            android:text="@string/next"
+            android:textColor="@color/white" />
+
+
+    </LinearLayout>
+
+</ScrollView>
+
