@@ -2,14 +2,12 @@ package com.ecolem.workoutside.activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.ecolem.workoutside.R;
-import com.ecolem.workoutside.WorkoutSide;
 import com.ecolem.workoutside.adapter.MovementListAdapter;
 import com.ecolem.workoutside.database.FirebaseManager;
 import com.ecolem.workoutside.model.Movement;
@@ -44,15 +42,12 @@ public class CatalogActivity extends Activity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Movement sMovements = (Movement) mListView.getItemAtPosition(position);
-                SharedPreferences.Editor editor = WorkoutSide.SHARED_PREFS.edit();
-                editor.putString("sMovName", sMovements.getNom());
-
-                editor.commit();
+                Movement sMovement = (Movement) mListView.getItemAtPosition(position);
 
                 //Toast.makeText(getApplicationContext(), "View info " + sMouvements.title, Toast.LENGTH_LONG).show();
 
                 Intent intent = new Intent(getApplicationContext(), MovementActivity.class);
+                intent.putExtra("mName", sMovement.getNom());
                 startActivity(intent);
                 finish();
             }

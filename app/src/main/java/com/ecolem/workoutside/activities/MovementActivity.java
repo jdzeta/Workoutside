@@ -4,52 +4,50 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ecolem.workoutside.R;
-import com.ecolem.workoutside.WorkoutSide;
-import com.ecolem.workoutside.database.FirebaseManager;
+import com.ecolem.workoutside.manager.MovementManager;
 import com.ecolem.workoutside.model.Movement;
 import com.ecolem.workoutside.tools.ImageLoadTask;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 
-public class MovementActivity extends Activity {
+public class MovementActivity extends Activity implements MovementManager.MovementListener{
+
+    TextView mNom;
+    TextView mDescription;
+    ImageView mImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movement);
 
-        initActivity();
+        mNom = (TextView) findViewById(R.id.movement_nom);
+        mDescription = (TextView) findViewById(R.id.movement_description);
+        mImage = (ImageView) findViewById(R.id.movement_image);
     }
 
-    public void initActivity() {
-        String movName = WorkoutSide.SHARED_PREFS.getString("sMovName", "");
+    @Override
+    protected void onStart() {
+        super.onStart();
 
-        Firebase movRef = FirebaseManager.getInstance().getFirebaseRef().child("catalog").child(movName);
+        String mName = getIntent().getExtras().getString("mName");
 
-        movRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                System.out.println("Found " + snapshot.getChildrenCount() + " catalog(s)");
-                Movement movement = snapshot.getValue(Movement.class);
+        MovementManager.getInstance().setListener(this);
+        MovementManager.getInstance().getMovement(mName);
+    }
 
-                TextView movName = (TextView) findViewById(R.id.movement_nom);
-                TextView movDescription = (TextView) findViewById(R.id.movement_description);
-                ImageView movImage = (ImageView) findViewById(R.id.movement_image);
+    @Override
+    public void onSuccess(Movement m) {
+        mNom.setText(m.getNom());
+        mDescription.setText(m.getDescription());
 
-                movName.setText(movement.getNom());
-                movDescription.setText(movement.getDescription());
+        new ImageLoadTask(m.getImage(), mImage).execute();
+    }
 
-                // Setting movement image from URL
-                new ImageLoadTask(movement.getImage(), movImage).execute();
-            }
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                System.out.println("The read failed: " + firebaseError.getMessage());
-            }
-        });
+    @Override
+    public void onFail(FirebaseError error) {
+        Toast.makeText(getApplicationContext(), "Error : Can't load movement data", Toast.LENGTH_SHORT).show();
     }
 }

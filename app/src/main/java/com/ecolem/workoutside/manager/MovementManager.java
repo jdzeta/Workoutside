@@ -2,6 +2,10 @@ package com.ecolem.workoutside.manager;
 
 import com.ecolem.workoutside.database.FirebaseManager;
 import com.ecolem.workoutside.model.Movement;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 /**
  * Created by akawa_000 on 25/10/2015.
@@ -9,6 +13,7 @@ import com.ecolem.workoutside.model.Movement;
 public class MovementManager {
 
     public static MovementManager sInstance = null;
+    public MovementListener mListener;
 
     public static MovementManager getInstance(){
         if(sInstance == null){
@@ -18,30 +23,40 @@ public class MovementManager {
         return sInstance;
     }
 
+    public void setListener(MovementListener listener){
+        this.mListener = listener;
+    }
+
 
     public void sendData(Movement movement){
         FirebaseManager.getInstance().getFirebaseRef().setValue(movement);
     }
 
-    /*public void getData(String mouvementName, final HashMap<String, TextView> mouvFields){
-        Firebase mouvRef = FirebaseManager.getInstance().getFirebaseRef().child(mouvementName);
+    public void getMovement(String movName){
 
-        mouvRef.addValueEventListener(new ValueEventListener() {
+        Firebase movRef = FirebaseManager.getInstance().getFirebaseRef().child("catalog").child(movName);
+
+        movRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 System.out.println("Found " + snapshot.getChildrenCount() + " mouvement(s)");
-                Mouvement mouvement = snapshot.getValue(Mouvement.class);
-
-                mouvFields.get("nom").setText(mouvement.getNom());
-                mouvFields.get("image").setText(mouvement.getImage());
-                mouvFields.get("description").setText(mouvement.getDescription());
+                Movement mouvement = snapshot.getValue(Movement.class);
+                if(mListener != null){
+                    mListener.onSuccess(mouvement);
+                }
             }
             @Override
             public void onCancelled(FirebaseError firebaseError) {
                 System.out.println("The read failed: " + firebaseError.getMessage());
-
-                mouvFields.get("erreur").setText("Mouvement inconnu");
+                if(mListener != null){
+                    mListener.onFail(firebaseError);
+                }
             }
         });
-    }*/
+    }
+
+    public interface MovementListener {
+        public void onSuccess(Movement m);
+        public void onFail(FirebaseError error);
+    }
 }
