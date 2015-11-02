@@ -9,27 +9,30 @@
     <TextView android:text="@string/title_activity_mouvement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/title_new_mouvement"/>
+        android:id="@+id/title_new_movement"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/new_mouvement_nom"
+        android:id="@+id/movement_nom"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/title_new_mouvement"/>
+        android:layout_below="@+id/title_new_movement"
+        android:text="Nom" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/new_mouvement_image"
+        android:id="@+id/movement_image"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/new_mouvement_nom"/>
+        android:layout_below="@+id/movement_nom"
+        android:contentDescription="Image" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/new_mouvement_description"
+        android:id="@+id/movement_description"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/new_mouvement_image"/>
+        android:layout_below="@+id/movement_image"
+        android:hint="Description" />
 
 </RelativeLayout>

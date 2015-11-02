@@ -1,12 +1,7 @@
 package com.ecolem.workoutside.manager;
 
-import com.ecolem.workoutside.WorkoutSide;
 import com.ecolem.workoutside.database.FirebaseManager;
 import com.ecolem.workoutside.model.Catalog;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 
 /**
  * Created by akawa_000 on 25/10/2015.
@@ -27,7 +22,7 @@ public class CatalogManager {
         FirebaseManager.getInstance().getFirebaseRef().setValue(catalog.getNom(), catalog);
     }
 
-    public void setCatalogueData(String catalogueName){
+    /*public void setCatalogueData(String catalogueName){
         Firebase catalogueRef = FirebaseManager.getInstance().getFirebaseRef().child(catalogueName);
 
         catalogueRef.addValueEventListener(new ValueEventListener() {
@@ -43,5 +38,5 @@ public class CatalogManager {
                 System.out.println("The read failed: " + firebaseError.getMessage());
             }
         });
-    }
+    }*/
 }

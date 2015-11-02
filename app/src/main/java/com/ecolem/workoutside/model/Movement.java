@@ -3,13 +3,15 @@ package com.ecolem.workoutside.model;
 /**
  * Created by akawa_000 on 22/10/2015.
  */
-public class Mouvement
+public class Movement
 {
     private String nom;
     private String image;
     private String description;
 
-    public Mouvement(String nom, String image, String description) {
+    public Movement() {}
+
+    public Movement(String nom, String image, String description) {
         this.nom = nom;
         this.image = image;
         this.description = description;

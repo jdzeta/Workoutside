@@ -51,14 +51,6 @@
             android:label="@string/title_activity_mouvement" >
         </activity>
         <activity
-            android:name=".activities.NewMovementActivity"
-            android:label="@string/title_activity_new_mouvement" >
-        </activity>
-        <activity
-            android:name=".activities.ListMovementActivity"
-            android:label="@string/title_activity_list_mouvement" >
-        </activity>
-        <activity
             android:name=".activities.CatalogActivity"
             android:label="@string/title_activity_catalogue" >
         </activity>
