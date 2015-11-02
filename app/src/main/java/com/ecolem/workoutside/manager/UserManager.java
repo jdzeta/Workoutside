@@ -4,6 +4,7 @@ import android.widget.TextView;
 
 import com.ecolem.workoutside.database.FirebaseManager;
 import com.ecolem.workoutside.model.User;
+import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -14,25 +15,24 @@ import java.util.HashMap;
 /**
  * Created by akawa_000 on 24/10/2015.
  */
-public class UserManager  {
+public class UserManager {
 
     public static UserManager sInstance = null;
+    private LoginListener mListener = null;
 
-    public static UserManager getInstance(){
-        if(sInstance == null){
+    public static UserManager getInstance() {
+        if (sInstance == null) {
             sInstance = new UserManager();
         }
 
         return sInstance;
     }
 
-
-    public void sendUserData(User user){
-
+    public void saveUser(User user) {
         FirebaseManager.getInstance().getFirebaseRef().setValue(user);
     }
 
-    public void setCompteData(String pseudo, final HashMap<String, TextView> userFields){
+    public void getUser(String pseudo, final UserListener listener) {
         Firebase userRef = FirebaseManager.getInstance().getFirebaseRef().child(pseudo);
 
         userRef.addValueEventListener(new ValueEventListener() {
@@ -41,7 +41,11 @@ public class UserManager  {
                 System.out.println("Found " + snapshot.getChildrenCount() + " user(s)");
                 User user = snapshot.getValue(User.class);
 
-                userFields.get("pseudo").setText(user.getPseudo());
+                if(listener != null){
+                    listener.onGetUserSuccess(user);
+                }
+
+                /*userFields.get("pseudo").setText(user.getPseudo());
                 userFields.get("nom").setText(user.getNom());
                 userFields.get("prenom").setText(user.getPrenom());
                 userFields.get("email").setText(user.getEmail());
@@ -52,19 +56,66 @@ public class UserManager  {
 
                 userFields.get("description").setText(user.getDescription());
                 userFields.get("taille").setText(user.getTaille() + " cm");
-                userFields.get("poids").setText(user.getPoids() + " kg");
-
+                userFields.get("poids").setText(user.getPoids() + " kg");*/
                 /**@TODO
                  * Set liste amis
                  * Bouton change mdp
                  **/
             }
+
             @Override
             public void onCancelled(FirebaseError firebaseError) {
                 System.out.println("The read failed: " + firebaseError.getMessage());
+                if(listener != null){
+                    listener.onFail(firebaseError);
+                }
 
-                userFields.get("erreur").setText("Utilisateur inconnu");
+               // userFields.get("erreur").setText("Utilisateur inconnu");
             }
         });
     }
+
+
+    public void login(String email, String password, final LoginListener listener) {
+
+
+        Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
+            @Override
+            public void onAuthenticated(AuthData authData) {
+                if (listener != null) {
+                    listener.onLoginSuccess();
+                }
+            }
+
+            @Override
+            public void onAuthenticationError(FirebaseError firebaseError) {
+                if (mListener != null) {
+                    listener.onLoginFail(firebaseError);
+                }
+            }
+        };
+
+        FirebaseManager.getInstance().getFirebaseRef().authWithPassword(email, password, authResultHandler);
+    }
+
+    public void logout() {
+        FirebaseManager.getInstance().getFirebaseRef().unauth();
+    }
+
+    /**
+     * Listeners
+     **/
+
+    public interface UserListener {
+        void onGetUserSuccess(User user);
+        void onFail(FirebaseError error);
+    }
+
+    public interface LoginListener {
+        void onLoginSuccess();
+
+        void onLoginFail(FirebaseError error);
+    }
+
+
 }

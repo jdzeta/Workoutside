@@ -18,7 +18,7 @@
     <string name="title_activity_catalogue">CatalogueActivity</string>
 
     <!-- MAIN -->
-    <string name="around_me">Autout de moi...</string>
+    <string name="around_me">Autour de moi...</string>
     <string name="menu_events">Agenda</string>
     <string name="menu_exos">Exercices</string>
     <string name="menu_settings">Paramètres</string>
