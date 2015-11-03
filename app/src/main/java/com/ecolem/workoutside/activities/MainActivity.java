@@ -33,7 +33,6 @@ import com.firebase.geofire.GeoQuery;
 import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
@@ -152,6 +151,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 break;
             case R.id.menu_logout:
                 showLogoutAlert();
+                break;
+            case R.id.menu_events:
+                Intent intent1 = new Intent(MainActivity.this, AgendaActivity.class);
+                startActivity(intent1);
                 break;
             default:
                 break;

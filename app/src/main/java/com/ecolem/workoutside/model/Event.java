@@ -1,35 +1,37 @@
 package com.ecolem.workoutside.model;
 
-import com.firebase.geofire.GeoLocation;
-import com.google.android.gms.location.LocationClient;
-
 import java.util.Date;
 import java.util.HashMap;
 
 /**
  * Created by akawa_000 on 23/10/2015.
  */
-public class Event {
-    private String name;
+public class Event
+{
+    private String nom;
     private Date date;
-    private GeoLocation location;
+    private String lieu;
     private String description;
-    private Integer minLevel;
-    private Integer maxParticipants;
-    private HashMap<Integer, User> participants;
+    private Integer niveauMin;
+    private Integer limiteP;
+    private HashMap<Integer,User> participants;
     private float note;
-    private HashMap<Integer, Comment> comments;
+    private HashMap<Integer,Comment> commentaires;
 
-    public Event() {
-
+    public Event(String nom, Date date, String lieu, String description, Integer niveauMin) {
+        this.nom = nom;
+        this.date = date;
+        this.lieu = lieu;
+        this.description = description;
+        this.niveauMin = niveauMin;
     }
 
-    public String getName() {
-        return name;
+    public String getNom() {
+        return nom;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 
     public Date getDate() {
@@ -40,13 +42,12 @@ public class Event {
         this.date = date;
     }
 
-    public GeoLocation getLocation() {
-        return location;
+    public String getLieu() {
+        return lieu;
     }
 
-    public void setLocation(GeoLocation location) {
-
-        this.location = location;
+    public void setLieu(String lieu) {
+        this.lieu = lieu;
     }
 
     public String getDescription() {
@@ -57,27 +58,27 @@ public class Event {
         this.description = description;
     }
 
-    public Integer getMinLevel() {
-        return minLevel;
+    public Integer getNiveauMin() {
+        return niveauMin;
     }
 
-    public void setMinLevel(int level) {
-        this.minLevel = level;
+    public void setNiveauMin(Integer niveauMin) {
+        this.niveauMin = niveauMin;
     }
 
-    public Integer getMaxParticipants() {
-        return maxParticipants;
+    public Integer getLimiteP() {
+        return limiteP;
     }
 
-    public void setMaxParticipants(int maxParticipants) {
-        this.maxParticipants = maxParticipants;
+    public void setLimiteP(Integer limiteP) {
+        this.limiteP = limiteP;
     }
 
     public HashMap<Integer, User> getParticipants() {
         return participants;
     }
 
-    public void setParticipants(HashMap<Integer, User> participants) {
+    public void setParticipants(ArrayList<User> participants) {
         this.participants = participants;
     }
 
@@ -90,10 +91,10 @@ public class Event {
     }
 
     public HashMap<Integer, Comment> getCommentaires() {
-        return comments;
+        return commentaires;
     }
 
-    public void setComments(HashMap<Integer, Comment> comments) {
-        this.comments = comments;
+    public void setCommentaires(HashMap<Integer, Comment> commentaires) {
+        this.commentaires = commentaires;
     }
 }

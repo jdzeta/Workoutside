@@ -27,7 +27,7 @@ public class MovementListAdapter extends ArrayAdapter<Movement> {
         Movement movement = getItem(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.mouvement_list_row, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.listrow_movement, parent, false);
         }
 
         TextView tvName = (TextView) convertView.findViewById(R.id.mouvement_title);
