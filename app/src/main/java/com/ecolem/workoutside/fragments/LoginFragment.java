@@ -220,6 +220,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
             case FirebaseError.EMAIL_TAKEN:
                 msg = getResources().getString(R.string.email_already_used);
                 break;
+            case FirebaseError.NETWORK_ERROR:
+                msg = getResources().getString(R.string.network_error);
+                break;
             default:
                 msg = error.getCode() + "";
                 break;

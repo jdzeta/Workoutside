@@ -30,7 +30,7 @@
     <string name="menu_logout">Déconnexion</string>
     <string name="level_0">Débutant</string>
     <string name="level_1">Intermédiaire</string>
-    <string name="level_2">Pro</string>
+    <string name="level_2">Avancé</string>
     <string name="level_3">Expert</string>
     <string name="finish">Terminer</string>
 
@@ -39,6 +39,7 @@
     <string name="invalid_password">Le mot de passe est invalide.</string>
     <string name="email_already_used">L\'email est déjà utilisé.</string>
     <string name="invalid_id">Les identifiants sont incorrects.</string>
+    <string name="network_error">Pas de connexion internet</string>
 
     <!-- CREATE ACCOUNT -->
     <string name="who_are_you">Qui êtes-vous ?</string>
@@ -46,5 +47,10 @@
     <string name="account_firstname">Prénom</string>
     <string name="account_lastname">Nom</string>
     <string name="account_city">Ville</string>
-
+    <string name="account_birthdate">Date de naissance</string>
+    <string name="account_birthdate_hint">jj/mm/aaaa</string>
+    <string name="account_gender">Sexe</string>
+    <string name="account_gender_m">M</string>
+    <string name="account_gender_f">F</string>
+    <string name="select_birthdate">Sélectionnez votre date de naissance</string>
 </resources>

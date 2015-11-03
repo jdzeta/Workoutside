@@ -1,6 +1,7 @@
 package com.ecolem.workoutside.fragments;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -95,6 +97,8 @@ public class AccountStep2Fragment extends Fragment implements View.OnClickListen
         if (mParentActivity != null) {
             User user = mParentActivity.getUser();
             user.setUID(uid);
+            user.setLevel(mSelecteLevel);
+
             UserManager.getInstance().saveUser(user);
             Intent intent = new Intent(getActivity(), MainActivity.class);
             startActivity(intent);
@@ -147,4 +151,5 @@ public class AccountStep2Fragment extends Fragment implements View.OnClickListen
         mProgressBar.setVisibility(View.GONE);
         mFinishButton.setVisibility(View.VISIBLE);
     }
+
 }

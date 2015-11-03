@@ -54,7 +54,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:padding="4dp"
-                    android:text="Date de naissance"
+
+                    android:text="@string/account_birthdate"
                     android:textSize="8pt" />
 
                 <LinearLayout
@@ -67,7 +68,12 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".7"
-                        android:singleLine="true" />
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:singleLine="true"
+                        android:text="@string/account_birthdate_hint"
+                        android:textColor="@color/gray_medium"
+                        android:textSize="8pt" />
 
                     <RelativeLayout
                         android:id="@+id/account_birthdate_button"
@@ -98,12 +104,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:padding="4dp"
-                    android:text="Sexe"
+                    android:text="@string/account_gender"
                     android:textSize="8pt" />
 
                 <Spinner
+                    android:id="@+id/account_gender_spinner"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"></Spinner>
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"></Spinner>
             </LinearLayout>
 
 
