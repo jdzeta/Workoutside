@@ -196,7 +196,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         this.mMarkers.clear();
 
         if (this.mMap != null) {
-            this.getFragmentManager().beginTransaction().remove(this.getFragmentManager().findFragmentById(R.id.map)).commit();
+            //this.getFragmentManager().beginTransaction().remove(this.getFragmentManager().findFragmentById(R.id.map)).commit();
             this.mMap = null;
         }
     }
