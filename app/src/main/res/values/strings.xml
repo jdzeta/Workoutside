@@ -28,6 +28,9 @@
     <string name="menu_exos">Exercices</string>
     <string name="menu_settings">Paramètres</string>
     <string name="menu_logout">Déconnexion</string>
+    <string name="logout_alert">Etes-vous sûr de vouloir quitter l\'application ?</string>
+    <string name="cancel">Annuler</string>
+    <string name="leave">Quitter</string>
     <string name="level_0">Débutant</string>
     <string name="level_1">Intermédiaire</string>
     <string name="level_2">Avancé</string>
