@@ -2,7 +2,6 @@ package com.ecolem.workoutside;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
 
@@ -11,23 +10,22 @@ import com.firebase.client.Firebase;
 /**
  * Created by snabou on 09/10/2015.
  */
-public class WorkoutSide  extends Application {
+public class WorkoutSide extends Application {
 
     private static WorkoutSide mInstance;
-    private static Context mCtx;
 
-    public static final String FIREBASE_URL = "https://workout-side.firebaseio.com/";
+    public static Context APP_CONTEXT;
     public static Resources APP_RESOURCES;
 
-    public static SharedPreferences SHARED_PREFS;
+    public static final String FIREBASE_URL = "https://workout-side.firebaseio.com/";
 
 
-    public WorkoutSide(){
+    public WorkoutSide() {
 
     }
 
     public WorkoutSide(Context context) {
-        mCtx = context;
+        APP_CONTEXT = context;
     }
 
     public static synchronized WorkoutSide getInstance(Context context) {
@@ -44,10 +42,5 @@ public class WorkoutSide  extends Application {
         APP_RESOURCES = getResources();
 
         Firebase.setAndroidContext(this);
-
-        SHARED_PREFS = PreferenceManager.getDefaultSharedPreferences(this);
-
-        System.out.println("STARTING APPLICATION");
-
     }
 }

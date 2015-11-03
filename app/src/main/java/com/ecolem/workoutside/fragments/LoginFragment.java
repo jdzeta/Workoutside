@@ -19,6 +19,7 @@ import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.WorkoutSide;
 import com.ecolem.workoutside.activities.MainActivity;
 import com.ecolem.workoutside.activities.StartActivity;
+import com.ecolem.workoutside.manager.SharedPreferenceManager;
 import com.ecolem.workoutside.manager.UserManager;
 import com.ecolem.workoutside.model.User;
 import com.ecolem.workoutside.views.StartViewPager;
@@ -134,6 +135,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
                 break;
 
         }
+
+        mEmailEditText.setText(SharedPreferenceManager.getInstance(mParentActivity).getSavedEmail());
+        mPasswordEditText.setText(SharedPreferenceManager.getInstance(mParentActivity).getSavedPassword());
     }
 
     private void showToast(String msg) {
@@ -148,13 +152,21 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
     private void login() {
         mProgressBar.setVisibility(View.VISIBLE);
         mLoginButtonsPanel.setVisibility(View.GONE);
-        UserManager.getInstance().login(mEmailEditText.getText().toString(), mPasswordEditText.getText().toString(), this);
+
+        String email = mEmailEditText.getText().toString();
+        String password = mPasswordEditText.getText().toString();
+        SharedPreferenceManager.getInstance(mParentActivity).saveLogin(email, password);
+        UserManager.getInstance().login(email, password, this);
     }
 
     private void createAccount() {
         mProgressBar.setVisibility(View.VISIBLE);
         mAccountButtonsPanel.setVisibility(View.GONE);
-        UserManager.getInstance().createAccount(mEmailEditText.getText().toString(), mPasswordEditText.getText().toString(), this);
+
+        String email = mEmailEditText.getText().toString();
+        String password = mPasswordEditText.getText().toString();
+        SharedPreferenceManager.getInstance(mParentActivity).saveLogin(email, password);
+        UserManager.getInstance().createAccount(email, password, this);
     }
 
     @Override
