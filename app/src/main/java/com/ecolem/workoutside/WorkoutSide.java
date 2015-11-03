@@ -18,7 +18,7 @@ public class WorkoutSide extends Application {
     public static Resources APP_RESOURCES;
 
     public static final String FIREBASE_URL = "https://workout-side.firebaseio.com/";
-
+    public static final String FIREBASE_GEOFIRE_URL = "https://publicdata-transit.firebaseio.com/_geofire";
 
     public WorkoutSide() {
 

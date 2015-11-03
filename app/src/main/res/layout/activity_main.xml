@@ -16,16 +16,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <fragment
-            android:id="@+id/mapView"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight=".4"
-            android:background="@color/gray_medium"
-            android:name="com.google.android.gms.maps.SupportMapFragment" />
+            android:background="@color/gray_medium" />
 
         <LinearLayout
             android:layout_width="match_parent"
