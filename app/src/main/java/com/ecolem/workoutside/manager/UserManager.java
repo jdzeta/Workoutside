@@ -64,7 +64,7 @@ public class UserManager {
                 }
 
                 /*userFields.get("pseudo").setText(user.getmLogin());
-                userFields.get("nom").setText(user.getNom());
+                userFields.get("nom").setText(user.getName());
                 userFields.get("prenom").setText(user.getPrenom());
                 userFields.get("email").setText(user.getEmail());
                 userFields.get("sexe").setText(user.getSexe());

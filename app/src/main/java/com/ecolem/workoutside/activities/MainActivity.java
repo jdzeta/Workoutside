@@ -2,15 +2,21 @@ package com.ecolem.workoutside.activities;
 
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
@@ -40,9 +46,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class MainActivity extends ActionBarActivity implements View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener {
+public class MainActivity extends ActionBarActivity implements View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener, LocationListener {
 
-    private static final GeoLocation INITIAL_CENTER = new GeoLocation(37.7789, -122.4017);
+    //private static final GeoLocation INITIAL_CENTER = new GeoLocation(37.7789, -122.4017);
     private static final int INITIAL_ZOOM_LEVEL = 14;
 
 
@@ -57,6 +63,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private GeoQuery mGeoQuery;
     private Map<String, Marker> mMarkers;
 
+    private LocationManager mLocationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,40 +85,48 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         mLogoutMenuButton.setOnClickListener(this);
 
 
+        initMap();
+        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        if (mLocationManager != null) {
+            Criteria criteria = new Criteria();
+            String provider = mLocationManager.getBestProvider(criteria, true);
+            Location location = mLocationManager.getLastKnownLocation(provider);
+
+            if (location != null) {
+                onLocationChanged(location);
+            }
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        }
+
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        initMap();
+
+        //initMap();
     }
+
 
     private void initMap() {
 
         this.mMap = mMapFragment.getMap();
-        LatLng latLngCenter = new LatLng(INITIAL_CENTER.latitude, INITIAL_CENTER.longitude);
-        this.mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngCenter, INITIAL_ZOOM_LEVEL));
+        this.mMap.setMyLocationEnabled(true);
+        // LatLng latLngCenter = new LatLng(INITIAL_CENTER.latitude, INITIAL_CENTER.longitude);
+        // this.mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngCenter, INITIAL_ZOOM_LEVEL));
         this.mMap.setOnCameraChangeListener(this);
         this.mGeoFire = new GeoFire(new Firebase(WorkoutSide.FIREBASE_GEOFIRE_URL));
-        this.mGeoQuery = this.mGeoFire.queryAtLocation(INITIAL_CENTER, 1);
-        this.mGeoQuery.addGeoQueryEventListener(this);
-        this.mSearchCircle = this.mMap.addCircle(new CircleOptions().center(latLngCenter).radius(1000));
-        this.mSearchCircle.setFillColor(Color.argb(66, 255, 0, 255));
-        this.mSearchCircle.setStrokeColor(Color.argb(66, 0, 0, 0));
+        // this.mGeoQuery = this.mGeoFire.queryAtLocation(INITIAL_CENTER, 1);
+        //this.mGeoQuery.addGeoQueryEventListener(this);
+        //this.mSearchCircle = this.mMap.addCircle(new CircleOptions().center(latLngCenter).radius(1000));
+        //this.mSearchCircle.setFillColor(Color.argb(66, 255, 0, 255));
+        //this.mSearchCircle.setStrokeColor(Color.argb(66, 0, 0, 0));
         this.mMarkers = new HashMap<String, Marker>();
+        // this.mMap.addMarker(new MarkerOptions().position(new LatLng(INITIAL_CENTER.latitude, INITIAL_CENTER.longitude)).title("My Home").snippet("Home Address"));
 
-        setUpMap();
 
-    }
-
-    private void setUpMap() {
-        // For showing a move to my loction button
-        this.mMap.setMyLocationEnabled(true);
-        // For dropping a marker at a point on the Map
-        this.mMap.addMarker(new MarkerOptions().position(new LatLng(INITIAL_CENTER.latitude, INITIAL_CENTER.longitude)).title("My Home").snippet("Home Address"));
-        // For zooming automatically to the Dropped PIN Location
-        this.mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(INITIAL_CENTER.latitude,
-                INITIAL_CENTER.longitude), INITIAL_ZOOM_LEVEL));
     }
 
     @Override
@@ -119,6 +134,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         super.onResume();
 
     }
+
 
     @Override
     public void onStop() {
@@ -170,7 +186,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 
     private void cleanMap() {
-        this.mGeoQuery.removeAllListeners();
+        //this.mGeoQuery.removeAllListeners();
         for (Marker marker : this.mMarkers.values()) {
             marker.remove();
         }
@@ -260,10 +276,41 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public void onCameraChange(CameraPosition cameraPosition) {
         LatLng center = cameraPosition.target;
         double radius = zoomLevelToRadius(cameraPosition.zoom);
-        this.mSearchCircle.setCenter(center);
-        this.mSearchCircle.setRadius(radius);
-        this.mGeoQuery.setCenter(new GeoLocation(center.latitude, center.longitude));
+        //this.mSearchCircle.setCenter(center);
+        //this.mSearchCircle.setRadius(radius);
+        //this.mGeoQuery.setCenter(new GeoLocation(center.latitude, center.longitude));
         // radius in km
-        this.mGeoQuery.setRadius(radius / 1000);
+        //this.mGeoQuery.setRadius(radius / 1000);
+    }
+
+    /**
+     * Location listener
+     **/
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+        Log.i("sandra", "location changed");
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+        this.mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        this.mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+
+        //this.mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(INITIAL_CENTER.latitude,INITIAL_CENTER.longitude), INITIAL_ZOOM_LEVEL));
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 }
