@@ -53,4 +53,5 @@
     <string name="account_gender_m">M</string>
     <string name="account_gender_f">F</string>
     <string name="select_birthdate">Sélectionnez votre date de naissance</string>
+    <string name="hello_blank_fragment">Blank fragment</string>
 </resources>
