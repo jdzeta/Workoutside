@@ -34,18 +34,18 @@ public class EventListAdapter extends ArrayAdapter<Event> {
         TextView evName = (TextView) convertView.findViewById(R.id.event_name);
         TextView evCity= (TextView) convertView.findViewById(R.id.event_city);
         TextView evHour = (TextView) convertView.findViewById(R.id.event_hour);
-        TextView evDesc = (TextView) convertView.findViewById(R.id.event_description);
-        TextView evNbParticipants = (TextView) convertView.findViewById(R.id.event_nb_participants);
+        TextView evDesc = (TextView) convertView.findViewById(R.id.new_event_description);
+        TextView evNbParticipants = (TextView) convertView.findViewById(R.id.new_event_max_participants);
 
-        // @TODO evName.setText(event.getName());
-        // @TODO evCity.setText(event.getCity());
+        evName.setText(event.getName());
+        //@TODO evCity.setText(event.get());
 
         Date eventDate = event.getDate();
         evHour.setText((int) eventDate.getTime());
 
         // @TODO evHour.setText(event.get());
         evDesc.setText(event.getDescription());
-        evNbParticipants.setText(event.getLimiteP());
+        evNbParticipants.setText(event.getMaxParticipants());
 
         return convertView;
     }

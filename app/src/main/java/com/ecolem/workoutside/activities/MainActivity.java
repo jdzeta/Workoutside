@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Criteria;
 import android.location.Location;
@@ -36,7 +35,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -51,6 +49,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private static final int INITIAL_ZOOM_LEVEL = 14;
 
 
+    private RelativeLayout mAgendaMenuButton;
     private RelativeLayout mCatalogMenuButton;
     private RelativeLayout mLogoutMenuButton;
 
@@ -78,6 +77,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         mMapFragment = (SupportMapFragment) this.getSupportFragmentManager().findFragmentById(R.id.map);
 
+        mAgendaMenuButton = (RelativeLayout) findViewById(R.id.menu_events);
+        mAgendaMenuButton.setOnClickListener(this);
         mCatalogMenuButton = (RelativeLayout) findViewById(R.id.menu_catalog);
         mCatalogMenuButton.setOnClickListener(this);
         mLogoutMenuButton = (RelativeLayout) findViewById(R.id.menu_logout);
@@ -131,7 +132,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
 
@@ -141,20 +141,20 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         cleanMap();
     }
 
-
     @Override
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()) {
             case R.id.menu_catalog:
-                Intent intent = new Intent(MainActivity.this, CatalogActivity.class);
+                intent = new Intent(MainActivity.this, CatalogActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_events:
+                intent = new Intent(getApplication(), AgendaActivity.class);
                 startActivity(intent);
                 break;
             case R.id.menu_logout:
                 showLogoutAlert();
-                break;
-            case R.id.menu_events:
-                Intent intent1 = new Intent(MainActivity.this, AgendaActivity.class);
-                startActivity(intent1);
                 break;
             default:
                 break;

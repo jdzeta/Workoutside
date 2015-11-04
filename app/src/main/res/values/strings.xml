@@ -64,4 +64,10 @@
     <string name="action_bar_title_agenda">AGENDA</string>
     <string name="action_add_event">+</string>
     <string name="title_activity_new_event">NewEventActivity</string>
+    <string name="new_event_name">Titre de l\'événement</string>
+    <string name="new_event_date">Date de l\'événement</string>
+    <string name="new_event_map_info">Sélectionnez le lieu de l\'évènement</string>
+    <string name="new_event_location">Adresse de l\'événement</string>
+    <string name="level_prompt">Niveau minimal requis</string>
+    <string name="new_event_title">Nouvel événement</string>
 </resources>

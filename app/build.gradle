@@ -3,9 +3,9 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         config {
-            keyAlias 'MyAndroidKey'
+            keyAlias 'APKKey'
             keyPassword 'Azerty1'
-            storeFile file('D:/ECOLEM/android/keystores/android.jks')
+            storeFile file('D:/ECOLEM/android/keystores/apkkey.jks')
             storePassword 'Azerty1'
         }
     }
@@ -30,7 +30,6 @@ android {
             signingConfig signingConfigs.config
         }
         debug {
-            signingConfig signingConfigs.config
         }
     }
     packagingOptions {
