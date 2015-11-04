@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Criteria;
 import android.location.Location;
@@ -25,6 +24,7 @@ import android.widget.RelativeLayout;
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.WorkoutSide;
 import com.ecolem.workoutside.manager.UserManager;
+import com.ecolem.workoutside.model.User;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.geofire.GeoFire;
@@ -33,11 +33,9 @@ import com.firebase.geofire.GeoQuery;
 import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -84,6 +82,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         mLogoutMenuButton = (RelativeLayout) findViewById(R.id.menu_logout);
         mLogoutMenuButton.setOnClickListener(this);
 
+        // Add click on "settings" <- It mean "account"
+        findViewById(R.id.menu_settings).setOnClickListener(this);
 
         initMap();
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -145,13 +145,18 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()) {
             case R.id.menu_catalog:
-                Intent intent = new Intent(MainActivity.this, CatalogActivity.class);
+                intent = new Intent(MainActivity.this, CatalogActivity.class);
                 startActivity(intent);
                 break;
             case R.id.menu_logout:
                 showLogoutAlert();
+                break;
+            case R.id.menu_settings:
+                intent = new Intent(MainActivity.this, AccountActivity.class);
+                startActivity(intent);
                 break;
             default:
                 break;
