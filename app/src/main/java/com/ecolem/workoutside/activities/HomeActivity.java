@@ -24,6 +24,9 @@ import android.widget.RelativeLayout;
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.WorkoutSide;
 import com.ecolem.workoutside.manager.UserManager;
+
+import com.ecolem.workoutside.model.User;
+
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.geofire.GeoFire;
@@ -85,6 +88,8 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         mLogoutMenuButton = (RelativeLayout) findViewById(R.id.menu_logout);
         mLogoutMenuButton.setOnClickListener(this);
 
+        // Add click on "settings" <- It mean "account"
+        findViewById(R.id.menu_profile).setOnClickListener(this);
 
         initMap();
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -98,7 +103,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
             //Location location = mLocationManager.getLastKnownLocation(provider);
 
             //if (location != null) {
-               // onLocationChanged(location);
+            // onLocationChanged(location);
             //}
             //
             //mLocationManager.requestLocationUpdates(provider, 20000, 0, this);
@@ -151,17 +156,21 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
     public void onClick(View v) {
         Intent intent;
         switch (v.getId()) {
-            case R.id.menu_training:
 
+            case R.id.menu_training:
                 intent = new Intent(HomeActivity.this, TrainingActivity.class);
                 startActivity(intent);
                 break;
             case R.id.menu_events:
-                intent = new Intent(getApplication(), EventsListActivity.class);
+                intent = new Intent(HomeActivity.this, EventsListActivity.class);
                 startActivity(intent);
                 break;
             case R.id.menu_logout:
                 showLogoutAlert();
+                break;
+            case R.id.menu_profile:
+                intent = new Intent(HomeActivity.this, AccountActivity.class);
+                startActivity(intent);
                 break;
             default:
                 break;
