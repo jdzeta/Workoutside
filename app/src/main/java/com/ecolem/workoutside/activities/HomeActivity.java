@@ -51,6 +51,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
     private static final int INITIAL_ZOOM_LEVEL = 14;
 
 
+    private RelativeLayout mAgendaMenuButton;
     private RelativeLayout mCatalogMenuButton;
     private RelativeLayout mLogoutMenuButton;
 
@@ -78,6 +79,8 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
 
         mMapFragment = (SupportMapFragment) this.getSupportFragmentManager().findFragmentById(R.id.map);
 
+        mAgendaMenuButton = (RelativeLayout) findViewById(R.id.menu_events);
+        mAgendaMenuButton.setOnClickListener(this);
         mCatalogMenuButton = (RelativeLayout) findViewById(R.id.menu_catalog);
         mCatalogMenuButton.setOnClickListener(this);
         mLogoutMenuButton = (RelativeLayout) findViewById(R.id.menu_logout);
@@ -136,7 +139,6 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
 
@@ -146,12 +148,17 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         cleanMap();
     }
 
-
     @Override
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()) {
             case R.id.menu_catalog:
-                Intent intent = new Intent(HomeActivity.this, CatalogActivity.class);
+
+                intent = new Intent(HomeActivity.this, CatalogActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_events:
+                intent = new Intent(getApplication(), AgendaActivity.class);
                 startActivity(intent);
                 break;
             case R.id.menu_logout:

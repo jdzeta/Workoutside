@@ -58,6 +58,22 @@
     <string name="select_birthdate">Sélectionnez votre date de naissance</string>
     <string name="hello_blank_fragment">Blank fragment</string>
 
+
     <!-- Mouvements -->
     <string name="training">Entraînement</string>
+
+    <string name="title_activity_agenda">AgendaActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_bar_title_agenda">AGENDA</string>
+    <string name="action_add_event">+</string>
+    <string name="title_activity_new_event">NewEventActivity</string>
+    <string name="new_event_name">Titre de l\'événement</string>
+    <string name="new_event_date">Date de l\'événement</string>
+    <string name="new_event_map_info">Sélectionnez le lieu de l\'évènement</string>
+    <string name="new_event_location">Adresse de l\'événement</string>
+    <string name="level_prompt">Niveau minimal requis</string>
+    <string name="new_event_title">Nouvel événement</string>
+
 </resources>

@@ -1,7 +1,6 @@
 package com.ecolem.workoutside.model;
 
 import com.firebase.geofire.GeoLocation;
-import com.google.android.gms.location.LocationClient;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -20,8 +19,15 @@ public class Event {
     private float note;
     private HashMap<Integer, Comment> comments;
 
-    public Event() {
+    public Event() {}
 
+    public Event(String name, Date date, GeoLocation location, String description, Integer minLevel, Integer maxParticipants) {
+        this.name = name;
+        this.date = date;
+        this.location = location;
+        this.description = description;
+        this.minLevel = minLevel;
+        this.maxParticipants = maxParticipants;
     }
 
     public String getName() {
