@@ -24,7 +24,6 @@ import android.widget.RelativeLayout;
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.WorkoutSide;
 import com.ecolem.workoutside.manager.UserManager;
-import com.ecolem.workoutside.model.Catalog;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.geofire.GeoFire;
@@ -52,7 +51,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
 
 
     private RelativeLayout mAgendaMenuButton;
-    private RelativeLayout mCatalogMenuButton;
+    private RelativeLayout mTrainingMenuButton;
     private RelativeLayout mLogoutMenuButton;
 
     private SupportMapFragment mMapFragment = null;
@@ -69,7 +68,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_home);
 
         Firebase.setAndroidContext(this);
 
@@ -81,8 +80,8 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
 
         mAgendaMenuButton = (RelativeLayout) findViewById(R.id.menu_events);
         mAgendaMenuButton.setOnClickListener(this);
-        mCatalogMenuButton = (RelativeLayout) findViewById(R.id.menu_catalog);
-        mCatalogMenuButton.setOnClickListener(this);
+        mTrainingMenuButton = (RelativeLayout) findViewById(R.id.menu_training);
+        mTrainingMenuButton.setOnClickListener(this);
         mLogoutMenuButton = (RelativeLayout) findViewById(R.id.menu_logout);
         mLogoutMenuButton.setOnClickListener(this);
 
@@ -152,13 +151,13 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
     public void onClick(View v) {
         Intent intent;
         switch (v.getId()) {
-            case R.id.menu_catalog:
+            case R.id.menu_training:
 
-                intent = new Intent(HomeActivity.this, CatalogActivity.class);
+                intent = new Intent(HomeActivity.this, TrainingActivity.class);
                 startActivity(intent);
                 break;
             case R.id.menu_events:
-                intent = new Intent(getApplication(), AgendaActivity.class);
+                intent = new Intent(getApplication(), EventsListActivity.class);
                 startActivity(intent);
                 break;
             case R.id.menu_logout:

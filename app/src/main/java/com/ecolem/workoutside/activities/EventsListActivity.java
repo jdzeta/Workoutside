@@ -11,14 +11,14 @@ import android.widget.ListView;
 
 import com.ecolem.workoutside.R;
 
-public class AgendaActivity extends ActionBarActivity {
+public class EventsListActivity extends ActionBarActivity {
 
     ListView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_agenda);
+        setContentView(R.layout.activity_events);
 
         ActionBar actionbar = getSupportActionBar();
         actionbar.setTitle(getResources().getString(R.string.action_bar_title_agenda));
