@@ -2,12 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
-        config {
-            keyAlias 'APKKey'
-            keyPassword 'Azerty1'
-            storeFile file('/Users/snabou/Documents/ECOLEMULTIMEDIA/apkkey.jks')
-            storePassword 'Azerty1'
-        }
     }
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
@@ -27,7 +21,6 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
         }
         debug {
         }

@@ -19,22 +19,12 @@ public class UserManager {
 
     public static UserManager sInstance = null;
 
-    private User mUser;
-
     public static UserManager getInstance() {
         if (sInstance == null) {
             sInstance = new UserManager();
         }
 
         return sInstance;
-    }
-
-    public User getUser() {
-        return mUser;
-    }
-
-    public void setUser(User user) {
-        mUser = user;
     }
 
     public void saveUser(User user) {
@@ -109,21 +99,10 @@ public class UserManager {
 
         Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
             @Override
-            public void onAuthenticated(final AuthData authData) {
-                Firebase movRef = FirebaseManager.getInstance().getFirebaseRef().child("users").child(authData.getUid());
-                movRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (listener != null) {
-                            mUser = dataSnapshot.getValue(User.class);
-                            listener.onLoginSuccess(authData.getUid());
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {
-                    }
-                });
+            public void onAuthenticated(AuthData authData) {
+                if (listener != null) {
+                    listener.onLoginSuccess(authData.getUid());
+                }
             }
 
             @Override
