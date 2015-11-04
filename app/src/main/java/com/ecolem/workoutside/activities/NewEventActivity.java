@@ -324,7 +324,7 @@ public class NewEventActivity extends ActionBarActivity
             EventManager eventManager = new EventManager();
             eventManager.sendData(event);
 
-            Intent intent = new Intent(getApplicationContext(), AgendaActivity.class);
+            Intent intent = new Intent(getApplicationContext(), EventsListActivity.class);
             startActivity(intent);
             finish();
         }
