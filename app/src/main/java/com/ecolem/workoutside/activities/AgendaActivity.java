@@ -1,90 +1,52 @@
 package com.ecolem.workoutside.activities;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.ecolem.workoutside.R;
-import com.ecolem.workoutside.adapter.MovementListAdapter;
-import com.ecolem.workoutside.database.FirebaseManager;
-import com.ecolem.workoutside.model.Movement;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
-public class AgendaActivity extends Activity {
+public class AgendaActivity extends ActionBarActivity {
 
     ListView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_catalog);
+        setContentView(R.layout.activity_agenda);
 
-        initCatalogue();
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setTitle(getResources().getString(R.string.action_bar_title_agenda));
+        actionbar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.primary)));
+
     }
 
-    public void initCatalogue() {
-
-        String cat_name = "catalog";//WorkoutSide.SHARED_PREFS.getString("cat_name", "");
-
-        setCatalogueData(cat_name);
-
-        mListView = (ListView) findViewById(R.id.catalog_listview);
-
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Movement sMovement = (Movement) mListView.getItemAtPosition(position);
-
-                //Toast.makeText(getApplicationContext(), "View info " + sMouvements.title, Toast.LENGTH_LONG).show();
-
-                Intent intent = new Intent(getApplicationContext(), MovementActivity.class);
-                intent.putExtra("mName", sMovement.getNom());
-                startActivity(intent);
-
-            }
-        });
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_agenda, menu);
+        return true;
     }
 
-    public void setCatalogueData(String catalogueName) {
-        Firebase catalogueRef = FirebaseManager.getInstance().getFirebaseRef().child(catalogueName);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
 
-        catalogueRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                System.out.println("Found " + snapshot.getChildrenCount() + " catalog(s)");
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_add_event) {
+            Intent intent = new Intent(getApplication(), NewEventActivity.class);
+            startActivity(intent);
+            return true;
+        }
 
-                ArrayList<Movement> movements = new ArrayList<Movement>();
-
-                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    movements.add(postSnapshot.getValue(Movement.class));
-                }
-
-                Collections.reverse(movements);
-
-                setMouvementListAdapter(movements);
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                System.out.println("The read failed: " + firebaseError.getMessage());
-            }
-        });
-    }
-
-    private void setMouvementListAdapter(ArrayList<Movement> movements) {
-
-        MovementListAdapter adapter = new MovementListAdapter(getApplicationContext(), movements);
-
-        ListView listView = (ListView) findViewById(R.id.catalog_listview);
-        listView.setAdapter(adapter);
+        return super.onOptionsItemSelected(item);
     }
 }

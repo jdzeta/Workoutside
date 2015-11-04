@@ -24,13 +24,18 @@ import android.widget.RelativeLayout;
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.WorkoutSide;
 import com.ecolem.workoutside.manager.UserManager;
+<<<<<<< HEAD:app/src/main/java/com/ecolem/workoutside/activities/MainActivity.java
 import com.ecolem.workoutside.model.User;
+=======
+import com.ecolem.workoutside.model.Catalog;
+>>>>>>> 51f5e0e7cc79cfe57190c485163d37746371b53d:app/src/main/java/com/ecolem/workoutside/activities/HomeActivity.java
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
 import com.firebase.geofire.GeoQueryEventListener;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -44,12 +49,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class MainActivity extends ActionBarActivity implements View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener, LocationListener {
+public class HomeActivity extends ActionBarActivity implements View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener, LocationListener {
 
     //private static final GeoLocation INITIAL_CENTER = new GeoLocation(37.7789, -122.4017);
     private static final int INITIAL_ZOOM_LEVEL = 14;
 
 
+    private RelativeLayout mAgendaMenuButton;
     private RelativeLayout mCatalogMenuButton;
     private RelativeLayout mLogoutMenuButton;
 
@@ -77,6 +83,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         mMapFragment = (SupportMapFragment) this.getSupportFragmentManager().findFragmentById(R.id.map);
 
+        mAgendaMenuButton = (RelativeLayout) findViewById(R.id.menu_events);
+        mAgendaMenuButton.setOnClickListener(this);
         mCatalogMenuButton = (RelativeLayout) findViewById(R.id.menu_catalog);
         mCatalogMenuButton.setOnClickListener(this);
         mLogoutMenuButton = (RelativeLayout) findViewById(R.id.menu_logout);
@@ -91,12 +99,17 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         if (mLocationManager != null) {
             Criteria criteria = new Criteria();
             String provider = mLocationManager.getBestProvider(criteria, true);
-            Location location = mLocationManager.getLastKnownLocation(provider);
+            mLocationManager.requestLocationUpdates(provider, 400, 1000, this); //You can also use LocationManager.GPS_PROVIDER and LocationManager.PASSIVE_PROVIDER
 
-            if (location != null) {
-                onLocationChanged(location);
-            }
-            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+
+            //Location location = mLocationManager.getLastKnownLocation(provider);
+
+            //if (location != null) {
+               // onLocationChanged(location);
+            //}
+            //
+            //mLocationManager.requestLocationUpdates(provider, 20000, 0, this);
+
         }
 
 
@@ -132,7 +145,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
 
@@ -142,13 +154,21 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         cleanMap();
     }
 
-
     @Override
     public void onClick(View v) {
         Intent intent;
         switch (v.getId()) {
             case R.id.menu_catalog:
+<<<<<<< HEAD:app/src/main/java/com/ecolem/workoutside/activities/MainActivity.java
                 intent = new Intent(MainActivity.this, CatalogActivity.class);
+=======
+
+                intent = new Intent(HomeActivity.this, CatalogActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_events:
+                intent = new Intent(getApplication(), AgendaActivity.class);
+>>>>>>> 51f5e0e7cc79cfe57190c485163d37746371b53d:app/src/main/java/com/ecolem/workoutside/activities/HomeActivity.java
                 startActivity(intent);
                 break;
             case R.id.menu_logout:
@@ -176,7 +196,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 .setPositiveButton(getResources().getString(R.string.leave), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         UserManager.getInstance().logout();
-                        MainActivity.this.finish();
+                        HomeActivity.this.finish();
                     }
                 })
                 .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -201,6 +221,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             //this.getFragmentManager().beginTransaction().remove(this.getFragmentManager().findFragmentById(R.id.map)).commit();
             this.mMap = null;
         }
+        mLocationManager.removeUpdates(this);
     }
 
 
@@ -298,8 +319,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         Log.i("sandra", "location changed");
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-        this.mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        this.mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
+        this.mMap.animateCamera(cameraUpdate);
+        mLocationManager.removeUpdates(this);
 
         //this.mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(INITIAL_CENTER.latitude,INITIAL_CENTER.longitude), INITIAL_ZOOM_LEVEL));
     }

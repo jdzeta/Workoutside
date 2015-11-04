@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ecolem.workoutside">
+    package="com.ecolem.workoutside" >
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -26,27 +26,18 @@
         android:authorities="com.facebook.app.FacebookContentProvider1047191685312128"
         android:exported="true" />
 
-
     <application
         android:name=".WorkoutSide"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
-
+        android:theme="@style/AppTheme" >
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-
-        <!--<meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyCNyx0WGUOdYwfIHtfftDT82_sO31yOYkY"/>-->
-
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyCQBsYR30ShJ6ckIQDP6hDnTlRZiI6tOTk" />
-
-
+            android:value="AIzaSyCNyx0WGUOdYwfIHtfftDT82_sO31yOYkY" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -56,20 +47,16 @@
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".activities.HomeActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activities.StartActivity"
             android:label="@string/title_activity_start"
-
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize">
-
+            android:windowSoftInputMode="adjustResize" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -78,14 +65,25 @@
         </activity>
         <activity
             android:name=".activities.MovementActivity"
-            android:label="@string/title_activity_movement"></activity>
+            android:label="@string/title_activity_movement" />
+        <activity
+            android:name=".activities.AgendaActivity"
+            android:label="@string/title_activity_agenda" />
         <activity
             android:name=".activities.CatalogActivity"
+<<<<<<< HEAD
             android:label="@string/title_activity_catalog"></activity>
         <activity
             android:name=".activities.AccountActivity"
             android:label="@string/title_activity_account"></activity>
 
+
+            android:label="@string/title_activity_catalog" />
+        <activity
+            android:name=".activities.NewEventActivity"
+            android:label="@string/title_activity_new_event" >
+        </activity>
+>>>>>>> 51f5e0e7cc79cfe57190c485163d37746371b53d
     </application>
 
 </manifest>
