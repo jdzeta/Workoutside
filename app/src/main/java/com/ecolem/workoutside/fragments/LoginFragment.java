@@ -17,13 +17,11 @@ import android.widget.Toast;
 
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.WorkoutSide;
-import com.ecolem.workoutside.activities.MainActivity;
+import com.ecolem.workoutside.activities.HomeActivity;
 import com.ecolem.workoutside.activities.StartActivity;
 import com.ecolem.workoutside.manager.SharedPreferenceManager;
 import com.ecolem.workoutside.manager.UserManager;
 import com.ecolem.workoutside.model.User;
-import com.ecolem.workoutside.views.StartViewPager;
-import com.facebook.FacebookSdk;
 import com.firebase.client.FirebaseError;
 
 /**
@@ -198,7 +196,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
 
     @Override
     public void onLoginSuccess(String uid) {
-        Intent intent = new Intent(getActivity(), MainActivity.class);
+        Intent intent = new Intent(getActivity(), HomeActivity.class);
         startActivity(intent);
     }
 

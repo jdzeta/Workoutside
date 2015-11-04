@@ -23,10 +23,10 @@
 
     <!-- MAIN -->
     <string name="around_me">Autour de moi...</string>
-    <string name="menu_events">Agenda</string>
+    <string name="menu_events">évènements</string>
     <string name="next">Suivant</string>
     <string name="menu_exos">Exercices</string>
-    <string name="menu_settings">Paramètres</string>
+    <string name="menu_profile">Profil</string>
     <string name="menu_logout">Déconnexion</string>
     <string name="logout_alert">Etes-vous sûr de vouloir quitter l\'application ?</string>
     <string name="cancel">Annuler</string>
@@ -57,4 +57,7 @@
     <string name="account_gender_f">F</string>
     <string name="select_birthdate">Sélectionnez votre date de naissance</string>
     <string name="hello_blank_fragment">Blank fragment</string>
+
+    <!-- Mouvements -->
+    <string name="training">Entraînement</string>
 </resources>
