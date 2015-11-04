@@ -24,6 +24,7 @@ import android.widget.RelativeLayout;
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.WorkoutSide;
 import com.ecolem.workoutside.manager.UserManager;
+
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.geofire.GeoFire;
@@ -43,14 +44,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class MainActivity extends ActionBarActivity implements View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener, LocationListener {
+public class HomeActivity extends ActionBarActivity implements View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener, LocationListener {
 
     //private static final GeoLocation INITIAL_CENTER = new GeoLocation(37.7789, -122.4017);
     private static final int INITIAL_ZOOM_LEVEL = 14;
 
 
     private RelativeLayout mAgendaMenuButton;
-    private RelativeLayout mCatalogMenuButton;
+    private RelativeLayout mTrainingMenuButton;
     private RelativeLayout mLogoutMenuButton;
 
     private SupportMapFragment mMapFragment = null;
@@ -67,7 +68,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_home);
 
         Firebase.setAndroidContext(this);
 
@@ -79,11 +80,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         mAgendaMenuButton = (RelativeLayout) findViewById(R.id.menu_events);
         mAgendaMenuButton.setOnClickListener(this);
-        mCatalogMenuButton = (RelativeLayout) findViewById(R.id.menu_catalog);
-        mCatalogMenuButton.setOnClickListener(this);
+        mTrainingMenuButton = (RelativeLayout) findViewById(R.id.menu_training);
+        mTrainingMenuButton.setOnClickListener(this);
         mLogoutMenuButton = (RelativeLayout) findViewById(R.id.menu_logout);
         mLogoutMenuButton.setOnClickListener(this);
 
+
+        // Add click on "settings" <- It mean "account"
+        findViewById(R.id.menu_profile).setOnClickListener(this);
 
         initMap();
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -91,7 +95,19 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         if (mLocationManager != null) {
             Criteria criteria = new Criteria();
             String provider = mLocationManager.getBestProvider(criteria, true);
+
             Location location = mLocationManager.getLastKnownLocation(provider);
+
+            mLocationManager.requestLocationUpdates(provider, 400, 1000, this); //You can also use LocationManager.GPS_PROVIDER and LocationManager.PASSIVE_PROVIDER
+
+
+            //Location location = mLocationManager.getLastKnownLocation(provider);
+
+            //if (location != null) {
+            // onLocationChanged(location);
+            //}
+            //
+            //mLocationManager.requestLocationUpdates(provider, 20000, 0, this);
 
             if (location != null) {
                 onLocationChanged(location);
@@ -145,16 +161,23 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public void onClick(View v) {
         Intent intent;
         switch (v.getId()) {
-            case R.id.menu_catalog:
-                intent = new Intent(MainActivity.this, CatalogActivity.class);
+
+            case R.id.menu_training:
+                intent = new Intent(HomeActivity.this, TrainingActivity.class);
                 startActivity(intent);
                 break;
             case R.id.menu_events:
-                intent = new Intent(getApplication(), AgendaActivity.class);
+                intent = new Intent(HomeActivity.this, EventsListActivity.class);
+
                 startActivity(intent);
                 break;
             case R.id.menu_logout:
                 showLogoutAlert();
+                break;
+
+            case R.id.menu_profile:
+                intent = new Intent(HomeActivity.this, AccountActivity.class);
+                startActivity(intent);
                 break;
             default:
                 break;
@@ -174,7 +197,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 .setPositiveButton(getResources().getString(R.string.leave), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         UserManager.getInstance().logout();
-                        MainActivity.this.finish();
+                        HomeActivity.this.finish();
                     }
                 })
                 .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {

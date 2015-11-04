@@ -1,7 +1,5 @@
 package com.ecolem.workoutside.manager;
 
-import android.widget.TextView;
-
 import com.ecolem.workoutside.database.FirebaseManager;
 import com.ecolem.workoutside.model.User;
 import com.firebase.client.AuthData;
@@ -9,8 +7,6 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-
-import java.util.HashMap;
 
 /**
  * Created by akawa_000 on 24/10/2015.
@@ -99,10 +95,23 @@ public class UserManager {
 
         Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
             @Override
-            public void onAuthenticated(AuthData authData) {
-                if (listener != null) {
-                    listener.onLoginSuccess(authData.getUid());
-                }
+
+            public void onAuthenticated(final AuthData authData) {
+                Firebase movRef = FirebaseManager.getInstance().getFirebaseRef().child("users").child(authData.getUid());
+                movRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (listener != null) {
+                            //mUser = dataSnapshot.getValue(User.class);
+                            listener.onLoginSuccess(authData.getUid());
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+                    }
+                });
+
             }
 
             @Override

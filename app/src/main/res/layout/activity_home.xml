@@ -78,56 +78,11 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/menu_catalog"
+                    android:id="@+id/menu_profile"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="10dp"
-                    android:layout_weight=".5"
-                    android:background="@color/gray_light">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:orientation="vertical">
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <ImageView
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_centerInParent="true"
-                                android:src="@mipmap/menu_exercices" />
-                        </RelativeLayout>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center"
-                            android:text="@string/menu_exos"
-                            android:textAllCaps="true"
-                            android:textColor="@color/gray" />
-                    </LinearLayout>
-
-                </RelativeLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".5"
-                android:orientation="horizontal">
-
-                <RelativeLayout
-                    android:id="@+id/menu_settings"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
                     android:layout_weight=".5"
                     android:background="@color/gray_light">
 
@@ -153,7 +108,55 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:gravity="center"
-                            android:text="@string/menu_settings"
+                            android:text="@string/menu_profile"
+                            android:textAllCaps="true"
+                            android:textColor="@color/gray" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".5"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+
+                    android:id="@+id/menu_training"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight=".5"
+                    android:background="@color/gray_light">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_centerInParent="true"
+
+                                android:src="@mipmap/menu_training" />
+                        </RelativeLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+
+                            android:text="@string/menu_training"
                             android:textAllCaps="true"
                             android:textColor="@color/gray" />
                     </LinearLayout>
