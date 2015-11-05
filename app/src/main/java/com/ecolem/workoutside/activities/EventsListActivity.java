@@ -7,6 +7,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.ecolem.workoutside.R;
@@ -15,7 +17,6 @@ import com.ecolem.workoutside.comparators.EventDateComparator;
 import com.ecolem.workoutside.manager.EventManager;
 import com.ecolem.workoutside.model.Event;
 import com.firebase.client.FirebaseError;
-import com.firebase.geofire.GeoLocation;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -42,7 +43,17 @@ public class EventsListActivity extends ActionBarActivity implements EventManage
 
         populateEvents();
 
-
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Event event = (Event) mListView.getItemAtPosition(position);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("event", event);
+                Intent intent = new Intent(getApplicationContext(), EventDetailsActivity.class);
+                intent.putExtra("myBundle", bundle);
+                startActivity(intent);
+            }
+        });
         //EventManager.getInstance().startGetEventsComing(this);
     }
 
@@ -55,20 +66,20 @@ public class EventsListActivity extends ActionBarActivity implements EventManage
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
 
-        mEvents.add(new Event("Event A", c.getTime(), new GeoLocation(80, 80), "balb labl balb jsdfhsd ksjhdfj fg", 0, 10, null));
-        mEvents.add(new Event("Event B", c.getTime(), new GeoLocation(80, 80), "balb labl balb jsdfhsd ksjhdfj fg", 0, 10, null));
+        mEvents.add(new Event("Event A", c.getTime(), 80, 80, "balb labl balb jsdfhsd ksjhdfj fg", 0, 10, null));
+        mEvents.add(new Event("Event B", c.getTime(), 80, 80, "balb labl balb jsdfhsd ksjhdfj fg", 0, 10, null));
 
         c.add(Calendar.DAY_OF_MONTH, 2);
-        mEvents.add(new Event("Event C", c.getTime(), new GeoLocation(80, 80), "balb labl balb jsdfhsd ksjhdfj fg", 0, 20, null));
+        mEvents.add(new Event("Event C", c.getTime(), 80, 80, "balb labl balb jsdfhsd ksjhdfj fg", 0, 20, null));
 
         c.add(Calendar.DAY_OF_MONTH, 1);
-        mEvents.add(new Event("Event D", c.getTime(), new GeoLocation(80, 80), "balb labl balb jsdfhsd ksjhdfj fg", 0, 3, null));
-        mEvents.add(new Event("Event E", c.getTime(), new GeoLocation(80, 80), "balb labl balb jsdfhsd ksjhdfj fg", 0, 10, null));
+        mEvents.add(new Event("Event D", c.getTime(), 80, 80, "balb labl balb jsdfhsd ksjhdfj fg", 0, 3, null));
+        mEvents.add(new Event("Event E", c.getTime(), 80, 80, "balb labl balb jsdfhsd ksjhdfj fg", 0, 10, null));
 
         // should not be displayed
         c.add(Calendar.DAY_OF_MONTH, -5);
-        mEvents.add(new Event("Event F", c.getTime(), new GeoLocation(80, 80), "balb labl balb jsdfhsd ksjhdfj fg", 0, 3, null));
-        mEvents.add(new Event("Event G", c.getTime(), new GeoLocation(80, 80), "balb labl balb jsdfhsd ksjhdfj fg", 0, 10, null));
+        mEvents.add(new Event("Event F", c.getTime(), 80, 80, "balb labl balb jsdfhsd ksjhdfj fg", 0, 3, null));
+        mEvents.add(new Event("Event G", c.getTime(), 80, 80, "balb labl balb jsdfhsd ksjhdfj fg", 0, 10, null));
 
         Collections.sort(mEvents, new EventDateComparator());
 

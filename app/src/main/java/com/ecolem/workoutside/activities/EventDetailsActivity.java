@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -54,7 +55,10 @@ public class EventDetailsActivity extends ActionBarActivity {
         Integer minLevel = 1;
         Integer maxParticipants = 3;
         User creator = UserManager.getInstance().getUser();
-        this.myEvent = new Event(name, date, location, description, minLevel, maxParticipants, creator);
+        this.myEvent = new Event(name, date, 12.3, -0.3, description, minLevel, maxParticipants, creator);
+
+        // Getting selected event
+        // @TODO this.myEvent = (Event) savedInstanceState.getSerializable("event");
 
         // Setting event name in actionbar
         setTitle(this.myEvent.getName());
@@ -67,6 +71,8 @@ public class EventDetailsActivity extends ActionBarActivity {
         this.event_detail_location  = (TextView) findViewById(R.id.event_detail_location);
         this.event_detail_nb_participants  = (TextView) findViewById(R.id.event_detail_nb_participants);
         this.event_detail_participant_list = (ListView) findViewById(R.id.event_detail_participant_list);
+
+        settingViews();
     }
 
     public void settingViews() {
@@ -80,7 +86,9 @@ public class EventDetailsActivity extends ActionBarActivity {
         this.event_detail_datetime.setText(dateFormat.format(evDate));
 
         // Turning location to address
-        GeoLocation evLocation = this.myEvent.getLocation();
+        double latitude = this.myEvent.getLatitude();
+        double longitude = this.myEvent.getLongitude();
+        GeoLocation evLocation = new GeoLocation(latitude, longitude);
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         List<Address> addresses = null;
         try {
@@ -92,7 +100,8 @@ public class EventDetailsActivity extends ActionBarActivity {
         this.event_detail_location.setText(addresses.get(0).toString());
 
         // Counting participants
-        this.event_detail_nb_participants.setText("");
+        HashMap<Integer, User> listParticipants = this.myEvent.getParticipants();
+        this.event_detail_nb_participants.setText(listParticipants + "");
     }
 
 }

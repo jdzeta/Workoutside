@@ -1,7 +1,6 @@
 package com.ecolem.workoutside.model;
 
-import com.firebase.geofire.GeoLocation;
-
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,13 +8,14 @@ import java.util.HashMap;
 /**
  * Created by akawa_000 on 23/10/2015.
  */
-public class Event {
+public class Event implements Serializable {
     private String name;
     private Date date;
-    private GeoLocation location;
+    private double latitude;
+    private double longitude;
     private String description;
-    private Integer minLevel;
-    private Integer maxParticipants;
+    private int minLevel;
+    private int maxParticipants;
     private HashMap<Integer, User> participants;
     private float note;
     private HashMap<Integer, Comment> comments;
@@ -23,34 +23,15 @@ public class Event {
 
     public Event() {}
 
-    public Event(String name, Date date, GeoLocation location, String description, Integer minLevel, Integer maxParticipants, User creator) {
+    public Event(String name, Date date, double latitude, double longitude, String description, Integer minLevel, Integer maxParticipants, User creator) {
         this.name = name;
         this.date = date;
-        this.location = location;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.description = description;
         this.minLevel = minLevel;
         this.maxParticipants = maxParticipants;
         this.creator = creator;
-    }
-
-    public User getCreator() {
-        return creator;
-    }
-
-    public void setCreator(User creator) {
-        this.creator = creator;
-    }
-
-    public HashMap<Integer, Comment> getComments() {
-        return comments;
-    }
-
-    public void setMaxParticipants(Integer maxParticipants) {
-        this.maxParticipants = maxParticipants;
-    }
-
-    public void setMinLevel(Integer minLevel) {
-        this.minLevel = minLevel;
     }
 
     public String getName() {
@@ -69,13 +50,20 @@ public class Event {
         this.date = date;
     }
 
-    public GeoLocation getLocation() {
-        return location;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setLocation(GeoLocation location) {
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
 
-        this.location = location;
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public String getDescription() {
@@ -86,15 +74,15 @@ public class Event {
         this.description = description;
     }
 
-    public Integer getMinLevel() {
+    public int getMinLevel() {
         return minLevel;
     }
 
-    public void setMinLevel(int level) {
-        this.minLevel = level;
+    public void setMinLevel(int minLevel) {
+        this.minLevel = minLevel;
     }
 
-    public Integer getMaxParticipants() {
+    public int getMaxParticipants() {
         return maxParticipants;
     }
 
@@ -118,12 +106,20 @@ public class Event {
         this.note = note;
     }
 
-    public HashMap<Integer, Comment> getCommentaires() {
+    public HashMap<Integer, Comment> getComments() {
         return comments;
     }
 
     public void setComments(HashMap<Integer, Comment> comments) {
         this.comments = comments;
+    }
+
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
     }
 
     public boolean hasSameDate(Event event){
