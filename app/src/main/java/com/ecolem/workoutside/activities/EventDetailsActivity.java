@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ecolem.workoutside.R;
+import com.ecolem.workoutside.adapter.UserListAdapter;
 import com.ecolem.workoutside.manager.EventManager;
 import com.ecolem.workoutside.manager.UserManager;
 import com.ecolem.workoutside.model.Event;
@@ -24,6 +25,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class EventDetailsActivity extends ActionBarActivity implements EventManager.EventListener {
 
@@ -140,10 +142,17 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
     }
 
     public void initParticipantsList(){
+        // Getting participants
         HashMap<String, User> participants = this.myEvent.getParticipants();
         if (participants != null){
             // Setting participants listView
-
+            // Setting participants in Arraylist
+            ArrayList<User> users = new ArrayList<>();
+            for (Map.Entry<String, User> entry : participants.entrySet()){
+                users.add(entry.getValue());
+            }
+            UserListAdapter adapter = new UserListAdapter(this, users);
+            this.event_detail_participant_list.setAdapter(adapter);
         }
     }
 

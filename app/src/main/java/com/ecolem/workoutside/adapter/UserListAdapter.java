@@ -31,7 +31,6 @@ public class UserListAdapter extends ArrayAdapter<User> {
         }
 
         TextView tvName = (TextView) convertView.findViewById(R.id.user_name);
-
         tvName.setText(user.getFirstname() + " " + user.getLastname());
 
         return convertView;
