@@ -211,6 +211,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
         if (mParentActivity != null) {
             User user = mParentActivity.getUser();
             user.setEmail(email);
+            user.setPassword(password);
             mParentActivity.setUser(user);
 
             mParentActivity.nextStep();

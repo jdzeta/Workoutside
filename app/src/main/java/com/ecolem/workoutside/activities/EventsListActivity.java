@@ -42,13 +42,16 @@ public class EventsListActivity extends ActionBarActivity implements EventManage
         actionbar.setTitle(getResources().getString(R.string.menu_events).toUpperCase());
         actionbar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.primary)));
 
-        populateEvents();
-        //EventManager.getInstance().startGetEventsComing(this);
+        //populateEvents();
+
     }
+
+
 
     @Override
     protected void onStart() {
         super.onStart();
+        EventManager.getInstance().startGetEventsComing(this);
     }
 
     private void populateEvents() {

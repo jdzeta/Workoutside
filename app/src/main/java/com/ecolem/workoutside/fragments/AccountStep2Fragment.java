@@ -98,8 +98,7 @@ public class AccountStep2Fragment extends Fragment implements View.OnClickListen
             user.setLevel(mSelecteLevel);
 
             UserManager.getInstance().saveUser(user);
-            Intent intent = new Intent(getActivity(), HomeActivity.class);
-            startActivity(intent);
+
         }
     }
 
@@ -132,6 +131,8 @@ public class AccountStep2Fragment extends Fragment implements View.OnClickListen
     @Override
     public void onLoginSuccess(String uid) {
         createUserWithUID(uid);
+        Intent intent = new Intent(getActivity(), HomeActivity.class);
+        startActivity(intent);
     }
 
     @Override
