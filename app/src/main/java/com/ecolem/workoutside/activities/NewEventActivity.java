@@ -51,6 +51,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.UUID;
 
 public class NewEventActivity extends ActionBarActivity
         implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener, AdapterView.OnItemSelectedListener, View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener, LocationListener, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
@@ -327,14 +328,19 @@ public class NewEventActivity extends ActionBarActivity
                 this.new_event_time != null &&
                 this.mMarker != null &&
                 this.new_event_description != null) {
+            // Name
             String name = this.new_event_name.getText().toString();
+            // Date
             Date date = this.new_event_date;
             Date time = this.new_event_time;
+            // Location
             LatLng latLng = this.mMarker.getPosition();
             double latitude = latLng.latitude;
             double longitude = latLng.longitude;
+            // Description
             String description = this.new_event_description.getText().toString();
 
+            // Min level
             Integer minLevel;
             String minLevelString = this.new_event_min_level.getSelectedItem().toString();
             switch (minLevelString) {
@@ -355,14 +361,22 @@ public class NewEventActivity extends ActionBarActivity
                     break;
             }
 
+            // Max users
             Integer maxParticipants = Integer.parseInt(this.new_event_max_participants.getText().toString());
 
+            // Finishing setting date
             date.setTime(time.getTime());
 
+            // Preparing event
             EventManager eventManager = new EventManager();
             UserManager userManager = UserManager.getInstance();
+            // Creator
             User creator = userManager.getUser();
-            Event event = new Event(name, date, latitude, longitude, description, minLevel, maxParticipants, creator);
+            // UUID
+            String uuid = UUID.randomUUID().toString();
+            // Event
+            Event event = new Event(uuid, name, date, latitude, longitude, description, minLevel, maxParticipants, creator);
+            // Sending to Firebase
             eventManager.sendData(event);
 
             Intent intent = new Intent(getApplicationContext(), EventsListActivity.class);

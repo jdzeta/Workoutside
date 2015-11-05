@@ -11,7 +11,6 @@ import com.firebase.client.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * Created by akawa_000 on 25/10/2015.
@@ -29,9 +28,7 @@ public class EventManager {
     }
 
     public void sendData(Event event){
-        String uuid = UUID.randomUUID().toString();
-        event.setUid(uuid);
-        FirebaseManager.getInstance().getFirebaseRef().child("events").child(uuid).setValue(event);
+        FirebaseManager.getInstance().getFirebaseRef().child("events").child(event.getUID()).setValue(event);
     }
 
     public void getEvent(String uuid, final EventListener eventListener) {

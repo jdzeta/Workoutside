@@ -56,10 +56,7 @@ public class UserManager {
         });
     }
 
-
-
     public void login(String email, String password, final UserListener listener) {
-
 
         Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
             @Override

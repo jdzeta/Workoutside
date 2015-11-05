@@ -1,6 +1,5 @@
 package com.ecolem.workoutside.model;
 
-import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -26,8 +25,8 @@ public class Event {
     public Event() {
     }
 
-    public Event(String name, Date date, double latitude, double longitude, String description, int minLevel, int maxParticipants, User creator) {
-
+    public Event(String uid, String name, Date date, double latitude, double longitude, String description, int minLevel, int maxParticipants, User creator) {
+        this.uid = uid;
         this.name = name;
         this.date = date;
         this.latitude = latitude;

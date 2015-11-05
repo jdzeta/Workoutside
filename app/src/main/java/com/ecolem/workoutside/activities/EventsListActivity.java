@@ -51,7 +51,7 @@ public class EventsListActivity extends ActionBarActivity implements EventManage
                 Bundle bundle = new Bundle();
                 bundle.putString("eventUUID", event.getUID());
                 Intent intent = new Intent(getApplicationContext(), EventDetailsActivity.class);
-                intent.putExtra("myBundle", bundle);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
@@ -69,21 +69,6 @@ public class EventsListActivity extends ActionBarActivity implements EventManage
     private void populateEvents() {
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
-
-        mEvents.add(new Event("Event A", c.getTime(), 80, 80, "balb labl balb jsdfhsd ksjhdfj fg", 0, 10, null));
-        mEvents.add(new Event("Event B", c.getTime(), 80, 80, "balb labl balb jsdfhsd ksjhdfj fg", 0, 10, null));
-
-        c.add(Calendar.DAY_OF_MONTH, 2);
-        mEvents.add(new Event("Event C", c.getTime(), 80, 80, "balb labl balb jsdfhsd ksjhdfj fg", 0, 20, null));
-
-        c.add(Calendar.DAY_OF_MONTH, 1);
-        mEvents.add(new Event("Event D", c.getTime(), 80, 80, "balb labl balb jsdfhsd ksjhdfj fg", 0, 3, null));
-        mEvents.add(new Event("Event E", c.getTime(), 80, 80, "balb labl balb jsdfhsd ksjhdfj fg", 0, 10, null));
-
-        // should not be displayed
-        c.add(Calendar.DAY_OF_MONTH, -5);
-        mEvents.add(new Event("Event F", c.getTime(), 80, 80, "balb labl balb jsdfhsd ksjhdfj fg", 0, 3, null));
-        mEvents.add(new Event("Event G", c.getTime(), 80, 80, "balb labl balb jsdfhsd ksjhdfj fg", 0, 10, null));
 
         Collections.sort(mEvents, new EventDateComparator());
 
