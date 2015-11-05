@@ -13,9 +13,11 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
@@ -96,12 +98,12 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
             Criteria criteria = new Criteria();
             String provider = mLocationManager.getBestProvider(criteria, true);
 
+            // Location location = mLocationManager.getLastKnownLocation(provider);
+
+            // mLocationManager.requestLocationUpdates(provider, 400, 1000, this); //You can also use LocationManager.GPS_PROVIDER and LocationManager.PASSIVE_PROVIDER
+
+
             Location location = mLocationManager.getLastKnownLocation(provider);
-
-            mLocationManager.requestLocationUpdates(provider, 400, 1000, this); //You can also use LocationManager.GPS_PROVIDER and LocationManager.PASSIVE_PROVIDER
-
-
-            //Location location = mLocationManager.getLastKnownLocation(provider);
 
             //if (location != null) {
             // onLocationChanged(location);
@@ -154,34 +156,44 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     public void onStop() {
         super.onStop();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         cleanMap();
     }
 
     @Override
     public void onClick(View v) {
-        Intent intent;
+
         switch (v.getId()) {
 
             case R.id.menu_training:
-                intent = new Intent(HomeActivity.this, TrainingActivity.class);
-                startActivity(intent);
+                startActivity(TrainingActivity.class);
                 break;
             case R.id.menu_events:
-                intent = new Intent(HomeActivity.this, EventsListActivity.class);
-
-                startActivity(intent);
+                startActivity(EventsListActivity.class);
                 break;
             case R.id.menu_logout:
                 showLogoutAlert();
                 break;
-
             case R.id.menu_profile:
-                intent = new Intent(HomeActivity.this, AccountActivity.class);
-                startActivity(intent);
+                startActivity(AccountActivity.class);
                 break;
             default:
                 break;
         }
+    }
+
+    private void startActivity(Class c) {
+
+        Intent intent = new Intent(HomeActivity.this, c);
+        startActivity(intent);
+        this.overridePendingTransition(android.R.anim.slide_in_left,
+                android.R.anim.slide_out_right);
+
     }
 
     private void showLogoutAlert() {
@@ -319,8 +331,10 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         Log.i("sandra", "location changed");
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-        this.mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        this.mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+        if (this.mMap != null) {
+            this.mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            this.mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+        }
 
         //this.mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(INITIAL_CENTER.latitude,INITIAL_CENTER.longitude), INITIAL_ZOOM_LEVEL));
     }

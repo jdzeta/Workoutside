@@ -60,6 +60,59 @@ public class UserManager {
         });
     }
 
+
+
+    public void login(String email, String password, final UserListener listener) {
+
+
+        Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
+            @Override
+            public void onAuthenticated(final AuthData authData) {
+                Firebase movRef = FirebaseManager.getInstance().getFirebaseRef().child("users").child(authData.getUid());
+                movRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (listener != null) {
+                            mUser = dataSnapshot.getValue(User.class);
+                            listener.onLoginSuccess(authData.getUid());
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+                    }
+                });
+            }
+
+            @Override
+            public void onAuthenticationError(FirebaseError firebaseError) {
+                if (listener != null) {
+                    listener.onFail(firebaseError);
+                }
+            }
+        };
+
+        FirebaseManager.getInstance().getFirebaseRef().authWithPassword(email, password, authResultHandler);
+    }
+
+    public void logout() {
+        FirebaseManager.getInstance().getFirebaseRef().unauth();
+    }
+
+    /**
+     * Listeners
+     **/
+
+    public interface UserListener {
+        void onLoginSuccess(String uid);
+
+        void onGetUserSuccess(User user);
+
+        void onAccountSuccess(String email, String password);
+
+        void onFail(FirebaseError error);
+    }
+
     public void getUser(String pseudo, final UserListener listener) {
         Firebase userRef = FirebaseManager.getInstance().getFirebaseRef().child(pseudo);
 
@@ -103,56 +156,5 @@ public class UserManager {
         });
     }
 
-
-    public void login(String email, String password, final UserListener listener) {
-
-
-        Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
-            @Override
-            public void onAuthenticated(final AuthData authData) {
-                Firebase movRef = FirebaseManager.getInstance().getFirebaseRef().child("users").child(authData.getUid());
-                movRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (listener != null) {
-                            //mUser = dataSnapshot.getValue(User.class);
-                            listener.onLoginSuccess(authData.getUid());
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {
-                    }
-                });
-            }
-
-            @Override
-            public void onAuthenticationError(FirebaseError firebaseError) {
-                if (listener != null) {
-                    listener.onFail(firebaseError);
-                }
-            }
-        };
-
-        FirebaseManager.getInstance().getFirebaseRef().authWithPassword(email, password, authResultHandler);
-    }
-
-    public void logout() {
-        FirebaseManager.getInstance().getFirebaseRef().unauth();
-    }
-
-    /**
-     * Listeners
-     **/
-
-    public interface UserListener {
-        void onLoginSuccess(String uid);
-
-        void onGetUserSuccess(User user);
-
-        void onAccountSuccess(String email, String password);
-
-        void onFail(FirebaseError error);
-    }
 
 }

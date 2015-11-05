@@ -163,6 +163,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
 
         String email = mEmailEditText.getText().toString();
         String password = mPasswordEditText.getText().toString();
+
         SharedPreferenceManager.getInstance(mParentActivity).saveLogin(email, password);
         UserManager.getInstance().createAccount(email, password, this);
     }
@@ -210,7 +211,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
         if (mParentActivity != null) {
             User user = mParentActivity.getUser();
             user.setEmail(email);
-            user.setPassword(password);
             mParentActivity.setUser(user);
 
             mParentActivity.nextStep();

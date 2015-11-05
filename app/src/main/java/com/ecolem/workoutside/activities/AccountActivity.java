@@ -2,12 +2,15 @@ package com.ecolem.workoutside.activities;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.manager.UserManager;
@@ -26,6 +29,7 @@ public class AccountActivity extends AppCompatActivity {
 
     private User mUserCopy;
 
+    private TextView mPictureDefaultText = null;
     private EditText mFirstNameEditText;
     private EditText mLastNameEditText;
     private RadioGroup mGenderGroup;
@@ -43,6 +47,9 @@ public class AccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
 
+        initActionBar();
+
+        mPictureDefaultText = (TextView) findViewById(R.id.account_picture_default_text);
         mFirstNameEditText = (EditText) findViewById(R.id.edit_first_name);
         mLastNameEditText = (EditText) findViewById(R.id.edit_last_name);
         mBirthdayEditText = (EditText) findViewById(R.id.edit_birthdate);
@@ -103,6 +110,14 @@ public class AccountActivity extends AppCompatActivity {
         populateFields(user);
     }
 
+    private void initActionBar() {
+
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setTitle(getResources().getString(R.string.menu_profile));
+        actionbar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.primary)));
+        actionbar.setDisplayHomeAsUpEnabled(true);
+    }
+
     @Override
     protected void onPause() {
         if (mDialog != null && mDialog.isShowing()) {
@@ -131,6 +146,13 @@ public class AccountActivity extends AppCompatActivity {
                 mDateFmt.format(dateToShow)
         );
 
+        String pictureText = "";
+        if (user.getFirstname() != null && !user.getFirstname().isEmpty()) {
+            pictureText += user.getFirstname().substring(0, 1);
+        }
+        if (user.getLastname() != null && !user.getLastname().isEmpty()) {
+            pictureText += user.getLastname().substring(0, 1);
+        }
     }
 
     private void discardChanges() {
