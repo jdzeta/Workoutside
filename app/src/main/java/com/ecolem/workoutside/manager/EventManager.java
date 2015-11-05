@@ -3,6 +3,7 @@ package com.ecolem.workoutside.manager;
 import com.ecolem.workoutside.comparators.EventDateComparator;
 import com.ecolem.workoutside.database.FirebaseManager;
 import com.ecolem.workoutside.model.Event;
+import com.ecolem.workoutside.model.User;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -126,6 +127,14 @@ public class EventManager {
                 }
             }
         });
+    }
+
+    public void pushData(Event event, User currentUser) {
+        FirebaseManager.getInstance().getFirebaseRef().child("events").child(event.getUID()).child("participants").push().setValue(currentUser.getUID(), currentUser);
+    }
+
+    public void removeParticipant(Event event, User user) {
+        FirebaseManager.getInstance().getFirebaseRef().child("event").child(event.getUID()).child("participants").child(user.getUID()).setValue(null);
     }
 
     public interface EventListener {
