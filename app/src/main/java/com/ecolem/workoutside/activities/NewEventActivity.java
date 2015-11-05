@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.WorkoutSide;
+import com.ecolem.workoutside.helpers.TimeHelper;
 import com.ecolem.workoutside.manager.EventManager;
 import com.ecolem.workoutside.manager.UserManager;
 import com.ecolem.workoutside.model.Event;
@@ -206,10 +207,12 @@ public class NewEventActivity extends ActionBarActivity
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         Calendar selectedCal = Calendar.getInstance();
-        selectedCal.set(hourOfDay, minute);
+        selectedCal.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        selectedCal.set(Calendar.MINUTE, minute);
+
         this.new_event_time = selectedCal.getTime();
 
-        this.new_event_time_editText.setText(hourOfDay + ":" + minute);
+        this.new_event_time_editText.setText(TimeHelper.getEventHourStr(selectedCal.getTime()));
     }
 
     @Override
@@ -362,7 +365,11 @@ public class NewEventActivity extends ActionBarActivity
             }
 
             // Max users
-            Integer maxParticipants = Integer.parseInt(this.new_event_max_participants.getText().toString());
+            Integer maxParticipants = -1;
+            if (this.new_event_max_participants.getText().toString() != null && !this.new_event_max_participants.getText().toString().isEmpty()) {
+                maxParticipants = Integer.parseInt(this.new_event_max_participants.getText().toString());
+            }
+
 
             // Finishing setting date
             date.setTime(time.getTime());
@@ -382,8 +389,7 @@ public class NewEventActivity extends ActionBarActivity
             Intent intent = new Intent(getApplicationContext(), EventsListActivity.class);
             startActivity(intent);
             finish();
-        }
-        else {
+        } else {
             Toast.makeText(getApplicationContext(), "Veuillez remplir tous les champs svp", Toast.LENGTH_SHORT).show();
         }
     }
