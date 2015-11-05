@@ -19,7 +19,6 @@ import java.util.UUID;
 public class EventManager {
 
     public static EventManager sInstance = null;
-    public EventListener mListener;
 
     public static EventManager getInstance() {
         if (sInstance == null) {
@@ -29,34 +28,30 @@ public class EventManager {
         return sInstance;
     }
 
-    public void setListener(EventListener listener) {
-        this.mListener = listener;
-    }
-
     public void sendData(Event event){
         String uuid = UUID.randomUUID().toString();
         FirebaseManager.getInstance().getFirebaseRef().child("events").child(uuid).setValue(event);
     }
 
-    public void getEvent(String eventName) {
+    public void getEvent(String uuid, final EventListener eventListener) {
 
-        Firebase movRef = FirebaseManager.getInstance().getFirebaseRef().child("events").child(eventName);
+        Firebase movRef = FirebaseManager.getInstance().getFirebaseRef().child("events").child(uuid);
 
         movRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 System.out.println("Found " + snapshot.getChildrenCount() + " évènement(s)");
                 Event event = snapshot.getValue(Event.class);
-                if (mListener != null) {
-                    mListener.onGetEventSuccess(event);
+                if (eventListener != null) {
+                    eventListener.onGetEventSuccess(event);
                 }
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
                 System.out.println("The read failed: " + firebaseError.getMessage());
-                if (mListener != null) {
-                    mListener.onFail(firebaseError);
+                if (eventListener != null) {
+                    eventListener.onFail(firebaseError);
                 }
             }
         });

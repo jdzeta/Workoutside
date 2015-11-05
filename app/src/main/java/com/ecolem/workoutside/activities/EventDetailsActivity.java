@@ -10,20 +10,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ecolem.workoutside.R;
-import com.ecolem.workoutside.manager.UserManager;
+import com.ecolem.workoutside.manager.EventManager;
 import com.ecolem.workoutside.model.Event;
 import com.ecolem.workoutside.model.User;
+import com.firebase.client.FirebaseError;
 import com.firebase.geofire.GeoLocation;
 
 import java.io.IOException;
 import java.text.DateFormat;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class EventDetailsActivity extends ActionBarActivity {
+public class EventDetailsActivity extends ActionBarActivity implements EventManager.EventListener {
 
     // Temporary event for testing
     private Event myEvent;
@@ -47,21 +48,20 @@ public class EventDetailsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_details);
 
-        // Setting tempEvent data
+        /* Setting tempEvent data
         String name = "My Event";
         Date date = Calendar.getInstance(Locale.FRANCE).getTime();
-        GeoLocation location = new GeoLocation(12, 39);
         String description = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus distinctio omnis inventore, quidem magnam eaque voluptates optio cum ullam autem natus nisi mollitia quae deleniti, ab fugiat iusto itaque. Minus.";
         Integer minLevel = 1;
         Integer maxParticipants = 3;
         User creator = UserManager.getInstance().getUser();
-        this.myEvent = new Event(name, date, 12.3, -0.3, description, minLevel, maxParticipants, creator);
+        this.myEvent = new Event(name, date, 12.3, -0.3, description, minLevel, maxParticipants, creator);*/
 
         // Getting selected event
-        // @TODO this.myEvent = (Event) savedInstanceState.getSerializable("event");
-
-        // Setting event name in actionbar
-        setTitle(this.myEvent.getName());
+        Bundle bundle = getIntent().getExtras();
+        String evUuid = bundle.getString("eventUUID");
+        EventManager eventManager = EventManager.getInstance();
+        eventManager.getEvent(evUuid, this);
 
         // INIT EVENT DETAILS
         this.event_detail_creator  = (TextView) findViewById(R.id.event_detail_creator);
@@ -72,13 +72,29 @@ public class EventDetailsActivity extends ActionBarActivity {
         this.event_detail_nb_participants  = (TextView) findViewById(R.id.event_detail_nb_participants);
         this.event_detail_participant_list = (ListView) findViewById(R.id.event_detail_participant_list);
 
-        settingViews();
     }
 
     public void settingViews() {
         this.event_detail_creator.setText(this.myEvent.getCreator().getFirstname() + " " + this.myEvent.getCreator().getLastname());
         this.event_detail_name.setText(this.myEvent.getName());
-        this.event_detail_min_level.setText(this.myEvent.getMinLevel());
+        // Defining min level
+        String minLevel;
+        switch (this.myEvent.getMinLevel()){
+            case 0:
+            default:
+                minLevel = "Débutant";
+                break;
+            case 1:
+                minLevel = "Intermédiaire";
+                break;
+            case 2:
+                minLevel = "Avancé";
+                break;
+            case 3:
+                minLevel = "Expert";
+                break;
+        }
+        this.event_detail_min_level.setText(minLevel);
 
         // Turning Time to Datetime
         Date evDate = this.myEvent.getDate();
@@ -104,4 +120,21 @@ public class EventDetailsActivity extends ActionBarActivity {
         this.event_detail_nb_participants.setText(listParticipants + "");
     }
 
+    @Override
+    public void onGetEventSuccess(Event event) {
+        this.myEvent = event;
+        // Setting event name in actionbar
+        setTitle(this.myEvent.getName());
+        settingViews();
+    }
+
+    @Override
+    public void onGetEventsSuccess(ArrayList<Event> events) {
+
+    }
+
+    @Override
+    public void onFail(FirebaseError error) {
+
+    }
 }
