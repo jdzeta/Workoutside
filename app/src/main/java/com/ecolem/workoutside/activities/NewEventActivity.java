@@ -1,6 +1,7 @@
 package com.ecolem.workoutside.activities;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -13,6 +14,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,6 +23,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.ecolem.workoutside.R;
@@ -48,7 +51,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public class NewEventActivity extends ActionBarActivity
-        implements DatePickerDialog.OnDateSetListener, AdapterView.OnItemSelectedListener, View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener, LocationListener, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
+        implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener, AdapterView.OnItemSelectedListener, View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener, LocationListener, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
 
     private EditText new_event_name = null;
     private EditText new_event_description = null;
@@ -56,6 +59,8 @@ public class NewEventActivity extends ActionBarActivity
 
     private LinearLayout new_event_calendar = null;
     private EditText new_event_date_editText = null;
+    private LinearLayout new_event_timepicker = null;
+    private EditText new_event_time_editText = null;
 
     private GoogleMap mMap;
     private Geocoder geocoder;
@@ -68,7 +73,8 @@ public class NewEventActivity extends ActionBarActivity
     private Spinner new_event_location_spinner = null;
     private Spinner new_event_min_level = null;
 
-    private Date new_event_date;
+    private Date new_event_date = null;
+    private Date new_event_time = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +90,11 @@ public class NewEventActivity extends ActionBarActivity
         this.new_event_date_editText = (EditText) findViewById(R.id.new_event_date);
         this.new_event_calendar = (LinearLayout) findViewById(R.id.new_event_calendar);
         this.new_event_calendar.setOnClickListener(this);
+
+        this.new_event_time_editText = (EditText) findViewById(R.id.new_event_time);
+        this.new_event_timepicker = (LinearLayout) findViewById(R.id.new_event_timepicker);
+        this.new_event_timepicker.setOnClickListener(this);
+
 
         // Map settings
         geocoder = new Geocoder(getApplicationContext(), Locale.FRANCE);
@@ -136,10 +147,23 @@ public class NewEventActivity extends ActionBarActivity
                         cal.get(Calendar.MONTH),
                         cal.get(Calendar.DAY_OF_MONTH));
                 datePicker.setCancelable(false);
-                datePicker.setTitle(getResources().getString(R.string.select_birthdate));
+                datePicker.setTitle(getResources().getString(R.string.select_event_date));
                 datePicker.show();
-
                 break;
+
+            case R.id.new_event_timepicker:
+            case R.id.new_event_time_button:
+            case R.id.new_event_time:
+                Calendar ctime = Calendar.getInstance(TimeZone.getDefault());
+                TimePickerDialog timePicker = new TimePickerDialog(this, this,
+                        ctime.get(Calendar.HOUR_OF_DAY),
+                        ctime.get(Calendar.MINUTE),
+                        DateFormat.is24HourFormat(this));
+                timePicker.setCancelable(false);
+                timePicker.setTitle(getResources().getString(R.string.select_event_hour));
+                timePicker.show();
+                break;
+
             case R.id.new_event_description:
                 Toast.makeText(getApplicationContext(), "Description", Toast.LENGTH_SHORT).show();
                 break;
@@ -174,6 +198,15 @@ public class NewEventActivity extends ActionBarActivity
 
         this.new_event_date_editText.setText(dayOfMonth + "/" + monthOfYear + "/" + year);
 
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        Calendar selectedCal = Calendar.getInstance();
+        selectedCal.set(hourOfDay, minute);
+        this.new_event_time = selectedCal.getTime();
+
+        this.new_event_time_editText.setText(hourOfDay + ":" + minute);
     }
 
     @Override
@@ -263,7 +296,7 @@ public class NewEventActivity extends ActionBarActivity
         ListView listView = (ListView) findViewById(R.id.groupListView);
         listView.setAdapter(adapter);*/
 
-        ArrayAdapter<String> addressListAdapter = new ArrayAdapter<String>(this, R.layout.simple_spinner_item);
+        ArrayAdapter<String> addressListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
 
         for (Address address : this.addresses) {
             String fullAddress = address.getAddressLine(0) + " " + address.getAddressLine(1) + " " + address.getAddressLine(2);
@@ -286,39 +319,42 @@ public class NewEventActivity extends ActionBarActivity
         System.out.println(addresses);
     }
 
-    public void saveNewEvent(View view){
-        String name = this.new_event_name.getText().toString();
-        Date date = this.new_event_date;
-        LatLng latLng = this.mMarker.getPosition();
-        GeoLocation location = new GeoLocation(latLng.latitude, latLng.longitude);
-        String description = this.new_event_description.getText().toString();
+    public void saveNewEvent(View view) {
+        if (this.new_event_name != null &&
+                this.new_event_date != null &&
+                this.new_event_time != null &&
+                this.mMarker != null &&
+                this.new_event_description != null) {
+            String name = this.new_event_name.getText().toString();
+            Date date = this.new_event_date;
+            Date time = this.new_event_time;
+            LatLng latLng = this.mMarker.getPosition();
+            GeoLocation location = new GeoLocation(latLng.latitude, latLng.longitude);
+            String description = this.new_event_description.getText().toString();
 
-        Integer minLevel;
-        String minLevelString = this.new_event_min_level.getSelectedItem().toString();
-        switch(minLevelString){
-            case "Débutant":
-                minLevel = 0;
-                break;
-            case "Intermédiaire":
-                minLevel = 1;
-                break;
-            case "Avancé":
-                minLevel = 2;
-                break;
-            case "Expert":
-                minLevel = 3;
-                break;
-            default:
-                minLevel = 0;
-                break;
-        }
+            Integer minLevel;
+            String minLevelString = this.new_event_min_level.getSelectedItem().toString();
+            switch (minLevelString) {
+                case "Débutant":
+                    minLevel = 0;
+                    break;
+                case "Intermédiaire":
+                    minLevel = 1;
+                    break;
+                case "Avancé":
+                    minLevel = 2;
+                    break;
+                case "Expert":
+                    minLevel = 3;
+                    break;
+                default:
+                    minLevel = 0;
+                    break;
+            }
 
-        Integer maxParticipants = Integer.parseInt(this.new_event_max_participants.getText().toString());
+            Integer maxParticipants = Integer.parseInt(this.new_event_max_participants.getText().toString());
 
-        if (checkFieldsBeforeSend(name, date, location, description, minLevel, maxParticipants) != true){
-            Toast.makeText(getApplicationContext(), "Veuillez remplir tous les champs svp", Toast.LENGTH_SHORT).show();
-        }
-        else {
+            date.setTime(time.getTime());
             Event event = new Event(name, date, location, description, minLevel, maxParticipants);
 
             EventManager eventManager = new EventManager();
@@ -328,11 +364,15 @@ public class NewEventActivity extends ActionBarActivity
             startActivity(intent);
             finish();
         }
+        else {
+            Toast.makeText(getApplicationContext(), "Veuillez remplir tous les champs svp", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    public boolean checkFieldsBeforeSend(String name, Date date, GeoLocation location, String description, Integer minLevel, Integer maxParticipants) {
+    public boolean checkFieldsBeforeSend(String name, Date date, Date time, GeoLocation location, String description, Integer minLevel, Integer maxParticipants) {
         if (name.equals(null) ||
                 date.equals(null) ||
+                time.equals(null) ||
                 location.equals(null) ||
                 description.equals(null) ||
                 minLevel.equals(null) ||

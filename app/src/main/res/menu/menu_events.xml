@@ -4,5 +4,5 @@
     tools:context="com.ecolem.workoutside.activities.EventsListActivity">
 
     <item android:id="@+id/action_add_event" android:title="@string/action_add_event"
-        android:orderInCategory="100" app:showAsAction="never" />
+        android:orderInCategory="100" app:showAsAction="collapseActionView" />
 </menu>

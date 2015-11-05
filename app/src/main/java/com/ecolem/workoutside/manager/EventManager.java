@@ -28,7 +28,7 @@ public class EventManager {
     }
 
     public void sendData(Event Event){
-        FirebaseManager.getInstance().getFirebaseRef().setValue(Event);
+        FirebaseManager.getInstance().getFirebaseRef().child("events").setValue(Event);
     }
 
     public void getEvent(String eventName){

@@ -24,7 +24,6 @@ import android.widget.RelativeLayout;
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.WorkoutSide;
 import com.ecolem.workoutside.manager.UserManager;
-
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.geofire.GeoFire;
@@ -95,24 +94,12 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         if (mLocationManager != null) {
             Criteria criteria = new Criteria();
             String provider = mLocationManager.getBestProvider(criteria, true);
-
             Location location = mLocationManager.getLastKnownLocation(provider);
-
-            mLocationManager.requestLocationUpdates(provider, 400, 1000, this); //You can also use LocationManager.GPS_PROVIDER and LocationManager.PASSIVE_PROVIDER
-
-
-            //Location location = mLocationManager.getLastKnownLocation(provider);
-
-            //if (location != null) {
-            // onLocationChanged(location);
-            //}
-            //
-            //mLocationManager.requestLocationUpdates(provider, 20000, 0, this);
 
             if (location != null) {
                 onLocationChanged(location);
             }
-            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+            //mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         }
 
 
