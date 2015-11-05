@@ -63,7 +63,7 @@ public class EventListAdapter extends ArrayAdapter<Event> {
         // Description
         evDesc.setText(event.getDescription());
 
-        evNbParticipants.setText(event.getParticipants() != null ? event.getParticipants().size() : 0);
+        evNbParticipants.setText((event.getParticipants() != null ? event.getParticipants().size() : 0) + "");
 
 
         return convertView;

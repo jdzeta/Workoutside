@@ -8,7 +8,9 @@ import java.util.HashMap;
 /**
  * Created by akawa_000 on 23/10/2015.
  */
-public class Event implements Serializable {
+public class Event {
+
+    private String uid;
     private String name;
     private Date date;
     private double latitude;
@@ -34,6 +36,14 @@ public class Event implements Serializable {
         this.minLevel = minLevel;
         this.maxParticipants = maxParticipants;
         this.creator = creator;
+    }
+
+    public String getUID() {
+        return this.uid;
+    }
+
+    public void setUid(String uid){
+        this.uid = uid;
     }
 
     public String getName() {

@@ -49,7 +49,7 @@ public class EventsListActivity extends ActionBarActivity implements EventManage
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Event event = (Event) mListView.getItemAtPosition(position);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("event", event);
+                bundle.putString("eventUUID", event.getUID());
                 Intent intent = new Intent(getApplicationContext(), EventDetailsActivity.class);
                 intent.putExtra("myBundle", bundle);
                 startActivity(intent);
