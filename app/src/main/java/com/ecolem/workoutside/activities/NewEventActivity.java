@@ -360,9 +360,8 @@ public class NewEventActivity extends ActionBarActivity
 
             EventManager eventManager = new EventManager();
             UserManager userManager = UserManager.getInstance();
-            User user = userManager.getUser();
-            Event event = new Event(name, date, location, description, minLevel, maxParticipants, user);
-
+            User creator = userManager.getUser();
+            Event event = new Event(name, date, location, description, minLevel, maxParticipants, creator);
             eventManager.sendData(event);
 
             Intent intent = new Intent(getApplicationContext(), EventsListActivity.class);

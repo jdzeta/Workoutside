@@ -29,8 +29,9 @@ public class EventManager {
         this.mListener = listener;
     }
 
-    public void sendData(Event Event){
-        FirebaseManager.getInstance().getFirebaseRef().child("events").setValue(UUID.randomUUID().toString(), Event);
+    public void sendData(Event event){
+        String uuid = UUID.randomUUID().toString();
+        FirebaseManager.getInstance().getFirebaseRef().child("events").child(uuid).setValue(event);
     }
 
     public void getEvent(String eventName){

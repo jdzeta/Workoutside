@@ -1,7 +1,5 @@
 package com.ecolem.workoutside.manager;
 
-import android.widget.TextView;
-
 import com.ecolem.workoutside.database.FirebaseManager;
 import com.ecolem.workoutside.model.User;
 import com.firebase.client.AuthData;
@@ -9,8 +7,6 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-
-import java.util.HashMap;
 
 /**
  * Created by akawa_000 on 24/10/2015.
@@ -115,7 +111,7 @@ public class UserManager {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (listener != null) {
-                            //mUser = dataSnapshot.getValue(User.class);
+                            mUser = dataSnapshot.getValue(User.class);
                             listener.onLoginSuccess(authData.getUid());
                         }
                     }
