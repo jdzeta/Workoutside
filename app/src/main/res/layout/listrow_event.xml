@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -10,20 +10,21 @@
         android:id="@+id/event_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:text="8 octobre"
         android:textAllCaps="true"
-        android:textColor="@color/gray"
+        android:textColor="@color/gray_dark"
         android:textSize="17sp"
         android:textStyle="bold" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="150dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
+
             android:background="@color/white"
             android:orientation="horizontal"
             android:padding="5dp">
@@ -83,10 +84,12 @@
 
                 <TextView
                     android:id="@+id/event_description"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="dklslkfh lskhf sdhfl hsdlfh sldfh slkhjhdfkjhdkfjhdkfjh kdsjhfksjhf dfiuyrisdhfis uiusryirsufhkdh " />
+                    android:maxLines="3"
+                    android:text="dklslkfh lskhf sdhfl hsdlfh sldfh slkhjhdfkjhdkfjhdkfjh kdsjhfksjhf dfiuyrisdhfis uiusryirsufhkdh "
+                    android:textColor="@color/gray_dark" />
 
 
             </LinearLayout>
@@ -102,8 +105,8 @@
             android:layout_alignParentRight="true"
             android:layout_marginBottom="5dp"
             android:layout_marginRight="5dp"
-            android:text="12"
             android:paddingRight="5dp"
+            android:text="12"
             android:textColor="@color/secondary"
             android:textSize="16sp"
             android:textStyle="italic" />

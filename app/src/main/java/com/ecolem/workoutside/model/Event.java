@@ -2,6 +2,7 @@ package com.ecolem.workoutside.model;
 
 import com.firebase.geofire.GeoLocation;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -123,5 +124,16 @@ public class Event {
 
     public void setComments(HashMap<Integer, Comment> comments) {
         this.comments = comments;
+    }
+
+    public boolean hasSameDate(Event event){
+        Calendar c1 = Calendar.getInstance();
+        c1.setTime(this.getDate());
+
+        Calendar c2 = Calendar.getInstance();
+        c2.setTime(event.getDate());
+
+        return c1.get(Calendar.DAY_OF_MONTH) == c2.get(Calendar.DAY_OF_MONTH) && c1.get(Calendar.MONTH) == c2.get(Calendar.MONTH);
+
     }
 }

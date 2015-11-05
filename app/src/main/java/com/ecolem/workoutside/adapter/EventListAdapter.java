@@ -28,6 +28,14 @@ public class EventListAdapter extends ArrayAdapter<Event> {
 
         Event event = getItem(position);
 
+        boolean showDate = true;
+        if(position > 0){
+            Event previousEvent = getItem(position - 1);
+            if(previousEvent != null && event.hasSameDate(previousEvent)){
+                showDate = false;
+            }
+        }
+
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.listrow_event, parent, false);
         }
@@ -41,6 +49,7 @@ public class EventListAdapter extends ArrayAdapter<Event> {
 
         // Date
         evDate.setText(TimeHelper.getEventDateStr(event.getDate()));
+        evDate.setVisibility(showDate ? View.VISIBLE : View.GONE);
 
         // Hour
         evHour.setText(TimeHelper.getEventHourStr(event.getDate()));
@@ -60,4 +69,5 @@ public class EventListAdapter extends ArrayAdapter<Event> {
 
         return convertView;
     }
+
 }
