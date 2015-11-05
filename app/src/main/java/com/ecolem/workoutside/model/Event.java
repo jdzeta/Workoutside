@@ -18,16 +18,38 @@ public class Event {
     private HashMap<Integer, User> participants;
     private float note;
     private HashMap<Integer, Comment> comments;
+    private User creator;
 
     public Event() {}
 
-    public Event(String name, Date date, GeoLocation location, String description, Integer minLevel, Integer maxParticipants) {
+    public Event(String name, Date date, GeoLocation location, String description, Integer minLevel, Integer maxParticipants, User creator) {
         this.name = name;
         this.date = date;
         this.location = location;
         this.description = description;
         this.minLevel = minLevel;
         this.maxParticipants = maxParticipants;
+        this.creator = creator;
+    }
+
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
+    }
+
+    public HashMap<Integer, Comment> getComments() {
+        return comments;
+    }
+
+    public void setMaxParticipants(Integer maxParticipants) {
+        this.maxParticipants = maxParticipants;
+    }
+
+    public void setMinLevel(Integer minLevel) {
+        this.minLevel = minLevel;
     }
 
     public String getName() {

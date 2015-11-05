@@ -7,6 +7,8 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.util.UUID;
+
 /**
  * Created by akawa_000 on 25/10/2015.
  */
@@ -28,7 +30,7 @@ public class EventManager {
     }
 
     public void sendData(Event Event){
-        FirebaseManager.getInstance().getFirebaseRef().child("events").setValue(Event);
+        FirebaseManager.getInstance().getFirebaseRef().child("events").setValue(UUID.randomUUID().toString(), Event);
     }
 
     public void getEvent(String eventName){

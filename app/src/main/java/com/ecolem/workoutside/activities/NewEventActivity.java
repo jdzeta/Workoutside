@@ -29,7 +29,9 @@ import android.widget.Toast;
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.WorkoutSide;
 import com.ecolem.workoutside.manager.EventManager;
+import com.ecolem.workoutside.manager.UserManager;
 import com.ecolem.workoutside.model.Event;
+import com.ecolem.workoutside.model.User;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.geofire.GeoFire;
@@ -355,9 +357,12 @@ public class NewEventActivity extends ActionBarActivity
             Integer maxParticipants = Integer.parseInt(this.new_event_max_participants.getText().toString());
 
             date.setTime(time.getTime());
-            Event event = new Event(name, date, location, description, minLevel, maxParticipants);
 
             EventManager eventManager = new EventManager();
+            UserManager userManager = UserManager.getInstance();
+            User user = userManager.getUser();
+            Event event = new Event(name, date, location, description, minLevel, maxParticipants, user);
+
             eventManager.sendData(event);
 
             Intent intent = new Intent(getApplicationContext(), EventsListActivity.class);
