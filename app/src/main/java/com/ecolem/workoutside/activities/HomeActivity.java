@@ -26,7 +26,6 @@ import android.widget.RelativeLayout;
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.WorkoutSide;
 import com.ecolem.workoutside.manager.UserManager;
-
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.geofire.GeoFire;
@@ -111,10 +110,11 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
             //
             //mLocationManager.requestLocationUpdates(provider, 20000, 0, this);
 
+
             if (location != null) {
                 onLocationChanged(location);
             }
-            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+            //mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         }
 
 

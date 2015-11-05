@@ -55,20 +55,20 @@ public class EventsListActivity extends ActionBarActivity implements EventManage
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
 
-        mEvents.add(new Event("Event A", c.getTime(), new GeoLocation(80, 80), "balb labl balb jsdfhsd ksjhdfj fg", 0, 10));
-        mEvents.add(new Event("Event B", c.getTime(), new GeoLocation(80, 80), "balb labl balb jsdfhsd ksjhdfj fg", 0, 10));
+        mEvents.add(new Event("Event A", c.getTime(), new GeoLocation(80, 80), "balb labl balb jsdfhsd ksjhdfj fg", 0, 10, null));
+        mEvents.add(new Event("Event B", c.getTime(), new GeoLocation(80, 80), "balb labl balb jsdfhsd ksjhdfj fg", 0, 10, null));
 
         c.add(Calendar.DAY_OF_MONTH, 2);
-        mEvents.add(new Event("Event C", c.getTime(), new GeoLocation(80, 80), "balb labl balb jsdfhsd ksjhdfj fg", 0, 20));
+        mEvents.add(new Event("Event C", c.getTime(), new GeoLocation(80, 80), "balb labl balb jsdfhsd ksjhdfj fg", 0, 20, null));
 
         c.add(Calendar.DAY_OF_MONTH, 1);
-        mEvents.add(new Event("Event D", c.getTime(), new GeoLocation(80, 80), "balb labl balb jsdfhsd ksjhdfj fg", 0, 3));
-        mEvents.add(new Event("Event E", c.getTime(), new GeoLocation(80, 80), "balb labl balb jsdfhsd ksjhdfj fg", 0, 10));
+        mEvents.add(new Event("Event D", c.getTime(), new GeoLocation(80, 80), "balb labl balb jsdfhsd ksjhdfj fg", 0, 3, null));
+        mEvents.add(new Event("Event E", c.getTime(), new GeoLocation(80, 80), "balb labl balb jsdfhsd ksjhdfj fg", 0, 10, null));
 
         // should not be displayed
         c.add(Calendar.DAY_OF_MONTH, -5);
-        mEvents.add(new Event("Event F", c.getTime(), new GeoLocation(80, 80), "balb labl balb jsdfhsd ksjhdfj fg", 0, 3));
-        mEvents.add(new Event("Event G", c.getTime(), new GeoLocation(80, 80), "balb labl balb jsdfhsd ksjhdfj fg", 0, 10));
+        mEvents.add(new Event("Event F", c.getTime(), new GeoLocation(80, 80), "balb labl balb jsdfhsd ksjhdfj fg", 0, 3, null));
+        mEvents.add(new Event("Event G", c.getTime(), new GeoLocation(80, 80), "balb labl balb jsdfhsd ksjhdfj fg", 0, 10, null));
 
         Collections.sort(mEvents, new EventDateComparator());
 
@@ -79,7 +79,7 @@ public class EventsListActivity extends ActionBarActivity implements EventManage
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_agenda, menu);
+        getMenuInflater().inflate(R.menu.menu_events, menu);
         return true;
     }
 

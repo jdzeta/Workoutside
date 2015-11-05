@@ -72,4 +72,7 @@
     <string name="new_event_title">Nouvel événement</string>
     <string name="menu_settings">Profil</string>
     <string name="new_event_submit">Ajouter</string>
+    <string name="new_event_time">Heure de l\'événement</string>
+    <string name="select_event_hour">Horaire de l\'événement</string>
+    <string name="select_event_date">Date de l\'événement</string>
 </resources>

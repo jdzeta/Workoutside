@@ -19,6 +19,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
+import java.util.UUID;
+
 /**
  * Created by akawa_000 on 25/10/2015.
  */
@@ -39,8 +41,10 @@ public class EventManager {
         this.mListener = listener;
     }
 
+
     public void sendData(Event Event) {
-        FirebaseManager.getInstance().getFirebaseRef().setValue(Event);
+        FirebaseManager.getInstance().getFirebaseRef().child("events").setValue(UUID.randomUUID().toString(), Event);
+
     }
 
     public void getEvent(String eventName) {
