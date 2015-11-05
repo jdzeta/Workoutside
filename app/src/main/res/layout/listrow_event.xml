@@ -14,103 +14,102 @@
         android:text="8 octobre"
         android:textAllCaps="true"
         android:textColor="@color/gray_dark"
-        android:textSize="17sp"
+        android:textSize="16sp"
         android:textStyle="bold" />
 
-    <RelativeLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="130dp">
+        android:layout_height="match_parent"
+
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".20"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/event_hour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="19:30"
+                android:textColor="@color/secondary"
+                android:textSize="18sp"
+                android:textStyle="normal" />
+
+        </RelativeLayout>
+
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight=".80"
+            android:orientation="vertical"
+            android:padding="10dp">
 
-            android:background="@color/white"
-            android:orientation="horizontal"
-            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/event_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Paris"
+                android:visibility="gone"
+                android:textSize="14sp" />
+
+
+            <TextView
+                android:id="@+id/event_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Evenement A"
+                android:textColor="@color/primary"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/event_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:maxLines="3"
+                android:text="dklslkfh lskhf sdhfl hsdlfh sldfh slkhjhdfkjhdkfjhdkfjh kdsjhfksjhf dfiuyrisdhfis uiusryirsufhkdh "
+                android:textColor="@color/gray_dark" />
+
 
             <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight=".20"
-                android:padding="10dp">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
 
                 <TextView
-                    android:id="@+id/event_hour"
+                    android:id="@+id/event_nb_participants"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="19:30"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="12"
                     android:textColor="@color/secondary"
-                    android:textSize="18sp"
-                    android:textStyle="normal" />
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@id/event_nb_participants"
+                    android:src="@mipmap/participant" />
 
             </RelativeLayout>
-
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight=".80"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/event_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Evenement A"
-                        android:textAllCaps="true"
-                        android:textColor="@color/primary"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/event_city"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:text="Paris"
-                        android:textSize="17sp"
-                        android:textStyle="italic" />
-
-                </LinearLayout>
-
-
-                <TextView
-                    android:id="@+id/event_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:maxLines="3"
-                    android:text="dklslkfh lskhf sdhfl hsdlfh sldfh slkhjhdfkjhdkfjhdkfjh kdsjhfksjhf dfiuyrisdhfis uiusryirsufhkdh "
-                    android:textColor="@color/gray_dark" />
-
-
-            </LinearLayout>
-
         </LinearLayout>
 
+    </LinearLayout>
 
-        <TextView
-            android:id="@+id/event_nb_participants"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="5dp"
-            android:paddingRight="5dp"
-            android:text="12"
-            android:textColor="@color/secondary"
-            android:textSize="16sp"
-            android:textStyle="italic" />
-
-    </RelativeLayout>
 
 </LinearLayout>
