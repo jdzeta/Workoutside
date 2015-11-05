@@ -6,15 +6,18 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ecolem.workoutside.R;
+
 import com.ecolem.workoutside.helpers.GeolocHelper;
 import com.ecolem.workoutside.helpers.TimeHelper;
+import com.ecolem.workoutside.adapter.UserListAdapter
 import com.ecolem.workoutside.manager.EventManager;
+import com.ecolem.workoutside.manager.UserManager;
 import com.ecolem.workoutside.model.Event;
 import com.ecolem.workoutside.model.User;
 import com.firebase.client.FirebaseError;
@@ -27,6 +30,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class EventDetailsActivity extends ActionBarActivity implements EventManager.EventListener {
 
@@ -42,14 +46,19 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
     private TextView event_detail_location;
     private TextView event_detail_description;
 
+
+    // Participation buttons
     private Button event_detail_button_participate;
+    private boolean participate;
 
-
+    // Participants number and list
     private TextView event_detail_nb_participants;
     private ListView event_detail_participant_list;
 
-
     private ActionBar mActionBar = null;
+
+    // Current user
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +91,9 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
 
     public void settingViews() {
 
+        // Creator name
         this.event_detail_creator.setText(this.myEvent.getCreator().getFirstname() + " " + this.myEvent.getCreator().getLastname());
+        // Event name
         this.event_detail_name.setText(this.myEvent.getName());
         this.event_detail_description.setText(this.myEvent.getDescription());
 
@@ -114,9 +125,46 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
         String address = GeolocHelper.getCityFromLatitudeLongitude(this, this.myEvent.getLatitude(), this.myEvent.getLongitude());
         this.event_detail_location.setText(address);
 
-        // Counting participants
-        HashMap<Integer, User> listParticipants = this.myEvent.getParticipants();
-        this.event_detail_nb_participants.setText(listParticipants + "");
+        // Counting participants and filling listView
+        this.event_detail_button_participate = (Button) findViewById(R.id.event_detail_button_participate);
+        this.event_detail_nb_participants.setText(this.myEvent.getParticipants().size() + " Participant(s)");
+        initParticipantsList();
+
+        // Setting participation to false, true if user is organizer
+        UserManager userManager = UserManager.getInstance();
+        this.currentUser = userManager.getUser();
+        if (currentUser.getUID().equals(this.myEvent.getCreator().getUID())) {
+            this.participate = true;
+            this.event_detail_button_participate.setText(getString(R.string.event_detail_button_desistate));
+        } else {
+            this.participate = false;
+        }
+    }
+
+    public void initParticipantsList() {
+        // Getting participants
+        HashMap<String, User> participants = this.myEvent.getParticipants();
+        if (participants != null) {
+            // Setting participants listView
+            // Setting participants in Arraylist
+            ArrayList<User> users = new ArrayList<>();
+            for (Map.Entry<String, User> entry : participants.entrySet()) {
+                users.add(entry.getValue());
+            }
+            UserListAdapter adapter = new UserListAdapter(this, users);
+            this.event_detail_participant_list.setAdapter(adapter);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        // If participation is true then update Event.users
+        if (this.participate) {
+            // Updating event
+            EventManager eventManager = EventManager.getInstance();
+            eventManager.pushData(this.myEvent, this.currentUser);
+        }
     }
 
     @Override
@@ -127,6 +175,19 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
         mActionBar.setTitle(this.myEvent.getName());
 
         settingViews();
+    }
+
+    public void participate(View view) {
+        EventManager eventManager = EventManager.getInstance();
+        if (this.participate == true) {
+            this.participate = false;
+            this.event_detail_button_participate.setText(getString(R.string.event_detail_button_participate));
+            eventManager.removeParticipant(this.myEvent, this.currentUser);
+        } else {
+            this.participate = true;
+            this.event_detail_button_participate.setText(getString(R.string.event_detail_button_desistate));
+            eventManager.pushData(this.myEvent, this.currentUser);
+        }
     }
 
     @Override

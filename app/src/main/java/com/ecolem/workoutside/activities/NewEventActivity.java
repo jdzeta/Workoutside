@@ -384,7 +384,6 @@ public class NewEventActivity extends ActionBarActivity
                 maxParticipants = Integer.parseInt(this.new_event_max_participants.getText().toString());
             }
 
-
             // Finishing setting date
             //date.setTime(time.getTime());
             Date date = this.new_event_cal.getTime();
