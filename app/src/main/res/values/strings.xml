@@ -75,4 +75,12 @@
     <string name="new_event_time">Heure de l\'événement</string>
     <string name="select_event_hour">Horaire de l\'événement</string>
     <string name="select_event_date">Date de l\'événement</string>
+    <string name="event_detail_creator">Organisatrice / Organisateur</string>
+    <string name="event_detail_name">Event name</string>
+    <string name="event_detail_min_level">Niveau minimum</string>
+    <string name="event_detail_datetime">Date et heure</string>
+    <string name="event_detail_location">Lieu</string>
+    <string name="event_detail_button_participate">J\'y serais</string>
+    <string name="event_detail_button_desistate">Je n\'y serais pas</string>
+    <string name="event_detail_nb_participants">Nb participants</string>
 </resources>

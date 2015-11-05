@@ -2,6 +2,7 @@ package com.ecolem.workoutside.model;
 
 import com.firebase.geofire.GeoLocation;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,16 +15,17 @@ public class Event {
     private Date date;
     private GeoLocation location;
     private String description;
-    private Integer minLevel;
-    private Integer maxParticipants;
+    private int minLevel;
+    private int maxParticipants;
     private HashMap<Integer, User> participants;
     private float note;
     private HashMap<Integer, Comment> comments;
     private User creator;
 
-    public Event() {}
+    public Event() {
+    }
 
-    public Event(String name, Date date, GeoLocation location, String description, Integer minLevel, Integer maxParticipants, User creator) {
+    public Event(String name, Date date, GeoLocation location, String description, int minLevel, int maxParticipants, User creator) {
         this.name = name;
         this.date = date;
         this.location = location;
@@ -31,26 +33,6 @@ public class Event {
         this.minLevel = minLevel;
         this.maxParticipants = maxParticipants;
         this.creator = creator;
-    }
-
-    public User getCreator() {
-        return creator;
-    }
-
-    public void setCreator(User creator) {
-        this.creator = creator;
-    }
-
-    public HashMap<Integer, Comment> getComments() {
-        return comments;
-    }
-
-    public void setMaxParticipants(Integer maxParticipants) {
-        this.maxParticipants = maxParticipants;
-    }
-
-    public void setMinLevel(Integer minLevel) {
-        this.minLevel = minLevel;
     }
 
     public String getName() {
@@ -74,7 +56,6 @@ public class Event {
     }
 
     public void setLocation(GeoLocation location) {
-
         this.location = location;
     }
 
@@ -86,15 +67,15 @@ public class Event {
         this.description = description;
     }
 
-    public Integer getMinLevel() {
+    public int getMinLevel() {
         return minLevel;
     }
 
-    public void setMinLevel(int level) {
-        this.minLevel = level;
+    public void setMinLevel(int minLevel) {
+        this.minLevel = minLevel;
     }
 
-    public Integer getMaxParticipants() {
+    public int getMaxParticipants() {
         return maxParticipants;
     }
 
@@ -118,7 +99,7 @@ public class Event {
         this.note = note;
     }
 
-    public HashMap<Integer, Comment> getCommentaires() {
+    public HashMap<Integer, Comment> getComments() {
         return comments;
     }
 
@@ -126,7 +107,15 @@ public class Event {
         this.comments = comments;
     }
 
-    public boolean hasSameDate(Event event){
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
+    }
+
+    public boolean hasSameDate(Event event) {
         Calendar c1 = Calendar.getInstance();
         c1.setTime(this.getDate());
 
