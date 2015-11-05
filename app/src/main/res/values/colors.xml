@@ -3,9 +3,10 @@
     <color name="white">#FFFFFF</color>
     <color name="primary">#FF701C</color>
     <color name="secondary">#359FD1</color>
-    <color name="gray">#8C8C8C</color>
-    <color name="gray_medium">#c2c2c2</color>
-    <color name="gray_light">#e1e1e1</color>
+    <color name="gray_dark">#8C8C8C</color>
+    <color name="gray">#c2c2c2</color>
+    <color name="gray_medium">#e1e1e1</color>
+    <color name="gray_light">#f2f2f2</color>
     <color name="level_0">#4be240</color>
     <color name="level_1">#f7ff00</color>
     <color name="level_2">#ffb730</color>

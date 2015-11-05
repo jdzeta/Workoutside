@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -72,7 +73,7 @@
                             android:gravity="center"
                             android:text="@string/menu_events"
                             android:textAllCaps="true"
-                            android:textColor="@color/gray" />
+                            android:textColor="@color/gray_dark" />
                     </LinearLayout>
 
                 </RelativeLayout>
@@ -100,7 +101,7 @@
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:layout_centerInParent="true"
-                                android:src="@mipmap/menu_settings" />
+                                android:src="@mipmap/menu_account" />
                         </RelativeLayout>
 
                         <TextView
@@ -110,7 +111,7 @@
                             android:gravity="center"
                             android:text="@string/menu_profile"
                             android:textAllCaps="true"
-                            android:textColor="@color/gray" />
+                            android:textColor="@color/gray_dark" />
                     </LinearLayout>
 
                 </RelativeLayout>
@@ -158,7 +159,7 @@
 
                             android:text="@string/menu_training"
                             android:textAllCaps="true"
-                            android:textColor="@color/gray" />
+                            android:textColor="@color/gray_dark" />
                     </LinearLayout>
 
                 </RelativeLayout>
@@ -196,7 +197,7 @@
                             android:gravity="center"
                             android:text="@string/menu_logout"
                             android:textAllCaps="true"
-                            android:textColor="@color/gray" />
+                            android:textColor="@color/gray_dark" />
                     </LinearLayout>
 
                 </RelativeLayout>

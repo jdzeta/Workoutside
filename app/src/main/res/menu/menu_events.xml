@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.ecolem.workoutside.activities.EventsListActivity">
 
-    <item android:id="@+id/action_add_event" android:title="@string/action_add_event"
-        android:orderInCategory="100" app:showAsAction="collapseActionView" />
+    <item
+        android:id="@+id/action_add_event"
+        android:orderInCategory="100"
+        android:title="@string/action_add_event"
+        android:icon="@drawable/add"
+        app:showAsAction="always" />
 </menu>
