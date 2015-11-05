@@ -41,25 +41,29 @@ public class EventsListActivity extends ActionBarActivity implements EventManage
         actionbar.setTitle(getResources().getString(R.string.menu_events).toUpperCase());
         actionbar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.primary)));
 
-        populateEvents();
+        //populateEvents();
+
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Event event = (Event) mListView.getItemAtPosition(position);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("event", event);
+                bundle.putString("eventUUID", event.getUID());
                 Intent intent = new Intent(getApplicationContext(), EventDetailsActivity.class);
                 intent.putExtra("myBundle", bundle);
                 startActivity(intent);
             }
         });
         //EventManager.getInstance().startGetEventsComing(this);
+
     }
+
 
     @Override
     protected void onStart() {
         super.onStart();
+        EventManager.getInstance().startGetEventsComing(this);
     }
 
     private void populateEvents() {

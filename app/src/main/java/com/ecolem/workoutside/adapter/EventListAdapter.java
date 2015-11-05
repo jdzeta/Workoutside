@@ -29,9 +29,9 @@ public class EventListAdapter extends ArrayAdapter<Event> {
         Event event = getItem(position);
 
         boolean showDate = true;
-        if(position > 0){
+        if (position > 0) {
             Event previousEvent = getItem(position - 1);
-            if(previousEvent != null && event.hasSameDate(previousEvent)){
+            if (previousEvent != null && event.hasSameDate(previousEvent)) {
                 showDate = false;
             }
         }
@@ -63,9 +63,8 @@ public class EventListAdapter extends ArrayAdapter<Event> {
         // Description
         evDesc.setText(event.getDescription());
 
-        if (event.getParticipants() != null) {
-            evNbParticipants.setText(event.getParticipants().size());
-        }
+        evNbParticipants.setText((event.getParticipants() != null ? event.getParticipants().size() : 0) + "");
+
 
         return convertView;
     }

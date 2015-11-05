@@ -8,7 +8,9 @@ import java.util.HashMap;
 /**
  * Created by akawa_000 on 23/10/2015.
  */
-public class Event implements Serializable {
+public class Event {
+
+    private String uid;
     private String name;
     private Date date;
     private double latitude;
@@ -21,9 +23,11 @@ public class Event implements Serializable {
     private HashMap<Integer, Comment> comments;
     private User creator;
 
-    public Event() {}
+    public Event() {
+    }
 
-    public Event(String name, Date date, double latitude, double longitude, String description, Integer minLevel, Integer maxParticipants, User creator) {
+    public Event(String name, Date date, double latitude, double longitude, String description, int minLevel, int maxParticipants, User creator) {
+
         this.name = name;
         this.date = date;
         this.latitude = latitude;
@@ -32,6 +36,14 @@ public class Event implements Serializable {
         this.minLevel = minLevel;
         this.maxParticipants = maxParticipants;
         this.creator = creator;
+    }
+
+    public String getUID() {
+        return this.uid;
+    }
+
+    public void setUid(String uid){
+        this.uid = uid;
     }
 
     public String getName() {
@@ -57,6 +69,7 @@ public class Event implements Serializable {
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
+
 
     public double getLongitude() {
         return longitude;
@@ -122,7 +135,8 @@ public class Event implements Serializable {
         this.creator = creator;
     }
 
-    public boolean hasSameDate(Event event){
+
+    public boolean hasSameDate(Event event) {
         Calendar c1 = Calendar.getInstance();
         c1.setTime(this.getDate());
 
