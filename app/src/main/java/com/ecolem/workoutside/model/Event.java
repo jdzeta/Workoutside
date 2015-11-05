@@ -1,7 +1,5 @@
 package com.ecolem.workoutside.model;
 
-import com.firebase.geofire.GeoLocation;
-
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,10 +8,11 @@ import java.util.HashMap;
 /**
  * Created by akawa_000 on 23/10/2015.
  */
-public class Event {
+public class Event implements Serializable {
     private String name;
     private Date date;
-    private GeoLocation location;
+    private double latitude;
+    private double longitude;
     private String description;
     private int minLevel;
     private int maxParticipants;
@@ -25,10 +24,12 @@ public class Event {
     public Event() {
     }
 
-    public Event(String name, Date date, GeoLocation location, String description, int minLevel, int maxParticipants, User creator) {
+    public Event(String name, Date date, double latitude, double longitude, String description, int minLevel, int maxParticipants, User creator) {
+
         this.name = name;
         this.date = date;
-        this.location = location;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.description = description;
         this.minLevel = minLevel;
         this.maxParticipants = maxParticipants;
@@ -51,12 +52,21 @@ public class Event {
         this.date = date;
     }
 
-    public GeoLocation getLocation() {
-        return location;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setLocation(GeoLocation location) {
-        this.location = location;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public String getDescription() {
@@ -114,6 +124,7 @@ public class Event {
     public void setCreator(User creator) {
         this.creator = creator;
     }
+
 
     public boolean hasSameDate(Event event) {
         Calendar c1 = Calendar.getInstance();

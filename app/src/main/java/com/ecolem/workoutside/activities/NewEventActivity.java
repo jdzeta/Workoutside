@@ -331,7 +331,8 @@ public class NewEventActivity extends ActionBarActivity
             Date date = this.new_event_date;
             Date time = this.new_event_time;
             LatLng latLng = this.mMarker.getPosition();
-            GeoLocation location = new GeoLocation(latLng.latitude, latLng.longitude);
+            double latitude = latLng.latitude;
+            double longitude = latLng.longitude;
             String description = this.new_event_description.getText().toString();
 
             Integer minLevel;
@@ -361,7 +362,7 @@ public class NewEventActivity extends ActionBarActivity
             EventManager eventManager = new EventManager();
             UserManager userManager = UserManager.getInstance();
             User creator = userManager.getUser();
-            Event event = new Event(name, date, location, description, minLevel, maxParticipants, creator);
+            Event event = new Event(name, date, latitude, longitude, description, minLevel, maxParticipants, creator);
             eventManager.sendData(event);
 
             Intent intent = new Intent(getApplicationContext(), EventsListActivity.class);
@@ -371,18 +372,5 @@ public class NewEventActivity extends ActionBarActivity
         else {
             Toast.makeText(getApplicationContext(), "Veuillez remplir tous les champs svp", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public boolean checkFieldsBeforeSend(String name, Date date, Date time, GeoLocation location, String description, Integer minLevel, Integer maxParticipants) {
-        if (name.equals(null) ||
-                date.equals(null) ||
-                time.equals(null) ||
-                location.equals(null) ||
-                description.equals(null) ||
-                minLevel.equals(null) ||
-                maxParticipants.equals(null)) {
-            return false;
-        }
-        return true;
     }
 }
