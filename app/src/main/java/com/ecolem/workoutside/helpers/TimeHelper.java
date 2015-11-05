@@ -21,7 +21,7 @@ public class TimeHelper {
         }
         dateStr += day;
 
-        dateStr += " " + getMonthForInt(c.get(Calendar.DAY_OF_MONTH) + 1);
+        dateStr += " " + getMonthForInt(c.get(Calendar.MONTH));
 
         return dateStr;
     }

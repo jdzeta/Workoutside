@@ -86,8 +86,6 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         mLogoutMenuButton = (RelativeLayout) findViewById(R.id.menu_logout);
         mLogoutMenuButton.setOnClickListener(this);
 
-
-        // Add click on "settings" <- It mean "account"
         findViewById(R.id.menu_profile).setOnClickListener(this);
 
         initMap();

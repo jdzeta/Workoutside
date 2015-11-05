@@ -77,8 +77,8 @@ public class NewEventActivity extends ActionBarActivity
     private Spinner new_event_location_spinner = null;
     private Spinner new_event_min_level = null;
 
-    private Date new_event_date = null;
-    private Date new_event_time = null;
+
+    private Calendar new_event_cal = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,6 +145,9 @@ public class NewEventActivity extends ActionBarActivity
             case R.id.new_event_date:
             case R.id.new_event_date_button:
 
+                if(this.new_event_cal == null){
+
+                }
                 Calendar cal = Calendar.getInstance(TimeZone.getDefault());
                 DatePickerDialog datePicker = new DatePickerDialog(this, this,
                         cal.get(Calendar.YEAR),
@@ -196,23 +199,33 @@ public class NewEventActivity extends ActionBarActivity
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        Calendar selectedCal = Calendar.getInstance();
-        selectedCal.set(year, monthOfYear, dayOfMonth);
-        this.new_event_date = selectedCal.getTime();
 
-        this.new_event_date_editText.setText(dayOfMonth + "/" + monthOfYear + "/" + year);
+        if(this.new_event_cal == null){
+            this.new_event_cal = Calendar.getInstance();
+        }
+
+        new_event_cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        new_event_cal.set(Calendar.MONTH, monthOfYear);
+        new_event_cal.set(Calendar.YEAR, year);
+
+       // this.new_event_date = selectedCal.getTime();
+
+        this.new_event_date_editText.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
 
     }
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        Calendar selectedCal = Calendar.getInstance();
-        selectedCal.set(Calendar.HOUR_OF_DAY, hourOfDay);
-        selectedCal.set(Calendar.MINUTE, minute);
 
-        this.new_event_time = selectedCal.getTime();
+        if(this.new_event_cal == null){
+            this.new_event_cal = Calendar.getInstance();
+        }
 
-        this.new_event_time_editText.setText(TimeHelper.getEventHourStr(selectedCal.getTime()));
+        new_event_cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        new_event_cal.set(Calendar.MINUTE, minute);
+        //this.new_event_time = selectedCal.getTime();
+
+        this.new_event_time_editText.setText(TimeHelper.getEventHourStr(new_event_cal.getTime()));
     }
 
     @Override
@@ -327,15 +340,16 @@ public class NewEventActivity extends ActionBarActivity
 
     public void saveNewEvent(View view) {
         if (this.new_event_name != null &&
-                this.new_event_date != null &&
-                this.new_event_time != null &&
+                //this.new_event_date != null &&
+                //this.new_event_time != null &&
+                this.new_event_cal != null &&
                 this.mMarker != null &&
                 this.new_event_description != null) {
             // Name
             String name = this.new_event_name.getText().toString();
             // Date
-            Date date = this.new_event_date;
-            Date time = this.new_event_time;
+          //  Date date = this.new_event_date;
+           // Date time = this.new_event_time;
             // Location
             LatLng latLng = this.mMarker.getPosition();
             double latitude = latLng.latitude;
@@ -371,7 +385,8 @@ public class NewEventActivity extends ActionBarActivity
             }
 
             // Finishing setting date
-            date.setTime(time.getTime());
+            //date.setTime(time.getTime());
+            Date date = this.new_event_cal.getTime();
 
             // Preparing event
             EventManager eventManager = new EventManager();
