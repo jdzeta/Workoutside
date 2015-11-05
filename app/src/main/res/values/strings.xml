@@ -7,6 +7,7 @@
     <string name="title_activity_start">StartActivity</string>
     <string name="title_activity_account">AccountActivity</string>
     <string name="title_activity_training">TrainingActivity</string>
+    <string name="title_activity_events">EventsActivity</string>
 
     <string name="username">Pseudo</string>
     <string name="email">Email</string>
@@ -44,7 +45,7 @@
     <string name="invalid_id">Les identifiants sont incorrects.</string>
     <string name="network_error">Pas de connexion internet</string>
 
-    <!-- CREATE ACCOUNT -->
+    <!-- ACCOUNT -->
     <string name="who_are_you">Qui êtes-vous ?</string>
     <string name="what_is_your_level">Quel est votre niveau ?</string>
     <string name="account_firstname">Prénom</string>
@@ -55,13 +56,12 @@
     <string name="account_gender">Sexe</string>
     <string name="account_gender_m">M</string>
     <string name="account_gender_f">F</string>
+    <string name="account_update">Mettre à jour</string>
     <string name="select_birthdate">Sélectionnez votre date de naissance</string>
     <string name="hello_blank_fragment">Blank fragment</string>
-    <string name="title_activity_agenda">AgendaActivity</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="action_bar_title_agenda">AGENDA</string>
     <string name="action_add_event">+</string>
     <string name="title_activity_new_event">NewEventActivity</string>
     <string name="new_event_name">Titre de l\'événement</string>

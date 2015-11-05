@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
 
     <LinearLayout
@@ -10,31 +10,60 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp">
+
+            <RelativeLayout
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/account_picture_default_bg">
+
+                <TextView
+                    android:id="@+id/account_picture_default_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="SN"
+                    android:textColor="@color/white"
+                    android:textSize="18pt" />
+            </RelativeLayout>
+        </RelativeLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:elevation="4dp"
             android:orientation="vertical"
-            android:layout_margin="16dp"
-            android:padding="8dp"
-            android:elevation="4dp">
+            android:padding="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:descendantFocusability="beforeDescendants"
+                android:focusableInTouchMode="true"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:text="First name:"
-                    android:layout_gravity="center_vertical"/>
+                    android:text="@string/account_firstname" />
 
                 <EditText
                     android:id="@+id/edit_first_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"/>
+                    android:layout_weight="3"
+                    android:descendantFocusability="beforeDescendants"
+                    android:focusableInTouchMode="true"
+                    android:singleLine="true" />
 
             </LinearLayout>
 
@@ -46,15 +75,16 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:text="Last name:"
-                    android:layout_gravity="center_vertical"/>
+                    android:text="@string/account_lastname" />
 
                 <EditText
                     android:id="@+id/edit_last_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"/>
+                    android:layout_weight="3"
+                    android:singleLine="true" />
 
             </LinearLayout>
 
@@ -66,9 +96,9 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:text="Gender"
-                    android:layout_gravity="center_vertical"/>
+                    android:text="@string/account_gender" />
 
                 <RadioGroup
                     android:id="@+id/group_gender"
@@ -82,14 +112,14 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="H"/>
+                        android:text="H" />
 
                     <RadioButton
                         android:id="@+id/female"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="F"/>
+                        android:text="F" />
 
                 </RadioGroup>
 
@@ -103,16 +133,16 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:text="Birthdate:"
-                    android:layout_gravity="center_vertical"/>
+                    android:text="@string/account_birthdate" />
 
                 <EditText
                     android:id="@+id/edit_birthdate"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:editable="false"/>
+                    android:editable="false" />
 
             </LinearLayout>
 
@@ -122,10 +152,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:elevation="4dp"
             android:orientation="vertical"
-            android:layout_margin="16dp"
-            android:padding="8dp"
-            android:elevation="4dp">
+            android:padding="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -135,15 +167,16 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:text="Email:"
-                    android:layout_gravity="center_vertical"/>
+                    android:text="@string/email" />
 
                 <EditText
                     android:id="@+id/edit_email"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5"/>
+                    android:layout_weight="5"
+                    android:singleLine="true" />
 
             </LinearLayout>
 
@@ -155,15 +188,16 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:text="City:"
-                    android:layout_gravity="center_vertical"/>
+                    android:singleLine="true"
+                    android:text="@string/account_city" />
 
                 <EditText
                     android:id="@+id/edit_city"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5"/>
+                    android:layout_weight="5" />
 
             </LinearLayout>
 
@@ -172,27 +206,31 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_margin="16dp"
-            android:padding="8dp"
             android:elevation="4dp"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:padding="8dp">
 
             <Button
                 android:id="@+id/btn_discard"
-                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Discard change"
-                android:textAllCaps="true"/>
+                android:background="@color/gray_light"
+                android:padding="10dp"
+                android:text="@string/cancel"
+                android:textAllCaps="true" />
 
             <Button
                 android:id="@+id/btn_confirm"
-                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Update my profile"
-                android:textAllCaps="true"/>
+                android:layout_marginLeft="40dp"
+                android:background="@color/primary"
+                android:padding="10dp"
+                android:text="@string/account_update"
+                android:textAllCaps="true"
+                android:textColor="@color/white" />
 
         </LinearLayout>
 

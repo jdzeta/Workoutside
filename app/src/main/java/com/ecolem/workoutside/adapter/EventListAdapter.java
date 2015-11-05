@@ -8,10 +8,11 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.ecolem.workoutside.R;
+import com.ecolem.workoutside.helpers.TimeHelper;
 import com.ecolem.workoutside.model.Event;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 
 /**
  * Created by akawa_000 on 31/10/2015.
@@ -31,21 +32,31 @@ public class EventListAdapter extends ArrayAdapter<Event> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.listrow_event, parent, false);
         }
 
+        TextView evDate = (TextView) convertView.findViewById(R.id.event_date);
         TextView evName = (TextView) convertView.findViewById(R.id.event_name);
-        TextView evCity= (TextView) convertView.findViewById(R.id.event_city);
+        TextView evCity = (TextView) convertView.findViewById(R.id.event_city);
         TextView evHour = (TextView) convertView.findViewById(R.id.event_hour);
-        TextView evDesc = (TextView) convertView.findViewById(R.id.new_event_description);
-        TextView evNbParticipants = (TextView) convertView.findViewById(R.id.new_event_max_participants);
+        TextView evDesc = (TextView) convertView.findViewById(R.id.event_description);
+        TextView evNbParticipants = (TextView) convertView.findViewById(R.id.event_nb_participants);
 
+        // Date
+        evDate.setText(TimeHelper.getEventDateStr(event.getDate()));
+
+        // Hour
+        evHour.setText(TimeHelper.getEventHourStr(event.getDate()));
+
+        // Name
         evName.setText(event.getName());
+
+        // City
         //@TODO evCity.setText(event.get());
 
-        Date eventDate = event.getDate();
-        evHour.setText((int) eventDate.getTime());
-
-        // @TODO evHour.setText(event.get());
+        // Description
         evDesc.setText(event.getDescription());
-        evNbParticipants.setText(event.getMaxParticipants());
+
+        if (event.getParticipants() != null) {
+            evNbParticipants.setText(event.getParticipants().size());
+        }
 
         return convertView;
     }
