@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.ecolem.workoutside.R;
-import com.ecolem.workoutside.WorkoutSide;
 import com.ecolem.workoutside.adapter.EventListAdapter;
 import com.ecolem.workoutside.comparators.EventDateComparator;
 import com.ecolem.workoutside.manager.EventManager;
@@ -22,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 public class EventsListActivity extends ActionBarActivity implements EventManager.EventListener {
 
@@ -43,6 +41,8 @@ public class EventsListActivity extends ActionBarActivity implements EventManage
         actionbar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.primary)));
 
         populateEvents();
+
+
         //EventManager.getInstance().startGetEventsComing(this);
     }
 
