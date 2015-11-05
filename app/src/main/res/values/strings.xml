@@ -83,4 +83,5 @@
     <string name="event_detail_button_participate">J\'y serais</string>
     <string name="event_detail_button_desistate">Je n\'y serais pas</string>
     <string name="event_detail_nb_participants">Nb participants</string>
+    <string name="title_activity_event_details">EventDetailsActivity</string>
 </resources>
