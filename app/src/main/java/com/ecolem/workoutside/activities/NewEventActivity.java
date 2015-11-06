@@ -68,7 +68,6 @@ public class NewEventActivity extends ActionBarActivity
 
     private GoogleMap mMap;
     private Geocoder geocoder;
-    private GeoFire mGeoFire;
     private SupportMapFragment mMapFragment = null;
     private LocationManager mLocationManager;
     private Marker mMarker;
@@ -134,7 +133,6 @@ public class NewEventActivity extends ActionBarActivity
         //
         this.mMap.setOnMapClickListener(this);
         this.mMap.setOnMapLongClickListener(this);
-        this.mGeoFire = new GeoFire(new Firebase(WorkoutSide.FIREBASE_GEOFIRE_URL));
     }
 
     @Override
@@ -143,13 +141,14 @@ public class NewEventActivity extends ActionBarActivity
             case R.id.new_event_calendar:
             case R.id.new_event_date:
             case R.id.new_event_date_button:
-                if(this.new_event_cal == null){
+                if (this.new_event_cal == null) {
                     this.new_event_cal = Calendar.getInstance(TimeZone.getDefault());
                 }
                 DatePickerDialog datePicker = new DatePickerDialog(this, this,
                         this.new_event_cal.get(Calendar.YEAR),
                         this.new_event_cal.get(Calendar.MONTH),
                         this.new_event_cal.get(Calendar.DAY_OF_MONTH));
+                datePicker.getDatePicker().setMinDate(new Date().getTime());
                 datePicker.setCancelable(false);
                 datePicker.setTitle(getResources().getString(R.string.select_event_date));
                 datePicker.show();
@@ -158,7 +157,7 @@ public class NewEventActivity extends ActionBarActivity
             case R.id.new_event_timepicker:
             case R.id.new_event_time_button:
             case R.id.new_event_time:
-                if(this.new_event_cal == null){
+                if (this.new_event_cal == null) {
                     this.new_event_cal = Calendar.getInstance(TimeZone.getDefault());
                 }
                 TimePickerDialog timePicker = new TimePickerDialog(this, this,
@@ -199,7 +198,7 @@ public class NewEventActivity extends ActionBarActivity
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-        if(this.new_event_cal == null){
+        if (this.new_event_cal == null) {
             this.new_event_cal = Calendar.getInstance();
         }
 
@@ -207,7 +206,7 @@ public class NewEventActivity extends ActionBarActivity
         new_event_cal.set(Calendar.MONTH, monthOfYear);
         new_event_cal.set(Calendar.YEAR, year);
 
-       // this.new_event_date = selectedCal.getTime();
+        // this.new_event_date = selectedCal.getTime();
 
         this.new_event_date_editText.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
 
@@ -216,7 +215,7 @@ public class NewEventActivity extends ActionBarActivity
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
-        if(this.new_event_cal == null){
+        if (this.new_event_cal == null) {
             this.new_event_cal = Calendar.getInstance();
         }
 
@@ -400,8 +399,8 @@ public class NewEventActivity extends ActionBarActivity
             Intent intent = getIntent();
             String parentActivity = intent.getStringExtra("parentActivity");
             // Getting parent activity if exists
-            if (parentActivity != null){
-                if (parentActivity.equals("MyEventsActivity")){
+            if (parentActivity != null) {
+                if (parentActivity.equals("MyEventsActivity")) {
                     Intent nextIntent = new Intent(getApplicationContext(), MyEventsActivity.class);
                     startActivity(nextIntent);
                 }
