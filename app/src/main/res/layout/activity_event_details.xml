@@ -145,19 +145,17 @@
                 android:id="@+id/event_detail_button_participate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="false"
+                android:layout_alignParentRight="false"
+                android:layout_centerHorizontal="true"
                 android:background="@color/secondary"
                 android:gravity="center_vertical|center|center_horizontal"
                 android:onClick="participateClick"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:text="@string/event_detail_button_participate"
                 android:textColor="@color/white"
-                android:textStyle="normal"
-                android:layout_alignParentRight="false"
-                android:layout_alignParentLeft="false"
-                android:layout_centerHorizontal="true"
-                android:paddingRight="5dp"
-                android:paddingLeft="5dp" />
+                android:textStyle="normal" />
 
         </RelativeLayout>
 
@@ -166,9 +164,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="5dp"
-            android:text="@string/event_detail_min_level"
             android:paddingLeft="20dp"
-            android:paddingTop="5dp" />
+            android:paddingTop="5dp"
+            android:text="@string/event_detail_min_level" />
 
 
         <LinearLayout
