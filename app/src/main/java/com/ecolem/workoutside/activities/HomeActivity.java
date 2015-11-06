@@ -174,9 +174,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
             case R.id.menu_events:
                 startActivity(EventsListActivity.class);
                 break;
-            case R.id.menu_logout:
-                showLogoutAlert();
-                break;
+
             case R.id.menu_profile:
                 startActivity(AccountActivity.class);
                 break;
@@ -192,32 +190,6 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         this.overridePendingTransition(android.R.anim.slide_in_left,
                 android.R.anim.slide_out_right);
 
-    }
-
-    private void showLogoutAlert() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-
-        // set title
-        alertDialogBuilder.setTitle(getResources().getString(R.string.menu_logout));
-
-        // set dialog message
-        alertDialogBuilder
-                .setMessage(getResources().getString(R.string.logout_alert))
-                .setCancelable(false)
-                .setPositiveButton(getResources().getString(R.string.leave), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        UserManager.getInstance().logout();
-                        HomeActivity.this.finish();
-                    }
-                })
-                .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
     }
 
 
