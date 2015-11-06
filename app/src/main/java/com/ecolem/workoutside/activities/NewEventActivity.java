@@ -27,15 +27,12 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.ecolem.workoutside.R;
-import com.ecolem.workoutside.WorkoutSide;
 import com.ecolem.workoutside.helpers.TimeHelper;
 import com.ecolem.workoutside.manager.EventManager;
 import com.ecolem.workoutside.manager.UserManager;
 import com.ecolem.workoutside.model.Event;
 import com.ecolem.workoutside.model.User;
-import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.maps.CameraUpdateFactory;

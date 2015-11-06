@@ -1,12 +1,16 @@
 package com.ecolem.workoutside.activities;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.format.DateFormat;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -22,6 +26,7 @@ import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.adapter.UserListAdapter;
 import com.ecolem.workoutside.helpers.GeolocHelper;
 import com.ecolem.workoutside.helpers.TimeHelper;
+import com.ecolem.workoutside.helpers.UserHelper;
 import com.ecolem.workoutside.manager.EventManager;
 import com.ecolem.workoutside.manager.UserManager;
 import com.ecolem.workoutside.model.Event;
@@ -30,11 +35,12 @@ import com.firebase.client.FirebaseError;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
-public class MyEventDetailsActivity extends ActionBarActivity  implements EventManager.EventListener, TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener, View.OnClickListener {
+public class MyEventDetailsActivity extends ActionBarActivity implements EventManager.EventListener, TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener, View.OnClickListener {
 
     // Temporary event for testing
     private Event myEvent;
@@ -103,7 +109,7 @@ public class MyEventDetailsActivity extends ActionBarActivity  implements EventM
         // Defining min level
         String minLevel; //the value you want the position for
         // Getting minLevel
-        switch (this.myEvent.getMinLevel()){
+        switch (this.myEvent.getMinLevel()) {
             case 0:
             default:
                 minLevel = "Débutant";
@@ -134,10 +140,10 @@ public class MyEventDetailsActivity extends ActionBarActivity  implements EventM
         // Counting participants and filling listView
         this.my_event_details_button_participate = (Button) findViewById(R.id.my_event_details_button_participate);
         int pSize = 0;
-        if (this.myEvent.getParticipants() != null){
+        if (this.myEvent.getParticipants() != null) {
             pSize = this.myEvent.getParticipants().size();
         }
-        this.my_event_details_nb_participants.setText( pSize + " Participant(s)");
+        this.my_event_details_nb_participants.setText(pSize + " Participant(s)");
         initParticipantsList();
 
         // Setting participation to false, true if user is organizer
@@ -151,14 +157,14 @@ public class MyEventDetailsActivity extends ActionBarActivity  implements EventM
         }
     }
 
-    public boolean isParticipate(){
+    public boolean isParticipate() {
         HashMap<String, User> participants = this.myEvent.getParticipants();
         if (participants != null) {
             // Setting participants listView
             // Setting participants in Arraylist
             ArrayList<User> users = new ArrayList<>();
             for (Map.Entry<String, User> entry : participants.entrySet()) {
-                if (entry.getKey().equals(this.currentUser.getUID())){
+                if (entry.getKey().equals(this.currentUser.getUID())) {
                     return true;
                 }
             }
@@ -183,12 +189,12 @@ public class MyEventDetailsActivity extends ActionBarActivity  implements EventM
 
     @Override
     public void onGetEventSuccess(Event event) {
-        this.myEvent = event;
-        // Setting event name in actionbar
+        if (event != null) {
+            this.myEvent = event;
+            mActionBar.setTitle(this.myEvent.getName());
 
-        mActionBar.setTitle(this.myEvent.getName());
-
-        settingViews();
+            settingViews();
+        }
     }
 
     @Override
@@ -214,14 +220,13 @@ public class MyEventDetailsActivity extends ActionBarActivity  implements EventM
     }
 
     // Sending participation to Firebase
-    public void participate(){
+    public void participate() {
         EventManager eventManager = EventManager.getInstance();
 
         if (this.participate) {
             // Updating event
             eventManager.pushParticipant(this.myEvent, this.currentUser);
-        }
-        else {
+        } else {
             eventManager.removeParticipant(this.myEvent, this.currentUser);
         }
     }
@@ -229,7 +234,7 @@ public class MyEventDetailsActivity extends ActionBarActivity  implements EventM
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-        if(this.my_event_details_cal == null){
+        if (this.my_event_details_cal == null) {
             this.my_event_details_cal = Calendar.getInstance();
         }
 
@@ -246,7 +251,7 @@ public class MyEventDetailsActivity extends ActionBarActivity  implements EventM
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
-        if(this.my_event_details_cal == null){
+        if (this.my_event_details_cal == null) {
             this.my_event_details_cal = Calendar.getInstance();
         }
 
@@ -261,7 +266,7 @@ public class MyEventDetailsActivity extends ActionBarActivity  implements EventM
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.my_event_details_date:
-                if(this.my_event_details_cal == null){
+                if (this.my_event_details_cal == null) {
                     this.my_event_details_cal = Calendar.getInstance(TimeZone.getDefault());
                 }
                 DatePickerDialog datePicker = new DatePickerDialog(this, this,
@@ -269,12 +274,13 @@ public class MyEventDetailsActivity extends ActionBarActivity  implements EventM
                         this.my_event_details_cal.get(Calendar.MONTH),
                         this.my_event_details_cal.get(Calendar.DAY_OF_MONTH));
                 datePicker.setCancelable(false);
+                datePicker.getDatePicker().setMinDate(new Date().getTime());
                 datePicker.setTitle(getResources().getString(R.string.select_event_date));
                 datePicker.show();
                 break;
 
             case R.id.my_event_details_hour:
-                if(this.my_event_details_cal == null){
+                if (this.my_event_details_cal == null) {
                     this.my_event_details_cal = Calendar.getInstance(TimeZone.getDefault());
                 }
                 TimePickerDialog timePicker = new TimePickerDialog(this, this,
@@ -293,4 +299,69 @@ public class MyEventDetailsActivity extends ActionBarActivity  implements EventM
                 break;
         }
     }
+
+
+    /* MENU */
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem deleteActionItem = menu.findItem(R.id.action_delete_event);
+        MenuItem shareActionItem = menu.findItem(R.id.action_share_event);
+
+        deleteActionItem.setVisible(UserHelper.currentUserIsCreator(myEvent));
+
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_event_details, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_delete_event) {
+            showDeleteAlert();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    private void showDeleteAlert() {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle(getResources().getString(R.string.delete));
+
+        alertDialogBuilder
+                .setMessage(getResources().getString(R.string.delete_event_alert))
+                .setCancelable(false)
+                .setPositiveButton(getResources().getString(R.string.action_delete), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (myEvent != null) {
+                            EventManager.getInstance().deleteEvent(myEvent.getUID());
+                            Toast.makeText(MyEventDetailsActivity.this, getResources().getString(R.string.delete_event_success), Toast.LENGTH_LONG).show();
+                            finish();
+                        }
+                    }
+                })
+                .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
 }

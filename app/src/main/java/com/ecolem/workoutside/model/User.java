@@ -167,4 +167,5 @@ public class User {
     public User copy() {
         return new User(uid, login, email, password, lastname, firstname, gender, birthdate, city, level, picture, description, weight, size, friends);
     }
+
 }

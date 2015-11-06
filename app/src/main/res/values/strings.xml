@@ -90,4 +90,8 @@
     <string name="title_activity_my_event">MyEventActivity</string>
     <string name="menu_my_events">Mes événements</string>
     <string name="events_coming">à venir...</string>
+    <string name="action_delete">Supprimer</string>
+    <string name="delete">Suppression</string>
+    <string name="delete_event_alert">Êtes-vous sûr de vouloir supprimer cet événement ?</string>
+    <string name="delete_event_success">L\'événement a bien été supprimé</string>
 </resources>

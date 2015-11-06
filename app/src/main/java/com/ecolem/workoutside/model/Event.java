@@ -41,7 +41,7 @@ public class Event {
         return this.uid;
     }
 
-    public void setUid(String uid){
+    public void setUid(String uid) {
         this.uid = uid;
     }
 
@@ -145,4 +145,6 @@ public class Event {
         return c1.get(Calendar.DAY_OF_MONTH) == c2.get(Calendar.DAY_OF_MONTH) && c1.get(Calendar.MONTH) == c2.get(Calendar.MONTH);
 
     }
+
+
 }

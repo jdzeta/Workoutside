@@ -1,13 +1,19 @@
 package com.ecolem.workoutside.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.adapter.UserListAdapter;
@@ -116,10 +122,10 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
         // Counting participants and filling listView
         this.event_detail_button_participate = (Button) findViewById(R.id.event_detail_button_participate);
         int pSize = 0;
-        if (this.myEvent.getParticipants() != null){
+        if (this.myEvent.getParticipants() != null) {
             pSize = this.myEvent.getParticipants().size();
         }
-        this.event_detail_nb_participants.setText( pSize + " Participant(s)");
+        this.event_detail_nb_participants.setText(pSize + " Participant(s)");
         initParticipantsList();
 
         // Setting participation to false, true if user is organizer
@@ -133,14 +139,14 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
         }
     }
 
-    public boolean isParticipate(){
+    public boolean isParticipate() {
         HashMap<String, User> participants = this.myEvent.getParticipants();
         if (participants != null) {
             // Setting participants listView
             // Setting participants in Arraylist
             ArrayList<User> users = new ArrayList<>();
             for (Map.Entry<String, User> entry : participants.entrySet()) {
-                if (entry.getKey().equals(this.currentUser.getUID())){
+                if (entry.getKey().equals(this.currentUser.getUID())) {
                     return true;
                 }
             }
@@ -196,14 +202,13 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
     }
 
     // Sending participation to Firebase
-    public void participate(){
+    public void participate() {
         EventManager eventManager = EventManager.getInstance();
 
         if (this.participate) {
             // Updating event
             eventManager.pushParticipant(this.myEvent, this.currentUser);
-        }
-        else {
+        } else {
             eventManager.removeParticipant(this.myEvent, this.currentUser);
         }
     }

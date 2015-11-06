@@ -142,7 +142,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:editable="false" />
+                    android:editable="false"
+                    android:singleLine="true" />
 
             </LinearLayout>
 
@@ -197,7 +198,8 @@
                     android:id="@+id/edit_city"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5" />
+                    android:layout_weight="5"
+                    android:singleLine="true" />
 
             </LinearLayout>
 
