@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.manager.UserManager;
 import com.ecolem.workoutside.model.User;
+import com.google.android.gms.internal.pi;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -153,6 +154,8 @@ public class AccountActivity extends AppCompatActivity {
         if (user.getLastname() != null && !user.getLastname().isEmpty()) {
             pictureText += user.getLastname().substring(0, 1);
         }
+
+        mPictureDefaultText.setText(pictureText);
     }
 
     private void discardChanges() {
