@@ -146,8 +146,6 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:background="@color/secondary"
-                android:onCliddingLeft="50dp"
-                android:pack="participate"
                 android:paddingRight="50dp"
                 android:text="@string/event_detail_button_participate"
                 android:textColor="@color/white" />
