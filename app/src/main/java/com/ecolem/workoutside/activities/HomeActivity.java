@@ -13,11 +13,9 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
@@ -175,7 +173,8 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 startActivity(EventsListActivity.class);
                 break;
             case R.id.menu_logout:
-                showLogoutAlert();
+                //showLogoutAlert();
+                startActivity(MyEventsActivity.class);
                 break;
             case R.id.menu_profile:
                 startActivity(AccountActivity.class);
