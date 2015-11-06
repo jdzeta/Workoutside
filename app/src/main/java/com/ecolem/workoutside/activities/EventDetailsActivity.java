@@ -30,7 +30,6 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
 
     // Event details displayed
     private TextView event_detail_creator;
-    private TextView event_detail_name;
     private TextView event_detail_min_level;
     private TextView event_detail_date;
     private TextView event_detail_hour;
@@ -69,7 +68,6 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
 
         // INIT EVENT DETAILS
         this.event_detail_creator = (TextView) findViewById(R.id.event_detail_creator);
-        this.event_detail_name = (TextView) findViewById(R.id.event_detail_name);
         this.event_detail_min_level = (TextView) findViewById(R.id.event_detail_min_level);
         this.event_detail_date = (TextView) findViewById(R.id.event_detail_date);
         this.event_detail_hour = (TextView) findViewById(R.id.event_detail_hour);
@@ -84,8 +82,7 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
 
         // Creator name
         this.event_detail_creator.setText(this.myEvent.getCreator().getFirstname() + " " + this.myEvent.getCreator().getLastname());
-        // Event name
-        this.event_detail_name.setText(this.myEvent.getName());
+        // Event description
         this.event_detail_description.setText(this.myEvent.getDescription());
 
         // Defining min level
