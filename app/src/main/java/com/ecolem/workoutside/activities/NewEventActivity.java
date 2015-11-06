@@ -318,8 +318,10 @@ public class NewEventActivity extends ActionBarActivity
         ArrayAdapter<String> addressListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
 
         for (Address address : this.addresses) {
-            String fullAddress = address.getAddressLine(0) + " " + address.getAddressLine(1) + " " + address.getAddressLine(2);
-            addressListAdapter.add(fullAddress);
+            if (address.getAddressLine(0) != null && address.getAddressLine(1) != null && address.getAddressLine(2) != null) {
+                String fullAddress = address.getAddressLine(0) + " " + address.getAddressLine(1) + " " + address.getAddressLine(2);
+                addressListAdapter.add(fullAddress);
+            }
         }
 
         new_event_location_spinner.setAdapter(addressListAdapter);

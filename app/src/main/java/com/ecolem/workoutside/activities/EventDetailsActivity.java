@@ -4,7 +4,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -129,12 +128,27 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
         // Setting participation to false, true if user is organizer
         UserManager userManager = UserManager.getInstance();
         this.currentUser = userManager.getUser();
-        if (currentUser.getUID().equals(this.myEvent.getCreator().getUID())) {
+        if (currentUser.getUID().equals(this.myEvent.getCreator().getUID()) || this.isParticipate()) {
             this.participate = true;
             this.event_detail_button_participate.setText(getString(R.string.event_detail_button_desistate));
         } else {
             this.participate = false;
         }
+    }
+
+    public boolean isParticipate(){
+        HashMap<String, User> participants = this.myEvent.getParticipants();
+        if (participants != null) {
+            // Setting participants listView
+            // Setting participants in Arraylist
+            ArrayList<User> users = new ArrayList<>();
+            for (Map.Entry<String, User> entry : participants.entrySet()) {
+                if (entry.getKey().equals(this.currentUser.getUID())){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public void initParticipantsList() {
@@ -172,14 +186,6 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
 
     }
 
-    @Override
-    public void onBackPressed() {
-        // Click on Android back button
-        super.onBackPressed();
-        // If participation is true then update Event.users
-        participate();
-    }
-
     // Click on participate button
     public void participateClick(View view) {
         if (this.participate == true) {
@@ -189,28 +195,20 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
             this.participate = true;
             this.event_detail_button_participate.setText(getString(R.string.event_detail_button_desistate));
         }
+        participate();
     }
 
     // Sending participation to Firebase
     public void participate(){
         EventManager eventManager = EventManager.getInstance();
+
         if (this.participate) {
             // Updating event
-            eventManager.pushData(this.myEvent, this.currentUser);
+            eventManager.pushParticipant(this.myEvent, this.currentUser);
         }
         else {
             eventManager.removeParticipant(this.myEvent, this.currentUser);
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.home) {
-            onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

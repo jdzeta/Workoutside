@@ -11,7 +11,6 @@ import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 
 /**
  * Created by akawa_000 on 25/10/2015.
@@ -57,7 +56,6 @@ public class EventManager {
     }
 
     public void startGetEventsComing(final EventListener listener) {
-        Date today = new Date();
         Firebase eventsRef = FirebaseManager.getInstance().getFirebaseRef().child("events");
 
         eventsRef.addValueEventListener(new ValueEventListener() {
@@ -89,8 +87,13 @@ public class EventManager {
         });
     }
 
-    public void pushData(Event event, User currentUser) {
-        FirebaseManager.getInstance().getFirebaseRef().child("events").child(event.getUID()).child("participants").push().child(currentUser.getUID()).setValue(currentUser);
+    public void pushParticipant(Event event, User user) {
+        if (event.getParticipants() == null){
+            FirebaseManager.getInstance().getFirebaseRef().child("events").child(event.getUID()).child("participants").child(user.getUID()).setValue(user);
+        }
+        else {
+            FirebaseManager.getInstance().getFirebaseRef().child("events").child(event.getUID()).child("participants").push().setValue(user.getUID(), user);
+        }
     }
 
     public void removeParticipant(Event event, User user) {
