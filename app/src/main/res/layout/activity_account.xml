@@ -19,6 +19,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_centerInParent="true"
+                android:alpha=".8"
                 android:background="@drawable/account_picture_default_bg">
 
                 <TextView
@@ -26,7 +27,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="SN"
                     android:textColor="@color/white"
                     android:textSize="18pt" />
             </RelativeLayout>
@@ -35,9 +35,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="20dp"
             android:elevation="4dp"
             android:orientation="vertical"
             android:padding="8dp">
@@ -152,9 +152,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="20dp"
             android:elevation="4dp"
             android:orientation="vertical"
             android:padding="8dp">

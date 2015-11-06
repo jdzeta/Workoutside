@@ -30,7 +30,7 @@ public class User {
         return uid;
     }
 
-    public void setUID(String uid){
+    public void setUID(String uid) {
         this.uid = uid;
     }
 
@@ -144,5 +144,27 @@ public class User {
 
     public void setFriends(HashMap<String, User> friends) {
         this.friends = friends;
+    }
+
+    public User(String uid, String login, String email, String password, String lastname, String firstname, int gender, Date birthdate, String city, int level, String picture, String description, Float weight, int size, HashMap<String, User> friends) {
+        this.uid = uid;
+        this.login = login;
+        this.email = email;
+        this.password = password;
+        this.lastname = lastname;
+        this.firstname = firstname;
+        this.gender = gender;
+        this.birthdate = birthdate;
+        this.city = city;
+        this.level = level;
+        this.picture = picture;
+        this.description = description;
+        this.weight = weight;
+        this.size = size;
+        this.friends = friends;
+    }
+
+    public User copy() {
+        return new User(uid, login, email, password, lastname, firstname, gender, birthdate, city, level, picture, description, weight, size, friends);
     }
 }

@@ -124,7 +124,7 @@
                 android:orientation="horizontal">
 
                 <RelativeLayout
-                    android:id="@+id/menu_logout"
+                    android:id="@+id/menu_my_events"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="10dp"

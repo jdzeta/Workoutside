@@ -1,11 +1,16 @@
 package com.ecolem.workoutside.activities;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -15,6 +20,7 @@ import android.widget.TextView;
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.manager.UserManager;
 import com.ecolem.workoutside.model.User;
+import com.google.android.gms.internal.pi;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -153,6 +159,8 @@ public class AccountActivity extends AppCompatActivity {
         if (user.getLastname() != null && !user.getLastname().isEmpty()) {
             pictureText += user.getLastname().substring(0, 1);
         }
+
+        mPictureDefaultText.setText(pictureText);
     }
 
     private void discardChanges() {
@@ -181,5 +189,52 @@ public class AccountActivity extends AppCompatActivity {
         // todo: chek for fail and do what need to be done
         userManager.saveUser(mUserCopy);
         userManager.setUser(mUserCopy);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_account, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+
+        if (id == R.id.action_logout) {
+            showLogoutAlert();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showLogoutAlert() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        // set title
+        alertDialogBuilder.setTitle(getResources().getString(R.string.menu_logout));
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(getResources().getString(R.string.logout_alert))
+                .setCancelable(false)
+                .setPositiveButton(getResources().getString(R.string.leave), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        UserManager.getInstance().logout();
+                        Intent intent = new Intent(AccountActivity.this, StartActivity.class);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }

@@ -144,8 +144,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/secondary"
-                android:onClick="participateClick"
                 android:gravity="center_vertical|center|center_horizontal"
+                android:onClick="participateClick"
                 android:text="@string/event_detail_button_participate"
                 android:textColor="@color/white"
                 android:textStyle="normal"
@@ -191,8 +191,6 @@
 
         </LinearLayout>
 
-
     </LinearLayout>
-
 
 </ScrollView>

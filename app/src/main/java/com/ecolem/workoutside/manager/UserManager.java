@@ -66,7 +66,8 @@ public class UserManager {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (listener != null) {
-                            mUser = dataSnapshot.getValue(User.class);
+                            User user = dataSnapshot.getValue(User.class);
+                            mUser = user.copy();
                             listener.onLoginSuccess(authData.getUid());
                         }
                     }

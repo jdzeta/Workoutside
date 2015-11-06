@@ -3,7 +3,6 @@ package com.ecolem.workoutside.activities;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Criteria;
@@ -23,7 +22,6 @@ import android.widget.RelativeLayout;
 
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.WorkoutSide;
-import com.ecolem.workoutside.manager.UserManager;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.geofire.GeoFire;
@@ -81,7 +79,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         mAgendaMenuButton.setOnClickListener(this);
         mTrainingMenuButton = (RelativeLayout) findViewById(R.id.menu_training);
         mTrainingMenuButton.setOnClickListener(this);
-        mLogoutMenuButton = (RelativeLayout) findViewById(R.id.menu_logout);
+        mLogoutMenuButton = (RelativeLayout) findViewById(R.id.menu_my_events);
         mLogoutMenuButton.setOnClickListener(this);
 
         findViewById(R.id.menu_profile).setOnClickListener(this);
@@ -172,8 +170,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
             case R.id.menu_events:
                 startActivity(EventsListActivity.class);
                 break;
-            case R.id.menu_logout:
-                //showLogoutAlert();
+            case R.id.menu_my_events:
                 startActivity(MyEventsActivity.class);
                 break;
             case R.id.menu_profile:
@@ -191,32 +188,6 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         this.overridePendingTransition(android.R.anim.slide_in_left,
                 android.R.anim.slide_out_right);
 
-    }
-
-    private void showLogoutAlert() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-
-        // set title
-        alertDialogBuilder.setTitle(getResources().getString(R.string.menu_logout));
-
-        // set dialog message
-        alertDialogBuilder
-                .setMessage(getResources().getString(R.string.logout_alert))
-                .setCancelable(false)
-                .setPositiveButton(getResources().getString(R.string.leave), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        UserManager.getInstance().logout();
-                        HomeActivity.this.finish();
-                    }
-                })
-                .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
     }
 
 

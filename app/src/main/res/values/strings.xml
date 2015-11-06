@@ -1,9 +1,11 @@
 <resources>
-    <string name="app_name">Workout side</string>
+    <string name="app_name">Workout Side</string>
+    <string name="app_slogan">From inside to workout side</string>
     <string name="facebook_app_id">1047191685312128</string>
     <string name="action_bar_title">WORKOUT SIDE</string>
 
     <!-- ACTIVITIES NAME -->
+    <string name="title_activity_splashscreen">SplashscreenActivity</string>
     <string name="title_activity_start">StartActivity</string>
     <string name="title_activity_account">AccountActivity</string>
     <string name="title_activity_training">TrainingActivity</string>
@@ -87,4 +89,5 @@
     <string name="title_activity_my_events">MyEventsActivity</string>
     <string name="title_activity_my_event">MyEventActivity</string>
     <string name="menu_my_events">Mes événements</string>
+    <string name="events_coming">à venir...</string>
 </resources>
