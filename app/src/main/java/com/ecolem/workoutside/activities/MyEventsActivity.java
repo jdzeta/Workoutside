@@ -13,36 +13,35 @@ import android.widget.ListView;
 
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.adapter.EventListAdapter;
-import com.ecolem.workoutside.comparators.EventDateComparator;
 import com.ecolem.workoutside.manager.EventManager;
+import com.ecolem.workoutside.manager.UserManager;
 import com.ecolem.workoutside.model.Event;
+import com.ecolem.workoutside.model.User;
 import com.firebase.client.FirebaseError;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
 
-public class EventsListActivity extends ActionBarActivity implements EventManager.EventListener {
+public class MyEventsActivity extends ActionBarActivity implements EventManager.EventListener {
 
     private ListView mListView;
 
     private ArrayList<Event> mEvents = new ArrayList<>();
     private EventListAdapter mAdapter = null;
+    private ArrayList<Event> myEvents;
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_events);
+        setContentView(R.layout.activity_my_events);
 
-        mListView = (ListView) findViewById(R.id.events_listview);
+        mListView = (ListView) findViewById(R.id.my_events_listview);
 
         ActionBar actionbar = getSupportActionBar();
-        actionbar.setTitle(getResources().getString(R.string.events_coming).toUpperCase());
+        actionbar.setTitle(getResources().getString(R.string.menu_events).toUpperCase());
         actionbar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.primary)));
 
         //populateEvents();
-
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -50,7 +49,7 @@ public class EventsListActivity extends ActionBarActivity implements EventManage
                 Event event = (Event) mListView.getItemAtPosition(position);
                 Bundle bundle = new Bundle();
                 bundle.putString("eventUUID", event.getUID());
-                Intent intent = new Intent(getApplicationContext(), EventDetailsActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MyEventDetailsActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -66,7 +65,7 @@ public class EventsListActivity extends ActionBarActivity implements EventManage
         EventManager.getInstance().startGetEventsComing(this);
     }
 
-    private void populateEvents() {
+    /*private void populateEvents() {
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
 
@@ -74,7 +73,7 @@ public class EventsListActivity extends ActionBarActivity implements EventManage
 
         mAdapter = new EventListAdapter(getApplicationContext(), mEvents);
         mListView.setAdapter(mAdapter);
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -93,6 +92,7 @@ public class EventsListActivity extends ActionBarActivity implements EventManage
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_add_event) {
             Intent intent = new Intent(getApplication(), NewEventActivity.class);
+            intent.putExtra("parentActivity", "MyEventsActivity");
             startActivity(intent);
             return true;
         }
@@ -109,7 +109,15 @@ public class EventsListActivity extends ActionBarActivity implements EventManage
     @Override
     public void onGetEventsSuccess(ArrayList<Event> events) {
         mEvents = events;
-        mAdapter = new EventListAdapter(getApplicationContext(), mEvents);
+        // Browse events to get only user's events
+        currentUser = UserManager.getInstance().getUser();
+        myEvents = new ArrayList<>();
+        for (Event event : events){
+            if (event.getCreator().getUID().equals(currentUser.getUID())){
+                myEvents.add(event);
+            }
+        }
+        mAdapter = new EventListAdapter(getApplicationContext(), myEvents);
         mListView.setAdapter(mAdapter);
     }
 

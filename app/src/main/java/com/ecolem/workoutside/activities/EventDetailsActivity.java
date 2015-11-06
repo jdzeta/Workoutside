@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.adapter.UserListAdapter;
 import com.ecolem.workoutside.helpers.GeolocHelper;
 import com.ecolem.workoutside.helpers.TimeHelper;
@@ -29,7 +30,6 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
 
     // Event details displayed
     private TextView event_detail_creator;
-    private TextView event_detail_name;
     private TextView event_detail_min_level;
     private TextView event_detail_date;
     private TextView event_detail_hour;
@@ -68,7 +68,6 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
 
         // INIT EVENT DETAILS
         this.event_detail_creator = (TextView) findViewById(R.id.event_detail_creator);
-        this.event_detail_name = (TextView) findViewById(R.id.event_detail_name);
         this.event_detail_min_level = (TextView) findViewById(R.id.event_detail_min_level);
         this.event_detail_date = (TextView) findViewById(R.id.event_detail_date);
         this.event_detail_hour = (TextView) findViewById(R.id.event_detail_hour);
@@ -83,8 +82,7 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
 
         // Creator name
         this.event_detail_creator.setText(this.myEvent.getCreator().getFirstname() + " " + this.myEvent.getCreator().getLastname());
-        // Event name
-        this.event_detail_name.setText(this.myEvent.getName());
+        // Event description
         this.event_detail_description.setText(this.myEvent.getDescription());
 
         // Defining min level
@@ -117,18 +115,37 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
 
         // Counting participants and filling listView
         this.event_detail_button_participate = (Button) findViewById(R.id.event_detail_button_participate);
-        this.event_detail_nb_participants.setText(this.myEvent.getParticipants().size() + " Participant(s)");
+        int pSize = 0;
+        if (this.myEvent.getParticipants() != null){
+            pSize = this.myEvent.getParticipants().size();
+        }
+        this.event_detail_nb_participants.setText( pSize + " Participant(s)");
         initParticipantsList();
 
         // Setting participation to false, true if user is organizer
         UserManager userManager = UserManager.getInstance();
         this.currentUser = userManager.getUser();
-        if (currentUser.getUID().equals(this.myEvent.getCreator().getUID())) {
+        if (currentUser.getUID().equals(this.myEvent.getCreator().getUID()) || this.isParticipate()) {
             this.participate = true;
             this.event_detail_button_participate.setText(getString(R.string.event_detail_button_desistate));
         } else {
             this.participate = false;
         }
+    }
+
+    public boolean isParticipate(){
+        HashMap<String, User> participants = this.myEvent.getParticipants();
+        if (participants != null) {
+            // Setting participants listView
+            // Setting participants in Arraylist
+            ArrayList<User> users = new ArrayList<>();
+            for (Map.Entry<String, User> entry : participants.entrySet()) {
+                if (entry.getKey().equals(this.currentUser.getUID())){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public void initParticipantsList() {
@@ -147,17 +164,6 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        // If participation is true then update Event.users
-        if (this.participate) {
-            // Updating event
-            EventManager eventManager = EventManager.getInstance();
-            eventManager.pushData(this.myEvent, this.currentUser);
-        }
-    }
-
-    @Override
     public void onGetEventSuccess(Event event) {
         this.myEvent = event;
         // Setting event name in actionbar
@@ -165,19 +171,6 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
         mActionBar.setTitle(this.myEvent.getName());
 
         settingViews();
-    }
-
-    public void participate(View view) {
-        EventManager eventManager = EventManager.getInstance();
-        if (this.participate == true) {
-            this.participate = false;
-            this.event_detail_button_participate.setText(getString(R.string.event_detail_button_participate));
-            eventManager.removeParticipant(this.myEvent, this.currentUser);
-        } else {
-            this.participate = true;
-            this.event_detail_button_participate.setText(getString(R.string.event_detail_button_desistate));
-            eventManager.pushData(this.myEvent, this.currentUser);
-        }
     }
 
     @Override
@@ -189,4 +182,30 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
     public void onFail(FirebaseError error) {
 
     }
+
+    // Click on participate button
+    public void participateClick(View view) {
+        if (this.participate == true) {
+            this.participate = false;
+            this.event_detail_button_participate.setText(getString(R.string.event_detail_button_participate));
+        } else {
+            this.participate = true;
+            this.event_detail_button_participate.setText(getString(R.string.event_detail_button_desistate));
+        }
+        participate();
+    }
+
+    // Sending participation to Firebase
+    public void participate(){
+        EventManager eventManager = EventManager.getInstance();
+
+        if (this.participate) {
+            // Updating event
+            eventManager.pushParticipant(this.myEvent, this.currentUser);
+        }
+        else {
+            eventManager.removeParticipant(this.myEvent, this.currentUser);
+        }
+    }
+
 }
