@@ -1,8 +1,6 @@
 package com.ecolem.workoutside.activities;
 
 import android.graphics.drawable.ColorDrawable;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -11,25 +9,17 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.ecolem.workoutside.R;
-
+import com.ecolem.workoutside.adapter.UserListAdapter;
 import com.ecolem.workoutside.helpers.GeolocHelper;
 import com.ecolem.workoutside.helpers.TimeHelper;
-import com.ecolem.workoutside.adapter.UserListAdapter
 import com.ecolem.workoutside.manager.EventManager;
 import com.ecolem.workoutside.manager.UserManager;
 import com.ecolem.workoutside.model.Event;
 import com.ecolem.workoutside.model.User;
 import com.firebase.client.FirebaseError;
-import com.firebase.geofire.GeoLocation;
 
-import java.io.IOException;
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public class EventDetailsActivity extends ActionBarActivity implements EventManager.EventListener {
