@@ -90,11 +90,11 @@ public class EventManager {
     }
 
     public void pushData(Event event, User currentUser) {
-        FirebaseManager.getInstance().getFirebaseRef().child("events").child(event.getUID()).child("participants").push().setValue(currentUser.getUID(), currentUser);
+        FirebaseManager.getInstance().getFirebaseRef().child("events").child(event.getUID()).child("participants").push().child(currentUser.getUID()).setValue(currentUser);
     }
 
     public void removeParticipant(Event event, User user) {
-        FirebaseManager.getInstance().getFirebaseRef().child("event").child(event.getUID()).child("participants").child(user.getUID()).setValue(null);
+        FirebaseManager.getInstance().getFirebaseRef().child("events").child(event.getUID()).child("participants").child(user.getUID()).setValue(null);
     }
 
     public interface EventListener {

@@ -139,18 +139,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-
             <Button
                 android:id="@+id/event_detail_button_participate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:background="@color/secondary"
-                android:onCliddingLeft="50dp"
-                android:pack="participate"
+                android:onClick="participateClick"
+                android:textAlignment="center"
                 android:paddingRight="50dp"
                 android:text="@string/event_detail_button_participate"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textStyle="normal"
+                android:layout_alignParentRight="false"
+                android:layout_alignParentLeft="false" />
 
         </RelativeLayout>
 
