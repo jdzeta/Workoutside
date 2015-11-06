@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.ecolem.workoutside.R;
+import com.ecolem.workoutside.helpers.GeolocHelper;
 import com.ecolem.workoutside.helpers.TimeHelper;
 import com.ecolem.workoutside.model.Event;
 
@@ -18,6 +19,7 @@ import java.util.Calendar;
  * Created by akawa_000 on 31/10/2015.
  */
 public class EventListAdapter extends ArrayAdapter<Event> {
+
 
     public EventListAdapter(Context context, ArrayList<Event> events) {
         super(context, 0, events);
@@ -48,7 +50,7 @@ public class EventListAdapter extends ArrayAdapter<Event> {
         TextView evNbParticipants = (TextView) convertView.findViewById(R.id.event_nb_participants);
 
         // Date
-        evDate.setText(TimeHelper.getEventDateStr(event.getDate()));
+        evDate.setText(TimeHelper.getEventDateStr(event.getDate(), false));
         evDate.setVisibility(showDate ? View.VISIBLE : View.GONE);
 
         // Hour
@@ -58,7 +60,8 @@ public class EventListAdapter extends ArrayAdapter<Event> {
         evName.setText(event.getName());
 
         // City
-        //@TODO evCity.setText(event.get());
+        // too lazy : evCity.setText(GeolocHelper.getCityFromLatitudeLongitude(getContext(), event.getLatitude(), event.getLongitude()));
+
 
         // Description
         evDesc.setText(event.getDescription());

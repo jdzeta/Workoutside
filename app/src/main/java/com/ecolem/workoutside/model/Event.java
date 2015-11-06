@@ -17,9 +17,9 @@ public class Event {
     private String description;
     private int minLevel;
     private int maxParticipants;
-    private HashMap<Integer, User> participants;
+    private HashMap<String, User> participants;
     private float note;
-    private HashMap<Integer, Comment> comments;
+    private HashMap<String, Comment> comments;
     private User creator;
 
     public Event() {
@@ -102,11 +102,11 @@ public class Event {
         this.maxParticipants = maxParticipants;
     }
 
-    public HashMap<Integer, User> getParticipants() {
+    public HashMap<String, User> getParticipants() {
         return participants;
     }
 
-    public void setParticipants(HashMap<Integer, User> participants) {
+    public void setParticipants(HashMap<String, User> participants) {
         this.participants = participants;
     }
 
@@ -118,11 +118,11 @@ public class Event {
         this.note = note;
     }
 
-    public HashMap<Integer, Comment> getComments() {
+    public HashMap<String, Comment> getComments() {
         return comments;
     }
 
-    public void setComments(HashMap<Integer, Comment> comments) {
+    public void setComments(HashMap<String, Comment> comments) {
         this.comments = comments;
     }
 

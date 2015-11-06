@@ -9,11 +9,14 @@ import java.util.Date;
  */
 public class TimeHelper {
 
-    public static String getEventDateStr(Date date) {
+    public static String getEventDateStr(Date date, boolean showYear) {
         String dateStr = "";
 
         Calendar c = Calendar.getInstance();
         c.setTime(date);
+
+        //dateStr  += getDayForInt(c.get(Calendar.DAY_OF_WEEK)) + " ";
+
 
         int day = c.get(Calendar.DAY_OF_MONTH);
         if (day < 10) {
@@ -21,7 +24,10 @@ public class TimeHelper {
         }
         dateStr += day;
 
-        dateStr += " " + getMonthForInt(c.get(Calendar.DAY_OF_MONTH) + 1);
+        dateStr += " " + getMonthForInt(c.get(Calendar.MONTH));
+
+        if(showYear)
+            dateStr += " " + c.get(Calendar.YEAR);
 
         return dateStr;
     }
@@ -34,6 +40,16 @@ public class TimeHelper {
             month = months[num];
         }
         return month;
+    }
+
+    public static String getDayForInt(int num) {
+        String day = "wrong";
+        DateFormatSymbols dfs = new DateFormatSymbols();
+        String[] days = dfs.getWeekdays();
+        if (num >= 0 && num <= 6) {
+            day = days[num];
+        }
+        return day;
     }
 
     public static String getEventHourStr(Date date) {

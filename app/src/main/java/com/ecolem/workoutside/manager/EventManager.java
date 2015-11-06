@@ -3,6 +3,7 @@ package com.ecolem.workoutside.manager;
 import com.ecolem.workoutside.comparators.EventDateComparator;
 import com.ecolem.workoutside.database.FirebaseManager;
 import com.ecolem.workoutside.model.Event;
+import com.ecolem.workoutside.model.User;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -58,46 +59,6 @@ public class EventManager {
     public void startGetEventsComing(final EventListener listener) {
         Date today = new Date();
         Firebase eventsRef = FirebaseManager.getInstance().getFirebaseRef().child("events");
-       /* Query query = eventsRef.startAt(today.getTime());
-
-        query.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                System.out.println("Found " + dataSnapshot.getChildrenCount() + " events");
-
-                ArrayList<Event> events = new ArrayList<Event>();
-
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    events.add(postSnapshot.getValue(Event.class));
-                }
-
-                Collections.sort(events, new EventDateComparator());
-
-                if (listener != null) {
-                    listener.onGetEventsSuccess(events);
-                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });*/
 
         eventsRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -126,6 +87,14 @@ public class EventManager {
                 }
             }
         });
+    }
+
+    public void pushData(Event event, User currentUser) {
+        FirebaseManager.getInstance().getFirebaseRef().child("events").child(event.getUID()).child("participants").push().setValue(currentUser.getUID(), currentUser);
+    }
+
+    public void removeParticipant(Event event, User user) {
+        FirebaseManager.getInstance().getFirebaseRef().child("event").child(event.getUID()).child("participants").child(user.getUID()).setValue(null);
     }
 
     public interface EventListener {

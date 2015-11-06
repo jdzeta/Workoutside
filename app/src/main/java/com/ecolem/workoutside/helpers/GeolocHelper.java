@@ -13,7 +13,7 @@ import java.util.Locale;
  */
 public class GeolocHelper {
 
-    public Address getAddressFromLocation(Context context, long longitude, long latitude) {
+    public static Address getAddressFromLocation(Context context, long longitude, long latitude) {
         Address address;
         Geocoder geocoder;
         List<Address> addresses;
@@ -28,6 +28,24 @@ public class GeolocHelper {
             String country = addresses.get(0).getCountryName();
             String postalCode = addresses.get(0).getPostalCode();
             String knownName = addresses.get(0).getFeatureName();*/
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String getCityFromLatitudeLongitude(Context context, double latitude, double longitude) {
+
+        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+
+        try {
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1); // 1 to 5
+            Address addr = addresses.get(0);
+
+            if (addr != null) {
+                return addr.getAddressLine(0) + ", " + addr.getPostalCode() + " " + addr.getLocality();
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
