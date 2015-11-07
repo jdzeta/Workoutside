@@ -121,10 +121,16 @@
         <activity
             android:name=".activities.MyEventsActivity"
             android:label="@string/title_activity_my_events" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.HomeActivity" />
         </activity>
         <activity
             android:name=".activities.MyEventDetailsActivity"
             android:label="@string/title_activity_my_event" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MyEventsActivity" />
         </activity>
     </application>
 
