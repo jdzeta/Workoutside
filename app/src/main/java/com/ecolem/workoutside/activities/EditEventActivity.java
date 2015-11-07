@@ -525,23 +525,6 @@ public class EditEventActivity extends ActionBarActivity
     /* MENU */
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem deleteActionItem = menu.findItem(R.id.action_delete_event);
-        MenuItem shareActionItem = menu.findItem(R.id.action_share_event);
-
-        deleteActionItem.setVisible(UserHelper.currentUserIsCreator(myEvent));
-
-        return true;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_event_edit, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -549,10 +532,7 @@ public class EditEventActivity extends ActionBarActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_delete_event) {
-            showDeleteAlert();
-            return true;
-        } else if (id == android.R.id.home) {
+        if (id == android.R.id.home) {
             if (this.myEvent != null) {
                 goBack();
             }

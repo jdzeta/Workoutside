@@ -1,6 +1,8 @@
 package com.ecolem.workoutside.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -14,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.adapter.UserListAdapter;
@@ -196,10 +199,10 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
     public void onGetEventSuccess(Event event) {
         this.myEvent = event;
         // Setting event name in actionbar
-
-        mActionBar.setTitle(this.myEvent.getName());
-
-        settingViews();
+        if (mActionBar != null && this.myEvent != null) {
+            mActionBar.setTitle(this.myEvent.getName());
+            settingViews();
+        }
     }
 
     @Override
@@ -249,13 +252,18 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
     }
 
 
+
      /* MENU */
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem editActionItem = menu.findItem(R.id.action_edit_event);
 
+        MenuItem deleteActionItem = menu.findItem(R.id.action_delete_event);
+        MenuItem shareActionItem = menu.findItem(R.id.action_share_event);
+
         editActionItem.setVisible(UserHelper.currentUserIsCreator(myEvent));
+        deleteActionItem.setVisible(UserHelper.currentUserIsCreator(myEvent));
 
         return true;
     }
@@ -282,9 +290,44 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
             intent.putExtras(bundle);
             startActivity(intent);
             return true;
+        } else if (id == R.id.action_delete_event) {
+            showDeleteAlert();
+            return true;
+        }
+        if (id == R.id.action_share_event) {
+            //TODO
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private void showDeleteAlert() {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle(getResources().getString(R.string.delete));
+
+        alertDialogBuilder
+                .setMessage(getResources().getString(R.string.delete_event_alert))
+                .setCancelable(false)
+                .setPositiveButton(getResources().getString(R.string.action_delete), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (myEvent != null) {
+                            EventManager.getInstance().deleteEvent(myEvent.getUID());
+                            Toast.makeText(EventDetailsActivity.this, getResources().getString(R.string.delete_event_success), Toast.LENGTH_LONG).show();
+                            finish();
+                        }
+                    }
+                })
+                .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     @Override
