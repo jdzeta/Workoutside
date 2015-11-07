@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ecolem.workoutside" >
+    package="com.ecolem.workoutside">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -31,7 +31,7 @@
         android:allowBackup="true"
         android:icon="@drawable/app_logo"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -39,11 +39,18 @@
            <meta-data
            android:name="com.google.android.maps.v2.API_KEY"
            android:value="AIzaSyCNyx0WGUOdYwfIHtfftDT82_sO31yOYkY"/>
-        -->
+
+            <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyCQBsYR30ShJ6ckIQDP6hDnTlRZiI6tOTk" />
+           -->
+
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyCQBsYR30ShJ6ckIQDP6hDnTlRZiI6tOTk" />
+            android:value="AIzaSyDeZ76MtIivloZIpHUE1U22wPiRPjqC1Oc" />
+
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -79,9 +86,9 @@
 
         </activity>
         <activity
-            android:name=".activities.EventsListActivity"
+            android:name=".activities.EventsActivity"
             android:label="@string/title_activity_events"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.HomeActivity" />
@@ -89,15 +96,15 @@
         <activity
             android:name=".activities.NewEventActivity"
             android:label="@string/title_activity_new_event"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.EventsListActivity" />
+                android:value=".activities.EventsActivity" />
         </activity>
         <activity
             android:name=".activities.TrainingActivity"
             android:label="@string/title_activity_training"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.HomeActivity" />
@@ -105,7 +112,7 @@
         <activity
             android:name=".activities.AccountActivity"
             android:label="@string/title_activity_account"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.HomeActivity" />
@@ -113,24 +120,26 @@
         <activity
             android:name=".activities.EventDetailsActivity"
             android:label="@string/title_activity_event_details"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.EventsListActivity" />
+                android:value=".activities.EventsActivity" />
         </activity>
         <activity
             android:name=".activities.MyEventsActivity"
-            android:label="@string/title_activity_my_events" >
+            android:label="@string/title_activity_my_events"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.HomeActivity" />
         </activity>
         <activity
-            android:name=".activities.MyEventDetailsActivity"
-            android:label="@string/title_activity_my_event" >
+            android:name=".activities.EditEventActivity"
+            android:label="@string/title_activity_my_event"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MyEventsActivity" />
+                android:value=".activities.EventDetailsActivity" />
         </activity>
     </application>
 

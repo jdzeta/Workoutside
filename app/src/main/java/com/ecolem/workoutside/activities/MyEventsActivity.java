@@ -25,7 +25,6 @@ public class MyEventsActivity extends ActionBarActivity implements EventManager.
 
     private ListView mListView;
 
-    private ArrayList<Event> mEvents = new ArrayList<>();
     private EventListAdapter mAdapter = null;
     private ArrayList<Event> myEvents;
     private User currentUser;
@@ -49,12 +48,11 @@ public class MyEventsActivity extends ActionBarActivity implements EventManager.
                 Event event = (Event) mListView.getItemAtPosition(position);
                 Bundle bundle = new Bundle();
                 bundle.putString("eventUUID", event.getUID());
-                Intent intent = new Intent(getApplicationContext(), MyEventDetailsActivity.class);
+                Intent intent = new Intent(getApplicationContext(), EventDetailsActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
-        //EventManager.getInstance().startGetEventsComing(this);
 
     }
 
@@ -65,16 +63,6 @@ public class MyEventsActivity extends ActionBarActivity implements EventManager.
         EventManager.getInstance().startGetEventsComing(this);
     }
 
-    /*private void populateEvents() {
-        Calendar c = Calendar.getInstance();
-        c.setTime(new Date());
-
-        Collections.sort(mEvents, new EventDateComparator());
-
-        mAdapter = new EventListAdapter(getApplicationContext(), mEvents);
-        mListView.setAdapter(mAdapter);
-    }*/
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -84,15 +72,10 @@ public class MyEventsActivity extends ActionBarActivity implements EventManager.
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_add_event) {
             Intent intent = new Intent(getApplication(), NewEventActivity.class);
-            intent.putExtra("parentActivity", "MyEventsActivity");
             startActivity(intent);
             return true;
         }
@@ -108,12 +91,12 @@ public class MyEventsActivity extends ActionBarActivity implements EventManager.
 
     @Override
     public void onGetEventsSuccess(ArrayList<Event> events) {
-        mEvents = events;
+        ArrayList<Event> mEvents = new ArrayList<>(events);
         // Browse events to get only user's events
         currentUser = UserManager.getInstance().getUser();
         myEvents = new ArrayList<>();
-        for (Event event : events){
-            if (event.getCreator().getUID().equals(currentUser.getUID())){
+        for (Event event : events) {
+            if (event.getCreator().getUID().equals(currentUser.getUID())) {
                 myEvents.add(event);
             }
         }

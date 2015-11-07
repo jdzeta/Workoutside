@@ -27,7 +27,7 @@ public class EventManager {
         return sInstance;
     }
 
-    public void sendData(Event event){
+    public void sendData(Event event) {
         FirebaseManager.getInstance().getFirebaseRef().child("events").child(event.getUID()).setValue(event);
     }
 
@@ -54,6 +54,7 @@ public class EventManager {
             }
         });
     }
+
 
     public void startGetEventsComing(final EventListener listener) {
         Firebase eventsRef = FirebaseManager.getInstance().getFirebaseRef().child("events");
@@ -88,10 +89,9 @@ public class EventManager {
     }
 
     public void pushParticipant(Event event, User user) {
-        if (event.getParticipants() == null){
+        if (event.getParticipants() == null) {
             FirebaseManager.getInstance().getFirebaseRef().child("events").child(event.getUID()).child("participants").child(user.getUID()).setValue(user);
-        }
-        else {
+        } else {
             FirebaseManager.getInstance().getFirebaseRef().child("events").child(event.getUID()).child("participants").push().setValue(user.getUID(), user);
         }
     }
@@ -99,6 +99,15 @@ public class EventManager {
     public void removeParticipant(Event event, User user) {
         FirebaseManager.getInstance().getFirebaseRef().child("events").child(event.getUID()).child("participants").child(user.getUID()).setValue(null);
     }
+
+    public void deleteEvent(String uuid) {
+        FirebaseManager.getInstance().getFirebaseRef().child("events").child(uuid).setValue(null);
+    }
+
+    public void saveEvent(Event event) {
+        FirebaseManager.getInstance().getFirebaseRef().child("events").child(event.getUID()).setValue(event);
+    }
+
 
     public interface EventListener {
         public void onGetEventSuccess(Event m);

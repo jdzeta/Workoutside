@@ -9,6 +9,12 @@ import java.util.Date;
  */
 public class TimeHelper {
 
+    public static String getEventShortDateStr(Date date) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        return c.get(Calendar.DAY_OF_MONTH) + "/" + c.get(Calendar.MONTH) + "/" + c.get(Calendar.YEAR);
+    }
+
     public static String getEventDateStr(Date date, boolean showYear) {
         String dateStr = "";
 
@@ -26,7 +32,7 @@ public class TimeHelper {
 
         dateStr += " " + getMonthForInt(c.get(Calendar.MONTH));
 
-        if(showYear)
+        if (showYear)
             dateStr += " " + c.get(Calendar.YEAR);
 
         return dateStr;

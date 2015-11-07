@@ -8,12 +8,10 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.ecolem.workoutside.R;
-import com.ecolem.workoutside.helpers.GeolocHelper;
 import com.ecolem.workoutside.helpers.TimeHelper;
 import com.ecolem.workoutside.model.Event;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  * Created by akawa_000 on 31/10/2015.
@@ -50,11 +48,11 @@ public class EventListAdapter extends ArrayAdapter<Event> {
         TextView evNbParticipants = (TextView) convertView.findViewById(R.id.event_nb_participants);
 
         // Date
-        evDate.setText(TimeHelper.getEventDateStr(event.getDate(), false));
+        evDate.setText(TimeHelper.getEventDateStr(event.getDateStart(), false));
         evDate.setVisibility(showDate ? View.VISIBLE : View.GONE);
 
         // Hour
-        evHour.setText(TimeHelper.getEventHourStr(event.getDate()));
+        evHour.setText(TimeHelper.getEventHourStr(event.getDateStart()));
 
         // Name
         evName.setText(event.getName());

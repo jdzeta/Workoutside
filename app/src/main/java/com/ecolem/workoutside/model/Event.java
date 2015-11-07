@@ -11,7 +11,8 @@ public class Event {
 
     private String uid;
     private String name;
-    private Date date;
+    private Date dateStart;
+    private Date dateEnd;
     private double latitude;
     private double longitude;
     private String description;
@@ -25,10 +26,11 @@ public class Event {
     public Event() {
     }
 
-    public Event(String uid, String name, Date date, double latitude, double longitude, String description, int minLevel, int maxParticipants, User creator) {
+    public Event(String uid, String name, Date dateStart, Date dateEnd, double latitude, double longitude, String description, int minLevel, int maxParticipants, User creator) {
         this.uid = uid;
         this.name = name;
-        this.date = date;
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
         this.latitude = latitude;
         this.longitude = longitude;
         this.description = description;
@@ -41,7 +43,7 @@ public class Event {
         return this.uid;
     }
 
-    public void setUid(String uid){
+    public void setUid(String uid) {
         this.uid = uid;
     }
 
@@ -53,12 +55,20 @@ public class Event {
         this.name = name;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getDateStart() {
+        return dateStart;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDateStart(Date dateStart) {
+        this.dateStart = dateStart;
+    }
+
+    public Date getDateEnd() {
+        return dateEnd;
+    }
+
+    public void setDateEnd(Date dateEnd) {
+        this.dateEnd = dateEnd;
     }
 
     public double getLatitude() {
@@ -137,12 +147,14 @@ public class Event {
 
     public boolean hasSameDate(Event event) {
         Calendar c1 = Calendar.getInstance();
-        c1.setTime(this.getDate());
+        c1.setTime(this.getDateStart());
 
         Calendar c2 = Calendar.getInstance();
-        c2.setTime(event.getDate());
+        c2.setTime(event.getDateStart());
 
         return c1.get(Calendar.DAY_OF_MONTH) == c2.get(Calendar.DAY_OF_MONTH) && c1.get(Calendar.MONTH) == c2.get(Calendar.MONTH);
 
     }
+
+
 }
