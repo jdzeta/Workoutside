@@ -46,6 +46,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -147,6 +148,7 @@ public class NewEventActivity extends ActionBarActivity
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            // Date click
             case R.id.event_date_button:
                 if (this.new_event_cal_start == null) {
                     this.new_event_cal_start = Calendar.getInstance(TimeZone.getDefault());
@@ -161,6 +163,7 @@ public class NewEventActivity extends ActionBarActivity
                 datePicker.show();
                 break;
 
+            // Time click
             case R.id.event_time_start_button:
                 if (this.new_event_cal_start == null) {
                     this.new_event_cal_start = Calendar.getInstance(TimeZone.getDefault());
@@ -187,6 +190,7 @@ public class NewEventActivity extends ActionBarActivity
                 timePicker1.show();
                 break;
 
+            // End time click
             case R.id.event_time_end_button:
                 if (this.new_event_cal_end == null) {
                     this.new_event_cal_end = Calendar.getInstance(TimeZone.getDefault());
@@ -212,6 +216,8 @@ public class NewEventActivity extends ActionBarActivity
                 timePicker2.setTitle(getResources().getString(R.string.select_event_hour));
                 timePicker2.show();
                 break;
+
+            // Submit/Add Event
             case R.id.event_submit:
                 saveNewEvent();
                 break;
@@ -378,6 +384,7 @@ public class NewEventActivity extends ActionBarActivity
         System.out.println(addresses);
     }
 
+    // Save Event
     public void saveNewEvent() {
         if (this.new_event_name != null &&
                 this.new_event_cal_start != null &&
@@ -416,6 +423,11 @@ public class NewEventActivity extends ActionBarActivity
             String uuid = UUID.randomUUID().toString();
             // Event
             Event event = new Event(uuid, name, startDate, endDate, latitude, longitude, description, minLevel, maxParticipants, creator);
+
+            // Adding Creator to participants
+            HashMap<String, User> participants = new HashMap<String, User>();
+            participants.put(creator.getUID(), creator);
+            event.setParticipants(participants);
 
             // Sending to Firebase
             eventManager.sendData(event);

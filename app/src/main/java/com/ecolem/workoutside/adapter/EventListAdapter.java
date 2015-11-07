@@ -5,11 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.helpers.TimeHelper;
+import com.ecolem.workoutside.manager.UserManager;
 import com.ecolem.workoutside.model.Event;
+import com.ecolem.workoutside.model.User;
 
 import java.util.ArrayList;
 
@@ -47,6 +50,8 @@ public class EventListAdapter extends ArrayAdapter<Event> {
         TextView evDesc = (TextView) convertView.findViewById(R.id.event_description);
         TextView evNbParticipants = (TextView) convertView.findViewById(R.id.event_nb_participants);
 
+        ImageView adminIcon = (ImageView) convertView.findViewById(R.id.admin_icon);
+
         // Date
         evDate.setText(TimeHelper.getEventDateStr(event.getDateStart(), false));
         evDate.setVisibility(showDate ? View.VISIBLE : View.GONE);
@@ -63,6 +68,15 @@ public class EventListAdapter extends ArrayAdapter<Event> {
 
         // Description
         evDesc.setText(event.getDescription());
+
+        // Showing admin_icon if current user is creator
+        User currentUser = UserManager.getInstance().getUser();
+        if (currentUser.getUID().equals(event.getCreator().getUID())){
+            adminIcon.setVisibility(View.VISIBLE);
+        }
+        else {
+            adminIcon.setVisibility(View.GONE);
+        }
 
         evNbParticipants.setText((event.getParticipants() != null ? event.getParticipants().size() : 0) + "");
 

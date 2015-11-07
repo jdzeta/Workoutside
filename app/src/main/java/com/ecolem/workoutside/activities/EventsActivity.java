@@ -59,7 +59,6 @@ public class EventsActivity extends ActionBarActivity implements EventManager.Ev
 
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();

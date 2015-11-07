@@ -104,4 +104,6 @@
     <string name="event_update">Mettre à jour</string>
     <string name="event_create">Ajouter</string>
     <string name="event_update_success">L\'événement a bien été mis à jour</string>
+    <string name="my_events_activity_title">Mes événements</string>
+    <string name="event_detail_button_full">Complet</string>
 </resources>

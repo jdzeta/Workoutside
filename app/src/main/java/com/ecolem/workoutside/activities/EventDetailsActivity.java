@@ -31,8 +31,8 @@ import com.firebase.client.FirebaseError;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class EventDetailsActivity extends ActionBarActivity implements EventManager.EventListener, View.OnClickListener {
 
@@ -146,23 +146,31 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
         this.event_detail_location.setText(address);
 
         // Counting participants and filling listView
-
         int pSize = 0;
         if (this.myEvent.getParticipants() != null) {
             pSize = this.myEvent.getParticipants().size();
+
+            // Disable participate button if maxParticipant and user is not in participant list
+            if (this.myEvent.getParticipants().size() == this.myEvent.getMaxParticipants() && this.participate != true){
+                this.event_detail_button_participate.setEnabled(false);
+                this.event_detail_button_participate.setText(getString(R.string.event_detail_button_full));
+            }
+            else {
+                // Setting participation to false, true if user is organizer or participant
+                UserManager userManager = UserManager.getInstance();
+                this.currentUser = userManager.getUser();
+                if (currentUser.getUID().equals(this.myEvent.getCreator().getUID()) || this.isParticipate()) {
+                    this.participate = true;
+                    this.event_detail_button_participate.setEnabled(true);
+                    this.event_detail_button_participate.setText(getString(R.string.event_detail_button_desistate));
+                } else {
+                    this.participate = false;
+                }
+            }
         }
         this.event_detail_nb_participants.setText(pSize + " Participant(s)");
         initParticipantsList();
 
-        // Setting participation to false, true if user is organizer
-        UserManager userManager = UserManager.getInstance();
-        this.currentUser = userManager.getUser();
-        if (currentUser.getUID().equals(this.myEvent.getCreator().getUID()) || this.isParticipate()) {
-            this.participate = true;
-            this.event_detail_button_participate.setText(getString(R.string.event_detail_button_desistate));
-        } else {
-            this.participate = false;
-        }
     }
 
     public boolean isParticipate() {
@@ -302,6 +310,19 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
         return super.onOptionsItemSelected(item);
     }
 
+    public void sendEmailOnDeletedEvent(String email){
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_EMAIL  , email);
+        i.putExtra(Intent.EXTRA_SUBJECT, "Annulation de l'événement : " + this.myEvent.getName());
+        i.putExtra(Intent.EXTRA_TEXT   , "L'événement prévu le " + TimeHelper.getEventDateStr(this.myEvent.getDateStart(), false) + " a été annulé.");
+        try {
+            startActivity(Intent.createChooser(i, "Envoi du mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(getApplicationContext(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     private void showDeleteAlert() {
 
@@ -315,6 +336,10 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
                     public void onClick(DialogInterface dialog, int id) {
                         if (myEvent != null) {
                             EventManager.getInstance().deleteEvent(myEvent.getUID());
+                            // Sending email to each participant
+                            for (Entry<String, User> entry : myEvent.getParticipants().entrySet()){
+                                sendEmailOnDeletedEvent(entry.getValue().getEmail());
+                            }
                             Toast.makeText(EventDetailsActivity.this, getResources().getString(R.string.delete_event_success), Toast.LENGTH_LONG).show();
                             finish();
                         }

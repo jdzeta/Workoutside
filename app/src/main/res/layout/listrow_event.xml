@@ -67,7 +67,7 @@
                 android:id="@+id/event_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Evenement A"
+                android:text="Sans titre"
                 android:textColor="@color/primary"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:maxLines="3"
-                android:text="dklslkfh lskhf sdhfl hsdlfh sldfh slkhjhdfkjhdkfjhdkfjh kdsjhfksjhf dfiuyrisdhfis uiusryirsufhkdh "
+                android:text="Pas de description disponible"
                 android:textColor="@color/gray_dark" />
 
 
@@ -99,12 +99,23 @@
                     android:textSize="16sp" />
 
                 <ImageView
+                    android:id="@+id/participant_icon"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="5dp"
                     android:layout_toLeftOf="@id/event_nb_participants"
                     android:src="@mipmap/participant" />
+
+                <ImageView
+                    android:id="@+id/admin_icon"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@id/participant_icon"
+                    android:src="@mipmap/admin"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignBottom="@+id/participant_icon" />
 
             </RelativeLayout>
         </LinearLayout>

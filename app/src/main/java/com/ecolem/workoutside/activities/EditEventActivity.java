@@ -19,7 +19,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.format.DateFormat;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,7 +34,6 @@ import android.widget.Toast;
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.helpers.GeolocHelper;
 import com.ecolem.workoutside.helpers.TimeHelper;
-import com.ecolem.workoutside.helpers.UserHelper;
 import com.ecolem.workoutside.manager.EventManager;
 import com.ecolem.workoutside.manager.UserManager;
 import com.ecolem.workoutside.model.Event;
@@ -58,7 +56,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
-import java.util.UUID;
 
 public class EditEventActivity extends ActionBarActivity
         implements DatePickerDialog.OnDateSetListener, EventManager.EventListener, AdapterView.OnItemSelectedListener, View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener, LocationListener, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
@@ -153,7 +150,7 @@ public class EditEventActivity extends ActionBarActivity
         this.mMap = mMapFragment.getMap();
         this.mMap.setMyLocationEnabled(true);
         this.mMap.setOnCameraChangeListener(this);
-        //
+        // Setting onMapClickListeners
         this.mMap.setOnMapClickListener(this);
         this.mMap.setOnMapLongClickListener(this);
     }
@@ -394,7 +391,7 @@ public class EditEventActivity extends ActionBarActivity
 
     @Override
     public void onMapLongClick(LatLng latLng) {
-        Toast.makeText(getApplicationContext(), "Long tapped point=" + latLng, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "Long tapped point=" + latLng, Toast.LENGTH_SHORT).show();
         try {
             addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 5);
         } catch (IOException e) {

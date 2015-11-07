@@ -20,6 +20,8 @@ import com.ecolem.workoutside.model.User;
 import com.firebase.client.FirebaseError;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MyEventsActivity extends ActionBarActivity implements EventManager.EventListener {
 
@@ -37,7 +39,7 @@ public class MyEventsActivity extends ActionBarActivity implements EventManager.
         mListView = (ListView) findViewById(R.id.my_events_listview);
 
         ActionBar actionbar = getSupportActionBar();
-        actionbar.setTitle(getResources().getString(R.string.menu_events).toUpperCase());
+        actionbar.setTitle(getResources().getString(R.string.my_events_activity_title).toUpperCase());
         actionbar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.primary)));
 
         //populateEvents();
@@ -92,12 +94,21 @@ public class MyEventsActivity extends ActionBarActivity implements EventManager.
     @Override
     public void onGetEventsSuccess(ArrayList<Event> events) {
         ArrayList<Event> mEvents = new ArrayList<>(events);
-        // Browse events to get only user's events
+        // Browse events to get only events where user is
         currentUser = UserManager.getInstance().getUser();
         myEvents = new ArrayList<>();
         for (Event event : events) {
+            HashMap<String, User> participants = event.getParticipants();
             if (event.getCreator().getUID().equals(currentUser.getUID())) {
                 myEvents.add(event);
+            } else {
+                if (participants != null) {
+                    for (Map.Entry<String, User> entry : participants.entrySet()) {
+                        if (entry.getKey().equals(currentUser.getUID())){
+                            myEvents.add(event);
+                        }
+                    }
+                }
             }
         }
         mAdapter = new EventListAdapter(getApplicationContext(), myEvents);
