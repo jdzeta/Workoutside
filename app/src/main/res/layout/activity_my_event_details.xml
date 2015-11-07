@@ -77,18 +77,23 @@
                     android:src="@mipmap/menu_events" />
 
                 <LinearLayout
+                    android:id="@+id/my_event_details_date_listview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@id/calendar_icon"
-                    android:orientation="vertical"
-                    android:id="@+id/my_event_details_date_listview">
+                    android:descendantFocusability="beforeDescendants"
+                    android:focusableInTouchMode="true"
+                    android:orientation="vertical">
 
                     <EditText
                         android:id="@+id/my_event_details_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:descendantFocusability="beforeDescendants"
+                        android:focusableInTouchMode="true"
+                        android:singleLine="true"
                         android:text="@string/event_detail_datetime" />
 
                     <EditText
@@ -143,17 +148,17 @@
                 android:id="@+id/my_event_details_button_participate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="false"
+                android:layout_alignParentRight="false"
+                android:layout_centerHorizontal="true"
                 android:background="@color/secondary"
-                android:onClick="participateClick"
                 android:gravity="center_vertical|center|center_horizontal"
+                android:onClick="participateClick"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:text="@string/event_detail_button_participate"
                 android:textColor="@color/white"
-                android:textStyle="normal"
-                android:layout_alignParentRight="false"
-                android:layout_alignParentLeft="false"
-                android:layout_centerHorizontal="true"
-                android:paddingRight="5dp"
-                android:paddingLeft="5dp" />
+                android:textStyle="normal" />
 
         </RelativeLayout>
 
@@ -161,14 +166,14 @@
             android:id="@+id/my_event_details_min_level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
             android:background="@android:drawable/btn_dropdown"
-            android:spinnerMode="dropdown"
             android:entries="@array/level_arrays"
             android:prompt="@string/level_prompt"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:spinnerMode="dropdown" />
 
 
         <LinearLayout
@@ -194,29 +199,29 @@
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="10dp">
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
 
             <Button
+                android:id="@+id/my_event_details_cancel"
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/gray_light"
                 android:padding="10dp"
                 android:text="@string/cancel"
-                android:textAllCaps="true"
-                android:id="@+id/my_event_details_cancel" />
+                android:textAllCaps="true" />
 
             <Button
+                android:id="@+id/my_event_details_update"
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Button"
-                android:id="@+id/my_event_details_update" />
+                android:text="New Button" />
 
             <Button
                 android:id="@+id/btn_discard"

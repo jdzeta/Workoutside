@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/gray_light"
 
-    tools:context="com.ecolem.workoutside.activities.EventsListActivity">
+    tools:context="com.ecolem.workoutside.activities.EventsActivity">
 
     <ListView
         android:id="@+id/events_listview"

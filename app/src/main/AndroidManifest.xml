@@ -86,7 +86,7 @@
 
         </activity>
         <activity
-            android:name=".activities.EventsListActivity"
+            android:name=".activities.EventsActivity"
             android:label="@string/title_activity_events"
             android:screenOrientation="portrait">
             <meta-data
@@ -99,7 +99,7 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.EventsListActivity" />
+                android:value=".activities.EventsActivity" />
         </activity>
         <activity
             android:name=".activities.TrainingActivity"
@@ -123,14 +123,24 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.EventsListActivity" />
+                android:value=".activities.EventsActivity" />
         </activity>
         <activity
             android:name=".activities.MyEventsActivity"
-            android:label="@string/title_activity_my_events"></activity>
+            android:label="@string/title_activity_my_events"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.HomeActivity" />
+        </activity>
         <activity
-            android:name=".activities.MyEventDetailsActivity"
-            android:label="@string/title_activity_my_event"></activity>
+            android:name=".activities.EditEventActivity"
+            android:label="@string/title_activity_my_event"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.EventDetailsActivity" />
+        </activity>
     </application>
 
 </manifest>

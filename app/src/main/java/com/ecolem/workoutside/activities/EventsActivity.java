@@ -23,7 +23,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 
-public class EventsListActivity extends ActionBarActivity implements EventManager.EventListener {
+public class EventsActivity extends ActionBarActivity implements EventManager.EventListener {
 
     private ListView mListView;
 

@@ -104,6 +104,11 @@ public class EventManager {
         FirebaseManager.getInstance().getFirebaseRef().child("events").child(uuid).setValue(null);
     }
 
+    public void saveEvent(Event event) {
+        FirebaseManager.getInstance().getFirebaseRef().child("events").child(event.getUID()).setValue(event);
+    }
+
+
     public interface EventListener {
         public void onGetEventSuccess(Event m);
 

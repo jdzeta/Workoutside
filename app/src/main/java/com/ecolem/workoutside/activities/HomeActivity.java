@@ -170,7 +170,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 startActivity(TrainingActivity.class);
                 break;
             case R.id.menu_events:
-                startActivity(EventsListActivity.class);
+                startActivity(EventsActivity.class);
                 break;
             case R.id.menu_my_events:
                 startActivity(MyEventsActivity.class);

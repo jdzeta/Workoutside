@@ -3,7 +3,6 @@ package com.ecolem.workoutside.activities;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Criteria;
@@ -19,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -52,16 +52,18 @@ import java.util.TimeZone;
 import java.util.UUID;
 
 public class NewEventActivity extends ActionBarActivity
-        implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener, AdapterView.OnItemSelectedListener, View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener, LocationListener, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
+        implements DatePickerDialog.OnDateSetListener, AdapterView.OnItemSelectedListener, View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener, LocationListener, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
 
     private EditText new_event_name = null;
     private EditText new_event_description = null;
     private EditText new_event_max_participants = null;
-
-    private LinearLayout new_event_calendar = null;
     private EditText new_event_date_editText = null;
-    private LinearLayout new_event_timepicker = null;
-    private EditText new_event_time_editText = null;
+    private EditText new_event_time_start_editText = null;
+    private EditText new_event_time_end_editText = null;
+    private LinearLayout new_event_date_button = null;
+    private LinearLayout new_event_time_start_button = null;
+    private LinearLayout new_event_time_end_button = null;
+    private Button event_submit_Button = null;
 
     private GoogleMap mMap;
     private Geocoder geocoder;
@@ -73,12 +75,13 @@ public class NewEventActivity extends ActionBarActivity
     private Spinner new_event_location_spinner = null;
     private Spinner new_event_min_level = null;
 
-    private Calendar new_event_cal = null;
+    private Calendar new_event_cal_start = null;
+    private Calendar new_event_cal_end = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_event);
+        setContentView(R.layout.activity_edit_event);
 
         // Setting activity title
         ActionBar actionbar = getSupportActionBar();
@@ -86,29 +89,37 @@ public class NewEventActivity extends ActionBarActivity
         actionbar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.primary)));
 
         // Setting date field
-        this.new_event_date_editText = (EditText) findViewById(R.id.new_event_date);
-        this.new_event_calendar = (LinearLayout) findViewById(R.id.new_event_calendar);
-        this.new_event_calendar.setOnClickListener(this);
+        this.new_event_date_editText = (EditText) findViewById(R.id.event_date);
+        this.new_event_date_button = (LinearLayout) findViewById(R.id.event_date_button);
+        this.new_event_date_button.setOnClickListener(this);
 
-        this.new_event_time_editText = (EditText) findViewById(R.id.new_event_time);
-        this.new_event_timepicker = (LinearLayout) findViewById(R.id.new_event_timepicker);
-        this.new_event_timepicker.setOnClickListener(this);
+        this.new_event_time_start_button = (LinearLayout) findViewById(R.id.event_time_start_button);
+        this.new_event_time_start_button.setOnClickListener(this);
 
+        this.new_event_time_end_button = (LinearLayout) findViewById(R.id.event_time_end_button);
+        this.new_event_time_end_button.setOnClickListener(this);
+
+        this.new_event_time_start_editText = (EditText) findViewById(R.id.event_time_start);
+        this.new_event_time_end_editText = (EditText) findViewById(R.id.event_time_end);
+
+        this.event_submit_Button = (Button) findViewById(R.id.event_submit);
+        this.event_submit_Button.setText(getResources().getString(R.string.event_create));
+        this.event_submit_Button.setOnClickListener(this);
 
         // Map settings
         geocoder = new Geocoder(getApplicationContext(), Locale.FRANCE);
-        mMapFragment = (SupportMapFragment) this.getSupportFragmentManager().findFragmentById(R.id.new_event_map);
+        mMapFragment = (SupportMapFragment) this.getSupportFragmentManager().findFragmentById(R.id.event_map);
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         initMap();
 
         // Spinner setting
-        this.new_event_location_spinner = (Spinner) findViewById(R.id.new_event_location_spinner);
-        this.new_event_min_level = (Spinner) findViewById(R.id.new_event_min_level);
+        this.new_event_location_spinner = (Spinner) findViewById(R.id.event_location_spinner);
+        this.new_event_min_level = (Spinner) findViewById(R.id.event_min_level);
 
         //Setting remaining fields
-        this.new_event_name = (EditText) findViewById(R.id.new_event_name);
-        this.new_event_description = (EditText) findViewById(R.id.new_event_description);
-        this.new_event_max_participants = (EditText) findViewById(R.id.new_event_max_participants);
+        this.new_event_name = (EditText) findViewById(R.id.event_name);
+        this.new_event_description = (EditText) findViewById(R.id.event_description);
+        this.new_event_max_participants = (EditText) findViewById(R.id.event_max_participants);
 
         if (mLocationManager != null) {
             Criteria criteria = new Criteria();
@@ -120,6 +131,7 @@ public class NewEventActivity extends ActionBarActivity
             }
             mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         }
+
     }
 
     private void initMap() {
@@ -135,39 +147,73 @@ public class NewEventActivity extends ActionBarActivity
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.new_event_calendar:
-            case R.id.new_event_date:
-            case R.id.new_event_date_button:
-                if (this.new_event_cal == null) {
-                    this.new_event_cal = Calendar.getInstance(TimeZone.getDefault());
+            case R.id.event_date_button:
+                if (this.new_event_cal_start == null) {
+                    this.new_event_cal_start = Calendar.getInstance(TimeZone.getDefault());
                 }
                 DatePickerDialog datePicker = new DatePickerDialog(this, this,
-                        this.new_event_cal.get(Calendar.YEAR),
-                        this.new_event_cal.get(Calendar.MONTH),
-                        this.new_event_cal.get(Calendar.DAY_OF_MONTH));
+                        this.new_event_cal_start.get(Calendar.YEAR),
+                        this.new_event_cal_start.get(Calendar.MONTH),
+                        this.new_event_cal_start.get(Calendar.DAY_OF_MONTH));
                 datePicker.getDatePicker().setMinDate(new Date().getTime());
                 datePicker.setCancelable(false);
                 datePicker.setTitle(getResources().getString(R.string.select_event_date));
                 datePicker.show();
                 break;
 
-            case R.id.new_event_timepicker:
-            case R.id.new_event_time_button:
-            case R.id.new_event_time:
-                if (this.new_event_cal == null) {
-                    this.new_event_cal = Calendar.getInstance(TimeZone.getDefault());
+            case R.id.event_time_start_button:
+                if (this.new_event_cal_start == null) {
+                    this.new_event_cal_start = Calendar.getInstance(TimeZone.getDefault());
                 }
-                TimePickerDialog timePicker = new TimePickerDialog(this, this,
-                        this.new_event_cal.get(Calendar.HOUR_OF_DAY),
-                        this.new_event_cal.get(Calendar.MINUTE),
+                TimePickerDialog timePicker1 = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        if (NewEventActivity.this.new_event_cal_start == null) {
+                            NewEventActivity.this.new_event_cal_start = Calendar.getInstance();
+                        }
+
+                        new_event_cal_start.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        new_event_cal_start.set(Calendar.MINUTE, minute);
+                        //this.new_event_time = selectedCal.getTime();
+
+                        NewEventActivity.this.new_event_time_start_editText.setText(TimeHelper.getEventHourStr(new_event_cal_start.getTime()));
+                    }
+                },
+                        this.new_event_cal_start.get(Calendar.HOUR_OF_DAY),
+                        this.new_event_cal_start.get(Calendar.MINUTE),
                         DateFormat.is24HourFormat(this));
-                timePicker.setCancelable(false);
-                timePicker.setTitle(getResources().getString(R.string.select_event_hour));
-                timePicker.show();
+                timePicker1.setCancelable(false);
+                timePicker1.setTitle(getResources().getString(R.string.select_event_hour));
+                timePicker1.show();
                 break;
 
-            case R.id.new_event_description:
-                Toast.makeText(getApplicationContext(), "Description", Toast.LENGTH_SHORT).show();
+            case R.id.event_time_end_button:
+                if (this.new_event_cal_end == null) {
+                    this.new_event_cal_end = Calendar.getInstance(TimeZone.getDefault());
+                }
+                TimePickerDialog timePicker2 = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        if (NewEventActivity.this.new_event_cal_end == null) {
+                            NewEventActivity.this.new_event_cal_end = Calendar.getInstance();
+                        }
+
+                        new_event_cal_end.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        new_event_cal_end.set(Calendar.MINUTE, minute);
+                        //this.new_event_time = selectedCal.getTime();
+
+                        NewEventActivity.this.new_event_time_end_editText.setText(TimeHelper.getEventHourStr(new_event_cal_end.getTime()));
+                    }
+                },
+                        this.new_event_cal_end.get(Calendar.HOUR_OF_DAY),
+                        this.new_event_cal_end.get(Calendar.MINUTE),
+                        DateFormat.is24HourFormat(this));
+                timePicker2.setCancelable(false);
+                timePicker2.setTitle(getResources().getString(R.string.select_event_hour));
+                timePicker2.show();
+                break;
+            case R.id.event_submit:
+                saveNewEvent();
                 break;
             default:
                 break;
@@ -195,13 +241,21 @@ public class NewEventActivity extends ActionBarActivity
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-        if (this.new_event_cal == null) {
-            this.new_event_cal = Calendar.getInstance();
+        if (this.new_event_cal_start == null) {
+            this.new_event_cal_start = Calendar.getInstance();
         }
 
-        new_event_cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        new_event_cal.set(Calendar.MONTH, monthOfYear);
-        new_event_cal.set(Calendar.YEAR, year);
+        if (this.new_event_cal_end == null) {
+            this.new_event_cal_end = Calendar.getInstance();
+        }
+
+        new_event_cal_start.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        new_event_cal_start.set(Calendar.MONTH, monthOfYear);
+        new_event_cal_start.set(Calendar.YEAR, year);
+
+        new_event_cal_end.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        new_event_cal_end.set(Calendar.MONTH, monthOfYear);
+        new_event_cal_end.set(Calendar.YEAR, year);
 
         // this.new_event_date = selectedCal.getTime();
 
@@ -209,19 +263,6 @@ public class NewEventActivity extends ActionBarActivity
 
     }
 
-    @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
-        if (this.new_event_cal == null) {
-            this.new_event_cal = Calendar.getInstance();
-        }
-
-        new_event_cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
-        new_event_cal.set(Calendar.MINUTE, minute);
-        //this.new_event_time = selectedCal.getTime();
-
-        this.new_event_time_editText.setText(TimeHelper.getEventHourStr(new_event_cal.getTime()));
-    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -337,9 +378,10 @@ public class NewEventActivity extends ActionBarActivity
         System.out.println(addresses);
     }
 
-    public void saveNewEvent(View view) {
+    public void saveNewEvent() {
         if (this.new_event_name != null &&
-                this.new_event_cal != null &&
+                this.new_event_cal_start != null &&
+                this.new_event_cal_end != null &&
                 this.mMarker != null &&
                 this.new_event_description != null) {
             // Name
@@ -352,23 +394,7 @@ public class NewEventActivity extends ActionBarActivity
             String description = this.new_event_description.getText().toString();
 
             // Min level
-            Integer minLevel;
-            String minLevelString = this.new_event_min_level.getSelectedItem().toString();
-            switch (minLevelString) {
-                case "Débutant":
-                default:
-                    minLevel = 0;
-                    break;
-                case "Intermédiaire":
-                    minLevel = 1;
-                    break;
-                case "Avancé":
-                    minLevel = 2;
-                    break;
-                case "Expert":
-                    minLevel = 3;
-                    break;
-            }
+            Integer minLevel = this.new_event_min_level.getSelectedItemPosition();
 
             // Max users
             Integer maxParticipants = -1;
@@ -378,7 +404,8 @@ public class NewEventActivity extends ActionBarActivity
 
             // Finishing setting date
             //date.setTime(time.getTime());
-            Date date = this.new_event_cal.getTime();
+            Date startDate = this.new_event_cal_start.getTime();
+            Date endDate = this.new_event_cal_end.getTime();
 
             // Preparing event
             EventManager eventManager = new EventManager();
@@ -388,24 +415,14 @@ public class NewEventActivity extends ActionBarActivity
             // UUID
             String uuid = UUID.randomUUID().toString();
             // Event
-            Event event = new Event(uuid, name, date, latitude, longitude, description, minLevel, maxParticipants, creator);
+            Event event = new Event(uuid, name, startDate, endDate, latitude, longitude, description, minLevel, maxParticipants, creator);
+
             // Sending to Firebase
             eventManager.sendData(event);
 
-            // Leaving activity
-            Intent intent = getIntent();
-            String parentActivity = intent.getStringExtra("parentActivity");
-            // Getting parent activity if exists
-            if (parentActivity != null) {
-                if (parentActivity.equals("MyEventsActivity")) {
-                    Intent nextIntent = new Intent(getApplicationContext(), MyEventsActivity.class);
-                    startActivity(nextIntent);
-                }
-            }
-
             finish();
         } else {
-            Toast.makeText(getApplicationContext(), "Veuillez remplir tous les champs svp", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.missing_fields_warning), Toast.LENGTH_SHORT).show();
         }
     }
 }
