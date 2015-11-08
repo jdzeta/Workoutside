@@ -144,6 +144,20 @@ public class Event {
         this.creator = creator;
     }
 
+    public String getMinLevelString(){
+        switch (minLevel) {
+            case 0:
+                return "Débutant";
+            case 1:
+                return "Intermédiaire";
+            case 2:
+                return "Avancé";
+            case 3:
+                return "Expert";
+            default:
+                return "Inconnu";
+        }
+    }
 
     public boolean hasSameDate(Event event) {
         Calendar c1 = Calendar.getInstance();

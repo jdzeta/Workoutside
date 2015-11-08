@@ -14,6 +14,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -55,6 +56,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class EditEventActivity extends ActionBarActivity
@@ -389,6 +391,31 @@ public class EditEventActivity extends ActionBarActivity
         //System.out.println("Address list = " + addressList);
     }
 
+    // Send email over event edition
+    public void sendEmailOnEventEdition(Event event, String email){
+        Intent i = new Intent(Intent.ACTION_SENDTO);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_EMAIL  , "no-reply@workout-side.com");
+        i.setData(Uri.parse("mailto:" + email));
+        // Defining reason mail's object
+        String subject = "Mise à jour de l'événement " + event.getName();
+        String text = "Nouvelles informations concernant l'événement : \n" +
+                "Date de l'événement : " + TimeHelper.getEventDateStr(event.getDateStart(), true)+
+                "Date de début : " + TimeHelper.getEventHourStr(event.getDateStart()) + "\n" +
+                "Date de fin : " + TimeHelper.getEventHourStr(event.getDateEnd()) + "\n" +
+                "Description : " + event.getDescription() + "\n" +
+                "Niveau minimum : " + event.getMinLevelString() + "\n" +
+                "Nombre de participants maximum : " + event.getMaxParticipants()  + "\n" +
+                "Lieu : " + GeolocHelper.getCityFromLatitudeLongitude(getApplicationContext(), event.getLatitude(), event.getLongitude());
+        i.putExtra(Intent.EXTRA_SUBJECT, subject);
+        i.putExtra(Intent.EXTRA_TEXT   , text);
+        try {
+            startActivity(Intent.createChooser(i, "Envoi du mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(getApplicationContext(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     public void onMapLongClick(LatLng latLng) {
         //Toast.makeText(getApplicationContext(), "Long tapped point=" + latLng, Toast.LENGTH_SHORT).show();
@@ -441,6 +468,13 @@ public class EditEventActivity extends ActionBarActivity
             // Sending to Firebase
             eventManager.saveEvent(event);
             Toast.makeText(this, getResources().getString(R.string.event_update_success), Toast.LENGTH_LONG).show();
+
+            // Sending email notification to each participant
+            if (event.getParticipants() != null) {
+                for (Map.Entry<String, User> entry : event.getParticipants().entrySet()) {
+                    sendEmailOnEventEdition(event, entry.getValue().getEmail());
+                }
+            }
 
             finish();
         } else {

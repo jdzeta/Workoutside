@@ -106,4 +106,5 @@
     <string name="event_update_success">L\'événement a bien été mis à jour</string>
     <string name="my_events_activity_title">Mes événements</string>
     <string name="event_detail_button_full">Complet</string>
+    <string name="user_does_not_exists">Utilisateur inconnu</string>
 </resources>

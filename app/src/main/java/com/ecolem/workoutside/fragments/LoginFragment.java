@@ -234,6 +234,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
             case FirebaseError.NETWORK_ERROR:
                 msg = getResources().getString(R.string.network_error);
                 break;
+            case FirebaseError.USER_DOES_NOT_EXIST:
+                msg = getResources().getString(R.string.user_does_not_exists);
+                break;
             default:
                 msg = error.getCode() + "";
                 break;

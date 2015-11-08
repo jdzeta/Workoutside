@@ -116,24 +116,7 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
         this.event_detail_description.setText(description);
 
         // Defining min level
-
-        switch (this.myEvent.getMinLevel()) {
-            case 0:
-                event_detail_min_level.setText(getResources().getString(R.string.level_0));
-                break;
-            case 1:
-                event_detail_min_level.setText(getResources().getString(R.string.level_1));
-                break;
-            case 2:
-                event_detail_min_level.setText(getResources().getString(R.string.level_2));
-                break;
-            case 3:
-                event_detail_min_level.setText(getResources().getString(R.string.level_3));
-                break;
-            default:
-                break;
-        }
-
+        event_detail_min_level.setText(this.myEvent.getMinLevelString());
 
         // Turning Time to Datetime
         this.event_detail_date.setText(TimeHelper.getEventDateStr(this.myEvent.getDateStart(), true));
@@ -310,19 +293,23 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
         return super.onOptionsItemSelected(item);
     }
 
-    public void sendEmailOnDeletedEvent(String email){
-        Intent i = new Intent(Intent.ACTION_SEND);
+    public void sendEmailOnDeletedEvent(Event event, String email){
+        Intent i = new Intent(Intent.ACTION_SENDTO);
         i.setType("message/rfc822");
-        i.putExtra(Intent.EXTRA_EMAIL  , email);
-        i.putExtra(Intent.EXTRA_SUBJECT, "Annulation de l'événement : " + this.myEvent.getName());
-        i.putExtra(Intent.EXTRA_TEXT   , "L'événement prévu le " + TimeHelper.getEventDateStr(this.myEvent.getDateStart(), false) + " a été annulé.");
+        i.putExtra(Intent.EXTRA_EMAIL  , "no-reply@workout-side.com");
+        i.setData(Uri.parse("mailto:" + email));
+        // Defining reason mail's object
+        // Getting minLevel String
+        String subject = "Annulation de l'événement : " + event.getName();
+        String text = "L'événement prévu le " + TimeHelper.getEventDateStr(event.getDateStart(), false) + " a été annulé.";
+        i.putExtra(Intent.EXTRA_SUBJECT, subject);
+        i.putExtra(Intent.EXTRA_TEXT   , text);
         try {
             startActivity(Intent.createChooser(i, "Envoi du mail..."));
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(getApplicationContext(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
         }
     }
-
 
     private void showDeleteAlert() {
 
@@ -338,7 +325,7 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
                             EventManager.getInstance().deleteEvent(myEvent.getUID());
                             // Sending email to each participant
                             for (Entry<String, User> entry : myEvent.getParticipants().entrySet()){
-                                sendEmailOnDeletedEvent(entry.getValue().getEmail());
+                                sendEmailOnDeletedEvent(myEvent, entry.getValue().getEmail());
                             }
                             Toast.makeText(EventDetailsActivity.this, getResources().getString(R.string.delete_event_success), Toast.LENGTH_LONG).show();
                             finish();
