@@ -89,11 +89,7 @@ public class EventManager {
     }
 
     public void pushParticipant(Event event, User user) {
-        if (event.getParticipants() == null) {
-            FirebaseManager.getInstance().getFirebaseRef().child("events").child(event.getUID()).child("participants").child(user.getUID()).setValue(user);
-        } else {
-            FirebaseManager.getInstance().getFirebaseRef().child("events").child(event.getUID()).child("participants").push().setValue(user.getUID(), user);
-        }
+        FirebaseManager.getInstance().getFirebaseRef().child("events").child(event.getUID()).child("participants").child(user.getUID()).setValue(user);
     }
 
     public void removeParticipant(Event event, User user) {

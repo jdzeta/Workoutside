@@ -220,7 +220,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:orientation="vertical"
             android:padding="20dp">
 
@@ -237,7 +237,7 @@
             <ListView
                 android:id="@+id/event_detail_participant_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent" />
 
 
         </LinearLayout>
