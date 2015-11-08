@@ -112,10 +112,39 @@
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_marginRight="5dp"
-                    android:layout_toLeftOf="@id/participant_icon"
+                    android:layout_toLeftOf="@+id/participant_icon"
                     android:src="@mipmap/admin"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignBottom="@+id/participant_icon" />
+                    android:layout_alignParentTop="false"
+                    android:layout_centerVertical="true" />
+
+                <LinearLayout
+                    android:id="@+id/participation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_centerVertical="true">
+
+                    <ImageView
+                        android:id="@+id/participation_check"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginRight="5dp"
+                        android:src="@mipmap/check_sea"
+                        android:layout_alignBottom="@+id/participant_icon"
+                        android:layout_centerVertical="true" />
+                    <TextView
+                        android:id="@+id/participating_label"
+                        android:textColor="@color/secondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/participating_label_true"
+                        android:layout_toRightOf="@+id/participation_check"
+                        android:layout_toEndOf="@+id/participation_check"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp" />
+
+                </LinearLayout>
+
 
             </RelativeLayout>
         </LinearLayout>

@@ -47,7 +47,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class HomeActivity extends ActionBarActivity implements View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener, LocationListener, EventManager.EventListener {
+public class HomeActivity extends ActionBarActivity implements View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener, LocationListener, EventManager.EventListener, GoogleMap.OnMarkerClickListener {
 
     //private static final GeoLocation INITIAL_CENTER = new GeoLocation(37.7789, -122.4017);
     private static final int INITIAL_ZOOM_LEVEL = 14;
@@ -146,6 +146,8 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         //this.mSearchCircle.setFillColor(Color.argb(66, 255, 0, 255));
         //this.mSearchCircle.setStrokeColor(Color.argb(66, 0, 0, 0));
         this.mMarkers = new HashMap<String, Marker>();
+
+        this.mMap.setOnMarkerClickListener(this);
 
         // Setting closest events marker within a range of 500m
         // Getting all events
@@ -381,7 +383,11 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
             // Checking if event is within a range of # around the user current position (in km)
             double range = 0.5;
             if (GeolocHelper.withinRange(from, to, range)){
-                Marker marker = this.mMap.addMarker(new MarkerOptions().position(new LatLng(event.getLatitude(), event.getLongitude())));
+                Marker marker = this.mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(event.getLatitude(), event.getLongitude()))
+                        .title(event.getName())
+                        .snippet(event.getDescription())
+                );
                 this.mMarkers.put(event.getUID(), marker);
                 // Adding event in closests
                 this.closestEvents.add(event);
@@ -393,5 +399,21 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     public void onFail(FirebaseError error) {
 
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        // Browse closest events to start activiy with right event
+        for (Event event : this.closestEvents){
+            if (marker.getTitle().equals(event.getName())){
+                Bundle bundle = new Bundle();
+                bundle.putString("eventUUID", event.getUID());
+                Intent intent = new Intent(getApplicationContext(), EventDetailsActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        }
+        //Toast.makeText(getApplicationContext(), marker.getTitle(), Toast.LENGTH_SHORT).show();// display toast
+        return true;
     }
 }
