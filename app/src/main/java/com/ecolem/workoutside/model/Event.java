@@ -1,5 +1,7 @@
 package com.ecolem.workoutside.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -7,6 +9,7 @@ import java.util.HashMap;
 /**
  * Created by akawa_000 on 23/10/2015.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Event {
 
     private String uid;
@@ -144,20 +147,6 @@ public class Event {
         this.creator = creator;
     }
 
-    public String getMinLevelString(){
-        switch (minLevel) {
-            case 0:
-                return "Débutant";
-            case 1:
-                return "Intermédiaire";
-            case 2:
-                return "Avancé";
-            case 3:
-                return "Expert";
-            default:
-                return "Inconnu";
-        }
-    }
 
     public boolean hasSameDate(Event event) {
         Calendar c1 = Calendar.getInstance();

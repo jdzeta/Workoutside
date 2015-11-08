@@ -33,6 +33,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.ecolem.workoutside.R;
+import com.ecolem.workoutside.helpers.EventHelper;
 import com.ecolem.workoutside.helpers.GeolocHelper;
 import com.ecolem.workoutside.helpers.TimeHelper;
 import com.ecolem.workoutside.manager.EventManager;
@@ -404,7 +405,7 @@ public class EditEventActivity extends ActionBarActivity
                 "Date de début : " + TimeHelper.getEventHourStr(event.getDateStart()) + "\n" +
                 "Date de fin : " + TimeHelper.getEventHourStr(event.getDateEnd()) + "\n" +
                 "Description : " + event.getDescription() + "\n" +
-                "Niveau minimum : " + event.getMinLevelString() + "\n" +
+                "Niveau minimum : " + EventHelper.convertMinLevelToString(event.getMinLevel()) + "\n" +
                 "Nombre de participants maximum : " + event.getMaxParticipants()  + "\n" +
                 "Lieu : " + GeolocHelper.getCityFromLatitudeLongitude(getApplicationContext(), event.getLatitude(), event.getLongitude());
         i.putExtra(Intent.EXTRA_SUBJECT, subject);
