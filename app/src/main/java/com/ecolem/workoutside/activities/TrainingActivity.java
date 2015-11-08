@@ -36,7 +36,7 @@ public class TrainingActivity extends ActionBarActivity implements FirebaseManag
         setContentView(R.layout.activity_training);
 
         ActionBar actionbar = getSupportActionBar();
-        actionbar.setTitle(getResources().getString(R.string.menu_training));
+        actionbar.setTitle(getResources().getString(R.string.menu_training).toUpperCase());
         actionbar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.primary)));
         actionbar.setDisplayHomeAsUpEnabled(true);
 

@@ -106,24 +106,11 @@ public class HomeActivity extends ActionBarActivity implements FirebaseManager.A
             Criteria criteria = new Criteria();
             String provider = mLocationManager.getBestProvider(criteria, true);
 
-            // Location location = mLocationManager.getLastKnownLocation(provider);
-
-            // mLocationManager.requestLocationUpdates(provider, 400, 1000, this); //You can also use LocationManager.GPS_PROVIDER and LocationManager.PASSIVE_PROVIDER
-
-
             Location location = mLocationManager.getLastKnownLocation(provider);
-
-            //if (location != null) {
-            // onLocationChanged(location);
-            //}
-            //
-            //mLocationManager.requestLocationUpdates(provider, 20000, 0, this);
-
 
             if (location != null) {
                 onLocationChanged(location);
             }
-            //mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         }
 
 

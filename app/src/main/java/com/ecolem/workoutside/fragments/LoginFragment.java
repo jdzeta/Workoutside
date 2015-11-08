@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,13 @@ import com.ecolem.workoutside.activities.StartActivity;
 import com.ecolem.workoutside.manager.SharedPreferenceManager;
 import com.ecolem.workoutside.manager.UserManager;
 import com.ecolem.workoutside.model.User;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.firebase.client.FirebaseError;
 
 /**
@@ -38,15 +46,18 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
     private LinearLayout mLoginButtonsPanel = null;
     private LinearLayout mAccountButtonsPanel = null;
     private Button mLoginButton = null;
+    private LoginButton mFBLoginButton = null;
     private Button mCreateAccountButton = null;
     private ProgressBar mProgressBar = null;
 
     private StartActivity mParentActivity = null;
-
+    private CallbackManager mCallbackManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
@@ -64,9 +75,31 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
         mCreateAccountButton = (Button) view.findViewById(R.id.create_button);
         mCreateAccountButton.setOnClickListener(this);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-
         mLoginButtonsPanel = (LinearLayout) view.findViewById(R.id.login_buttons_panel);
         mAccountButtonsPanel = (LinearLayout) view.findViewById(R.id.account_buttons_panel);
+
+
+        mFBLoginButton = (LoginButton) view.findViewById(R.id.fb_login_button);
+        mFBLoginButton.setFragment(this);
+        mCallbackManager = CallbackManager.Factory.create();
+
+        LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Log.i("sandra", "logged in");
+            }
+
+            @Override
+            public void onCancel() {
+                Log.i("sandra", "logged in");
+            }
+
+            @Override
+            public void onError(FacebookException e) {
+                Log.i("sandra", "error : " + e.getMessage());
+
+            }
+        });
 
 
         return view;
@@ -193,7 +226,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
 
     /**
      * USER CALLBACKS
-     **/
+     */
 
     @Override
     public void onLoginSuccess(String uid) {
@@ -246,5 +279,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
         updateDisplay();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+    }
 
 }

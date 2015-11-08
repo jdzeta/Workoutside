@@ -127,7 +127,7 @@ public class AccountActivity extends AppCompatActivity implements FirebaseManage
     private void initActionBar() {
 
         ActionBar actionbar = getSupportActionBar();
-        actionbar.setTitle(getResources().getString(R.string.menu_profile));
+        actionbar.setTitle(getResources().getString(R.string.menu_profile).toUpperCase());
         actionbar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.primary)));
         actionbar.setDisplayHomeAsUpEnabled(true);
     }
