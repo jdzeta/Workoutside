@@ -1,5 +1,6 @@
 package com.ecolem.workoutside.activities;
 
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,8 +12,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.ecolem.workoutside.R;
+import com.ecolem.workoutside.database.FirebaseManager;
 import com.ecolem.workoutside.fragments.MoveFragment;
 import com.ecolem.workoutside.manager.TrainingManager;
 import com.ecolem.workoutside.model.Movement;
@@ -20,7 +23,7 @@ import com.firebase.client.FirebaseError;
 
 import java.util.ArrayList;
 
-public class TrainingActivity extends ActionBarActivity implements TrainingManager.MoveListener {
+public class TrainingActivity extends ActionBarActivity implements FirebaseManager.AuthenticationListener, TrainingManager.MoveListener {
 
     private ViewPager mViewPager = null;
     private PagerAdapter mPagerAdapter;
@@ -44,7 +47,7 @@ public class TrainingActivity extends ActionBarActivity implements TrainingManag
     @Override
     protected void onStart() {
         super.onStart();
-
+        FirebaseManager.getInstance().register(this);
         TrainingManager.getInstance().startGetMoves(this);
     }
 
@@ -90,5 +93,15 @@ public class TrainingActivity extends ActionBarActivity implements TrainingManag
         }
     }
 
+    @Override
+    public void onUserIsLogged(boolean isLogged) {
+        if (!isLogged) {
+            Toast.makeText(this, "Vous êtes déconnecté", Toast.LENGTH_LONG).show();
+            Intent newIntent = new Intent(TrainingActivity.this, StartActivity.class);
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(newIntent);
+        }
+    }
 
 }

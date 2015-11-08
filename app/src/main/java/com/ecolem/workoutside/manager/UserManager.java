@@ -37,6 +37,7 @@ public class UserManager {
         FirebaseManager.getInstance().getFirebaseRef().child("users").child(user.getUID()).setValue(user);
     }
 
+
     public void createAccount(final String email, final String password, final UserListener listener) {
 
         FirebaseManager.getInstance().getFirebaseRef().createUser(email, password, new Firebase.ResultHandler() {
@@ -93,9 +94,10 @@ public class UserManager {
         FirebaseManager.getInstance().getFirebaseRef().unauth();
     }
 
+
     /**
      * Listeners
-     **/
+     */
 
     public interface UserListener {
         void onLoginSuccess(String uid);

@@ -1,11 +1,9 @@
 package com.ecolem.workoutside.activities;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
@@ -14,7 +12,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -33,6 +30,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.ecolem.workoutside.R;
+import com.ecolem.workoutside.database.FirebaseManager;
+import com.ecolem.workoutside.helpers.EventHelper;
 import com.ecolem.workoutside.helpers.GeolocHelper;
 import com.ecolem.workoutside.helpers.TimeHelper;
 import com.ecolem.workoutside.manager.EventManager;
@@ -56,13 +55,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.TimeZone;
 
-public class EditEventActivity extends ActionBarActivity
-        implements DatePickerDialog.OnDateSetListener, EventManager.EventListener, AdapterView.OnItemSelectedListener, View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener, LocationListener, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
+public class EditEventActivity extends ActionBarActivity implements FirebaseManager.AuthenticationListener, DatePickerDialog.OnDateSetListener, EventManager.EventListener, AdapterView.OnItemSelectedListener, View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener, LocationListener, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
 
-    private Event myEvent = null;
+    private Event mEvent = null;
 
     private EditText event_name = null;
     private EditText event_description = null;
@@ -236,11 +233,15 @@ public class EditEventActivity extends ActionBarActivity
     @Override
     protected void onStart() {
         super.onStart();
+
+        FirebaseManager.getInstance().register(this);
+
         // Getting selected event
         Bundle bundle = getIntent().getExtras();
         String evUuid = bundle.getString("eventUUID");
         EventManager eventManager = EventManager.getInstance();
         eventManager.getEvent(evUuid, this);
+
 
     }
 
@@ -361,14 +362,18 @@ public class EditEventActivity extends ActionBarActivity
 
     @Override
     public void onMapClick(LatLng latLng) {
+        addMarker(latLng.latitude, latLng.longitude);
+    }
+
+    private void addMarker(double latitude, double longitude) {
         //Toast.makeText(getApplicationContext(), "Tapped point=" + latLng, Toast.LENGTH_SHORT).show();
         try {
-            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 5);
+            addresses = geocoder.getFromLocation(latitude, longitude, 5);
         } catch (IOException e) {
             e.printStackTrace();
         }
         cleanMap();
-        this.mMarker = this.mMap.addMarker(new MarkerOptions().position(latLng));
+        this.mMarker = this.mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)));
 
         /*GroupListAdapter adapter = new GroupListAdapter(this, groups);
 
@@ -389,31 +394,6 @@ public class EditEventActivity extends ActionBarActivity
         event_location_spinner.setAdapter(addressListAdapter);
 
         //System.out.println("Address list = " + addressList);
-    }
-
-    // Send email over event edition
-    public void sendEmailOnEventEdition(Event event, String email){
-        Intent i = new Intent(Intent.ACTION_SENDTO);
-        i.setType("message/rfc822");
-        i.putExtra(Intent.EXTRA_EMAIL  , "no-reply@workout-side.com");
-        i.setData(Uri.parse("mailto:" + email));
-        // Defining reason mail's object
-        String subject = "Mise à jour de l'événement " + event.getName();
-        String text = "Nouvelles informations concernant l'événement : \n" +
-                "Date de l'événement : " + TimeHelper.getEventDateStr(event.getDateStart(), true)+
-                "Date de début : " + TimeHelper.getEventHourStr(event.getDateStart()) + "\n" +
-                "Date de fin : " + TimeHelper.getEventHourStr(event.getDateEnd()) + "\n" +
-                "Description : " + event.getDescription() + "\n" +
-                "Niveau minimum : " + event.getMinLevelString() + "\n" +
-                "Nombre de participants maximum : " + event.getMaxParticipants()  + "\n" +
-                "Lieu : " + GeolocHelper.getCityFromLatitudeLongitude(getApplicationContext(), event.getLatitude(), event.getLongitude());
-        i.putExtra(Intent.EXTRA_SUBJECT, subject);
-        i.putExtra(Intent.EXTRA_TEXT   , text);
-        try {
-            startActivity(Intent.createChooser(i, "Envoi du mail..."));
-        } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(getApplicationContext(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override
@@ -463,18 +443,11 @@ public class EditEventActivity extends ActionBarActivity
             User creator = userManager.getUser();
 
             // Event
-            Event event = new Event(this.myEvent.getUID(), name, startDate, endDate, latitude, longitude, description, minLevel, maxParticipants, creator);
+            Event event = new Event(this.mEvent.getUID(), name, startDate, endDate, latitude, longitude, description, minLevel, maxParticipants, creator);
 
             // Sending to Firebase
-            eventManager.saveEvent(event);
+            eventManager.saveEvent(this, event);
             Toast.makeText(this, getResources().getString(R.string.event_update_success), Toast.LENGTH_LONG).show();
-
-            // Sending email notification to each participant
-            if (event.getParticipants() != null) {
-                for (Map.Entry<String, User> entry : event.getParticipants().entrySet()) {
-                    sendEmailOnEventEdition(event, entry.getValue().getEmail());
-                }
-            }
 
             finish();
         } else {
@@ -486,29 +459,14 @@ public class EditEventActivity extends ActionBarActivity
     public void settingViews() {
 
         // Event description
-        this.event_name.setText(this.myEvent.getName());
+        this.event_name.setText(this.mEvent.getName());
 
         // Event description
-        this.event_description.setText(this.myEvent.getDescription());
+        this.event_description.setText(this.mEvent.getDescription());
 
         // Defining min level
-        String minLevel; //the value you want the position for
-        // Getting minLevel
-        switch (this.myEvent.getMinLevel()) {
-            case 0:
-            default:
-                minLevel = getResources().getString(R.string.level_0);
-                break;
-            case 1:
-                minLevel = getResources().getString(R.string.level_1);
-                break;
-            case 2:
-                minLevel = getResources().getString(R.string.level_2);
-                break;
-            case 3:
-                minLevel = getResources().getString(R.string.level_3);
-                break;
-        }
+        String minLevel = EventHelper.getLevelStr(this, this.mEvent.getMinLevel());
+
         ArrayAdapter myAdap = (ArrayAdapter) this.event_min_level.getAdapter(); //cast to an ArrayAdapter
         int spinnerPosition = myAdap.getPosition(minLevel);
         //set the default according to value
@@ -516,27 +474,28 @@ public class EditEventActivity extends ActionBarActivity
 
         // Turning Time to Datetime
         this.event_cal_start = Calendar.getInstance();
-        this.event_cal_start.setTime(this.myEvent.getDateStart());
+        this.event_cal_start.setTime(this.mEvent.getDateStart());
         this.event_cal_end = Calendar.getInstance();
-        this.event_cal_end.setTime(this.myEvent.getDateEnd());
+        this.event_cal_end.setTime(this.mEvent.getDateEnd());
 
-        this.event_date_editText.setText(TimeHelper.getEventShortDateStr(this.myEvent.getDateStart()));
-        this.event_time_start_editText.setText(TimeHelper.getEventHourStr(this.myEvent.getDateStart()));
-        this.event_time_end_editText.setText(TimeHelper.getEventHourStr(this.myEvent.getDateEnd()));
+        this.event_date_editText.setText(TimeHelper.getEventShortDateStr(this.mEvent.getDateStart()));
+        this.event_time_start_editText.setText(TimeHelper.getEventHourStr(this.mEvent.getDateStart()));
+        this.event_time_end_editText.setText(TimeHelper.getEventHourStr(this.mEvent.getDateEnd()));
+
+        this.event_max_participants.setText(this.mEvent.getMaxParticipants() + "");
+
 
         // Turning location to address
-        String address = GeolocHelper.getCityFromLatitudeLongitude(this, this.myEvent.getLatitude(), this.myEvent.getLongitude());
-        // TODO map location
-        //this.my_event_details_location.setText(address);
-
+        // String address = GeolocHelper.getCityFromLatitudeLongitude(this, this.mEvent.getLatitude(), this.mEvent.getLongitude());
+        addMarker(this.mEvent.getLatitude(), this.mEvent.getLongitude());
     }
 
 
     @Override
     public void onGetEventSuccess(Event event) {
         if (event != null) {
-            this.myEvent = event;
-            mActionBar.setTitle(this.myEvent.getName());
+            this.mEvent = event;
+            mActionBar.setTitle(this.mEvent.getName());
 
             settingViews();
         }
@@ -557,14 +516,10 @@ public class EditEventActivity extends ActionBarActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == android.R.id.home) {
-            if (this.myEvent != null) {
+            if (this.mEvent != null) {
                 goBack();
             }
             return true;
@@ -574,45 +529,28 @@ public class EditEventActivity extends ActionBarActivity
     }
 
     private void goBack() {
-        if (this.myEvent != null) {
+        if (this.mEvent != null) {
             Intent returnIntent = new Intent();
-            returnIntent.putExtra("eventUUID", this.myEvent.getUID());
+            returnIntent.putExtra("eventUUID", this.mEvent.getUID());
             setResult(Activity.RESULT_OK, returnIntent);
             finish();
         }
-    }
-
-
-    private void showDeleteAlert() {
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle(getResources().getString(R.string.delete));
-
-        alertDialogBuilder
-                .setMessage(getResources().getString(R.string.delete_event_alert))
-                .setCancelable(false)
-                .setPositiveButton(getResources().getString(R.string.action_delete), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        if (myEvent != null) {
-                            EventManager.getInstance().deleteEvent(myEvent.getUID());
-                            Toast.makeText(EditEventActivity.this, getResources().getString(R.string.delete_event_success), Toast.LENGTH_LONG).show();
-                            finish();
-                        }
-                    }
-                })
-                .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         goBack();
+    }
+
+    @Override
+    public void onUserIsLogged(boolean isLogged) {
+        if (!isLogged) {
+            Toast.makeText(this, "Vous êtes déconnecté", Toast.LENGTH_LONG).show();
+            Intent newIntent = new Intent(EditEventActivity.this, StartActivity.class);
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(newIntent);
+        }
     }
 }

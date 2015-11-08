@@ -20,9 +20,11 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.WorkoutSide;
+import com.ecolem.workoutside.database.FirebaseManager;
 import com.ecolem.workoutside.manager.UserManager;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -43,7 +45,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class HomeActivity extends ActionBarActivity implements View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener, LocationListener {
+public class HomeActivity extends ActionBarActivity implements FirebaseManager.AuthenticationListener, View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener, LocationListener {
 
     //private static final GeoLocation INITIAL_CENTER = new GeoLocation(37.7789, -122.4017);
     private static final int INITIAL_ZOOM_LEVEL = 14;
@@ -119,6 +121,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     protected void onStart() {
         super.onStart();
+        FirebaseManager.getInstance().register(this);
 
         //initMap();
     }
@@ -352,5 +355,16 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    @Override
+    public void onUserIsLogged(boolean isLogged) {
+        if (!isLogged) {
+            Toast.makeText(this, "Vous êtes déconnecté", Toast.LENGTH_LONG).show();
+            Intent newIntent = new Intent(HomeActivity.this, StartActivity.class);
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(newIntent);
+        }
     }
 }
