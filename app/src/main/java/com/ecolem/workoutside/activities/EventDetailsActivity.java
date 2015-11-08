@@ -125,6 +125,7 @@ public class EventDetailsActivity extends ActionBarActivity implements FirebaseM
         // Defining min level
         event_detail_min_level.setText(EventHelper.getLevelStr(this, this.myEvent.getMinLevel()));
 
+
         // Turning Time to Datetime
         this.event_detail_date.setText(TimeHelper.getEventDateStr(this.myEvent.getDateStart(), true));
         this.event_detail_time_start.setText(TimeHelper.getEventHourStr(this.myEvent.getDateStart()));
@@ -135,20 +136,23 @@ public class EventDetailsActivity extends ActionBarActivity implements FirebaseM
         String address = GeolocHelper.getCityFromLatitudeLongitude(this, this.myEvent.getLatitude(), this.myEvent.getLongitude());
         this.event_detail_location.setText(address);
 
+        // Setting current user
+        UserManager userManager = UserManager.getInstance();
+        this.currentUser = userManager.getUser();
+
         // Counting participants and filling listView
         int pSize = 0;
         if (this.myEvent.getParticipants() != null) {
             pSize = this.myEvent.getParticipants().size();
 
             // Disable participate button if maxParticipant and user is not in participant list
-            if (this.myEvent.getParticipants().size() == this.myEvent.getMaxParticipants() && this.participate != true) {
+            if (this.myEvent.getParticipants().size() == this.myEvent.getMaxParticipants() && !isParticipate()) {
+
                 this.event_detail_button_participate.setEnabled(false);
                 this.event_detail_button_participate.setText(getString(R.string.event_detail_button_full));
             } else {
                 // Setting participation to false, true if user is organizer or participant
-                UserManager userManager = UserManager.getInstance();
-                this.currentUser = userManager.getUser();
-                if (currentUser.getUID().equals(this.myEvent.getCreator().getUID()) || this.isParticipate()) {
+                if (currentUser.getUID().equals(this.myEvent.getCreator().getUID()) || !isParticipate()) {
                     this.participate = true;
                     this.event_detail_button_participate.setEnabled(true);
                     this.event_detail_button_participate.setText(getString(R.string.event_detail_button_desistate));
@@ -167,7 +171,6 @@ public class EventDetailsActivity extends ActionBarActivity implements FirebaseM
         if (participants != null) {
             // Setting participants listView
             // Setting participants in Arraylist
-            ArrayList<User> users = new ArrayList<>();
             for (Map.Entry<String, User> entry : participants.entrySet()) {
                 if (entry.getKey().equals(this.currentUser.getUID())) {
                     return true;

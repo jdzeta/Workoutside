@@ -141,8 +141,8 @@ public class HomeActivity extends ActionBarActivity implements FirebaseManager.A
         //this.mSearchCircle.setFillColor(Color.argb(66, 255, 0, 255));
         //this.mSearchCircle.setStrokeColor(Color.argb(66, 0, 0, 0));
         this.mMarkers = new HashMap<String, Marker>();
-        // this.mMap.addMarker(new MarkerOptions().position(new LatLng(INITIAL_CENTER.latitude, INITIAL_CENTER.longitude)).title("My Home").snippet("Home Address"));
 
+        // this.mMap.addMarker(new MarkerOptions().position(new LatLng(INITIAL_CENTER.latitude, INITIAL_CENTER.longitude)).title("My Home").snippet("Home Address"));
 
     }
 

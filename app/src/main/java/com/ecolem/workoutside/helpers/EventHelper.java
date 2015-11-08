@@ -3,7 +3,6 @@ package com.ecolem.workoutside.helpers;
 import android.content.Context;
 
 import com.ecolem.workoutside.R;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Created by Sandra on 08/11/15.
@@ -25,5 +24,6 @@ public class EventHelper {
                 return "";
         }
     }
+
 
 }

@@ -396,6 +396,7 @@ public class EditEventActivity extends ActionBarActivity implements FirebaseMana
         //System.out.println("Address list = " + addressList);
     }
 
+
     @Override
     public void onMapLongClick(LatLng latLng) {
         //Toast.makeText(getApplicationContext(), "Long tapped point=" + latLng, Toast.LENGTH_SHORT).show();
