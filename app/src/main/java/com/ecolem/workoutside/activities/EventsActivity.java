@@ -107,7 +107,13 @@ public class EventsActivity extends ActionBarActivity implements EventManager.Ev
 
     @Override
     public void onGetEventsSuccess(ArrayList<Event> events) {
-        mEvents = events;
+        // Checking and getting events which date is not past
+        Date now = new Date();
+        for (Event event : events){
+            if (event.getDateStart().after(now)){
+                mEvents.add(event);
+            }
+        }
         mAdapter = new EventListAdapter(getApplicationContext(), mEvents);
         mListView.setAdapter(mAdapter);
     }
