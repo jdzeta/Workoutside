@@ -4,6 +4,8 @@ import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 
+import com.firebase.geofire.GeoLocation;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -50,5 +52,23 @@ public class GeolocHelper {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static boolean withinRange(GeoLocation from, GeoLocation to, double distance){
+        double latDistance = Math.toRadians(from.latitude - to.latitude);
+        double lngDistance = Math.toRadians(from.longitude - to.longitude);
+        double a = (Math.sin(latDistance / 2) * Math.sin(latDistance / 2)) +
+                (Math.cos(Math.toRadians(from.latitude))) *
+                        (Math.cos(Math.toRadians(to.latitude))) *
+                        (Math.sin(lngDistance / 2)) *
+                        (Math.sin(lngDistance / 2));
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        double dist = 6371 * c;
+        if (dist <= distance){
+            return true;
+        }
+        return false;
     }
 }

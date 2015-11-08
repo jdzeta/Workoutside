@@ -152,7 +152,7 @@ public class EventDetailsActivity extends ActionBarActivity implements FirebaseM
                 this.event_detail_button_participate.setText(getString(R.string.event_detail_button_full));
             } else {
                 // Setting participation to false, true if user is organizer or participant
-                if (currentUser.getUID().equals(this.myEvent.getCreator().getUID()) || !isParticipate()) {
+                if (currentUser.getUID().equals(this.myEvent.getCreator().getUID()) || isParticipate()) {
                     this.participate = true;
                     this.event_detail_button_participate.setEnabled(true);
                     this.event_detail_button_participate.setText(getString(R.string.event_detail_button_desistate));

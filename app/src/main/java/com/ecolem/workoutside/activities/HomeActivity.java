@@ -25,8 +25,13 @@ import android.widget.Toast;
 
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.WorkoutSide;
+
 import com.ecolem.workoutside.database.FirebaseManager;
+
+import com.ecolem.workoutside.helpers.GeolocHelper;
+import com.ecolem.workoutside.manager.EventManager;
 import com.ecolem.workoutside.manager.UserManager;
+import com.ecolem.workoutside.model.Event;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.geofire.GeoFire;
@@ -42,11 +47,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class HomeActivity extends ActionBarActivity implements FirebaseManager.AuthenticationListener, View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener, LocationListener {
+public class HomeActivity extends ActionBarActivity implements FirebaseManager.AuthenticationListener, View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener, LocationListener, EventManager.EventListener, GoogleMap.OnMarkerClickListener {
+
 
     //private static final GeoLocation INITIAL_CENTER = new GeoLocation(37.7789, -122.4017);
     private static final int INITIAL_ZOOM_LEVEL = 14;
@@ -64,7 +71,10 @@ public class HomeActivity extends ActionBarActivity implements FirebaseManager.A
     private GeoQuery mGeoQuery;
     private Map<String, Marker> mMarkers;
 
+    private ArrayList<Event> closestEvents;
+
     private LocationManager mLocationManager;
+    private LatLng userLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +134,7 @@ public class HomeActivity extends ActionBarActivity implements FirebaseManager.A
         super.onStart();
         FirebaseManager.getInstance().register(this);
 
+        EventManager.getInstance().startGetEventsComing(this);
         //initMap();
     }
 
@@ -142,6 +153,11 @@ public class HomeActivity extends ActionBarActivity implements FirebaseManager.A
         //this.mSearchCircle.setFillColor(Color.argb(66, 255, 0, 255));
         //this.mSearchCircle.setStrokeColor(Color.argb(66, 0, 0, 0));
         this.mMarkers = new HashMap<String, Marker>();
+
+        this.mMap.setOnMarkerClickListener(this);
+
+        // Setting closest events marker within a range of 500m
+        // Getting all events
 
         // this.mMap.addMarker(new MarkerOptions().position(new LatLng(INITIAL_CENTER.latitude, INITIAL_CENTER.longitude)).title("My Home").snippet("Home Address"));
 
@@ -304,6 +320,8 @@ public class HomeActivity extends ActionBarActivity implements FirebaseManager.A
         Log.i("sandra", "location changed");
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
+        this.userLocation = latLng;
+
         if (this.mMap != null) {
             this.mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
             this.mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
@@ -360,6 +378,7 @@ public class HomeActivity extends ActionBarActivity implements FirebaseManager.A
     }
 
     @Override
+
     public void onUserIsLogged(boolean isLogged) {
         if (!isLogged) {
             Toast.makeText(this, "Vous êtes déconnecté", Toast.LENGTH_LONG).show();
@@ -368,5 +387,53 @@ public class HomeActivity extends ActionBarActivity implements FirebaseManager.A
             newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(newIntent);
         }
+    }
+
+    public void onGetEventSuccess(Event m) {
+    }
+
+    @Override
+    public void onGetEventsSuccess(ArrayList<Event> events) {
+        this.closestEvents = new ArrayList<>();
+        GeoLocation from = new GeoLocation(this.userLocation.latitude, this.userLocation.longitude);
+        for (Event event : events) {
+            // Getting event location
+            GeoLocation to = new GeoLocation(event.getLatitude(), event.getLongitude());
+            // Checking if event is within a range of # around the user current position (in km)
+            double range = 0.5;
+            if (GeolocHelper.withinRange(from, to, range)) {
+                Marker marker = this.mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(event.getLatitude(), event.getLongitude()))
+                                .title(event.getName())
+                                .snippet(event.getDescription())
+                );
+                this.mMarkers.put(event.getUID(), marker);
+                // Adding event in closests
+                this.closestEvents.add(event);
+                System.out.println(this.closestEvents);
+            }
+        }
+    }
+
+    @Override
+    public void onFail(FirebaseError error) {
+
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        // Browse closest events to start activiy with right event
+        for (Event event : this.closestEvents) {
+            if (marker.getTitle().equals(event.getName())) {
+                Bundle bundle = new Bundle();
+                bundle.putString("eventUUID", event.getUID());
+                Intent intent = new Intent(getApplicationContext(), EventDetailsActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        }
+        //Toast.makeText(getApplicationContext(), marker.getTitle(), Toast.LENGTH_SHORT).show();// display toast
+        return true;
+
     }
 }

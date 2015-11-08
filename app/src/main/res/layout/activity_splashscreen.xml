@@ -58,6 +58,7 @@
             android:gravity="center"
             android:text="@string/app_slogan"
             android:textColor="@color/secondary"
+            android:textStyle="italic"
             android:textSize="20sp"/>
 
     </LinearLayout>

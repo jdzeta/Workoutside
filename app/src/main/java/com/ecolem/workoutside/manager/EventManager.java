@@ -99,7 +99,8 @@ public class EventManager {
     }
 
     public void pushParticipant(Event event, User user) {
-        if(event != null && user != null) {
+
+        if (event != null && user != null) {
             FirebaseManager.getInstance().getFirebaseRef().child("events").child(event.getUID()).child("participants").child(user.getUID()).setValue(user);
         }
     }
