@@ -55,6 +55,7 @@ public class MyEventsActivity extends ActionBarActivity implements FirebaseManag
                 Intent intent = new Intent(getApplicationContext(), EventDetailsActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
+                MyEventsActivity.this.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
             }
         });
 
@@ -83,6 +84,10 @@ public class MyEventsActivity extends ActionBarActivity implements FirebaseManag
         if (id == R.id.action_add_event) {
             Intent intent = new Intent(getApplication(), NewEventActivity.class);
             startActivity(intent);
+            return true;
+        } else if (id == android.R.id.home) {
+            finish();
+            this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
             return true;
         }
 
@@ -133,5 +138,11 @@ public class MyEventsActivity extends ActionBarActivity implements FirebaseManag
             newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(newIntent);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
     }
 }

@@ -39,7 +39,6 @@ public class SplashscreenActivity extends Activity {
 
                 Intent mainIntent = new Intent(SplashscreenActivity.this, StartActivity.class);
                 SplashscreenActivity.this.startActivity(mainIntent);
-                SplashscreenActivity.this.finish();
                 overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
             }
         }, 3000);

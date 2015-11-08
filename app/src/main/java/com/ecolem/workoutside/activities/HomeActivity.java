@@ -1,6 +1,7 @@
 package com.ecolem.workoutside.activities;
 
 
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -190,8 +191,7 @@ public class HomeActivity extends ActionBarActivity implements FirebaseManager.A
 
         Intent intent = new Intent(HomeActivity.this, c);
         startActivity(intent);
-        this.overridePendingTransition(android.R.anim.slide_in_left,
-                android.R.anim.slide_out_right);
+        this.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
 
     }
 
@@ -344,7 +344,9 @@ public class HomeActivity extends ActionBarActivity implements FirebaseManager.A
                 .setPositiveButton(getResources().getString(R.string.leave), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         UserManager.getInstance().logout();
+                        HomeActivity.this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
                         HomeActivity.this.finish();
+
                     }
                 })
                 .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {

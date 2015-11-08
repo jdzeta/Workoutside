@@ -55,6 +55,7 @@ public class EventsActivity extends ActionBarActivity implements FirebaseManager
                 Intent intent = new Intent(getApplicationContext(), EventDetailsActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
+                EventsActivity.this.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
             }
         });
         //EventManager.getInstance().startGetEventsComing(this);
@@ -98,6 +99,10 @@ public class EventsActivity extends ActionBarActivity implements FirebaseManager
             Intent intent = new Intent(getApplication(), NewEventActivity.class);
             startActivity(intent);
             return true;
+        } else if (id == android.R.id.home) {
+            finish();
+            this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -113,8 +118,8 @@ public class EventsActivity extends ActionBarActivity implements FirebaseManager
     public void onGetEventsSuccess(ArrayList<Event> events) {
         // Checking and getting events which date is not past
         Date now = new Date();
-        for (Event event : events){
-            if (event.getDateStart().after(now)){
+        for (Event event : events) {
+            if (event.getDateStart().after(now)) {
                 mEvents.add(event);
             }
         }
@@ -136,5 +141,11 @@ public class EventsActivity extends ActionBarActivity implements FirebaseManager
             newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(newIntent);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
     }
 }

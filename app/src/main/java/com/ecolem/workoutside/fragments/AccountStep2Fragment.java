@@ -133,6 +133,7 @@ public class AccountStep2Fragment extends Fragment implements View.OnClickListen
         createUserWithUID(uid);
         Intent intent = new Intent(getActivity(), HomeActivity.class);
         startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
     }
 
     @Override

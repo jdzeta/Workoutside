@@ -288,14 +288,20 @@ public class EventDetailsActivity extends ActionBarActivity implements FirebaseM
             bundle.putString("eventUUID", this.eventUUID);
             Intent intent = new Intent(getApplicationContext(), EditEventActivity.class);
             intent.putExtras(bundle);
+            this.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
             startActivity(intent);
             return true;
         } else if (id == R.id.action_delete_event) {
             showDeleteAlert();
             return true;
         }
-        if (id == R.id.action_share_event) {
+       else  if (id == R.id.action_share_event) {
             //TODO
+            return true;
+        }
+        else  if (id == android.R.id.home) {
+            finish();
+            this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
             return true;
         }
 
@@ -316,7 +322,9 @@ public class EventDetailsActivity extends ActionBarActivity implements FirebaseM
                         if (myEvent != null) {
                             EventManager.getInstance().deleteEvent(EventDetailsActivity.this, myEvent);
                             Toast.makeText(EventDetailsActivity.this, getResources().getString(R.string.delete_event_success), Toast.LENGTH_LONG).show();
+                            EventDetailsActivity.this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
                             finish();
+
                         }
                     }
                 })
@@ -354,5 +362,11 @@ public class EventDetailsActivity extends ActionBarActivity implements FirebaseM
             newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(newIntent);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
     }
 }

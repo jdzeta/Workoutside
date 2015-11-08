@@ -214,6 +214,10 @@ public class AccountActivity extends AppCompatActivity implements FirebaseManage
         if (id == R.id.action_logout) {
             showLogoutAlert();
             return true;
+        } else  if (id == android.R.id.home) {
+            finish();
+            this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -256,5 +260,11 @@ public class AccountActivity extends AppCompatActivity implements FirebaseManage
             newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(newIntent);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
     }
 }

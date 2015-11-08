@@ -199,6 +199,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
     public void onLoginSuccess(String uid) {
         Intent intent = new Intent(getActivity(), HomeActivity.class);
         startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
     }
 
     @Override
