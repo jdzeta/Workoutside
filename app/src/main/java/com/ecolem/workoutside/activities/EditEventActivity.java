@@ -422,8 +422,8 @@ public class EditEventActivity extends ActionBarActivity implements FirebaseMana
             // Sending to Firebase
             eventManager.saveEvent(this, event);
             Toast.makeText(this, getResources().getString(R.string.event_update_success), Toast.LENGTH_LONG).show();
-            this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-            finish();
+
+            goBack();
         } else {
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.missing_fields_warning), Toast.LENGTH_SHORT).show();
         }

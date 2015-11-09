@@ -63,7 +63,8 @@
                     android:layout_weight="3"
                     android:descendantFocusability="beforeDescendants"
                     android:focusableInTouchMode="true"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textColor="@color/gray_dark" />
 
             </LinearLayout>
 
@@ -84,7 +85,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textColor="@color/gray_dark" />
 
             </LinearLayout>
 
@@ -143,7 +145,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:editable="false"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textColor="@color/gray_dark" />
 
             </LinearLayout>
 
@@ -177,7 +180,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textColor="@color/gray_dark" />
 
             </LinearLayout>
 
@@ -186,21 +190,23 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:singleLine="true"
                     android:text="@string/account_password" />
+
 
                 <EditText
                     android:id="@+id/edit_password"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="3"
                     android:inputType="textPassword"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textColor="@color/gray_dark" />
 
             </LinearLayout>
 
@@ -222,7 +228,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textColor="@color/gray_dark" />
 
             </LinearLayout>
 

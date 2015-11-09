@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -68,6 +69,7 @@ public class ChangePasswordActivity extends ActionBarActivity implements UserMan
     public void onResetPasswordSuccess() {
         Toast.makeText(getApplicationContext(), getResources().getString(R.string.change_password_success), Toast.LENGTH_LONG).show();
         finish();
+        this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
     }
 
     @Override
@@ -91,5 +93,25 @@ public class ChangePasswordActivity extends ActionBarActivity implements UserMan
     @Override
     public void onAccountSuccess(String email, String password) {
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            finish();
+            this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
     }
 }

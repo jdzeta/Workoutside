@@ -175,7 +175,7 @@ public class AccountActivity extends AppCompatActivity implements FirebaseManage
             pictureText += user.getLastname().substring(0, 1);
         }
 
-        mPictureDefaultText.setText(pictureText);
+        mPictureDefaultText.setText(pictureText.toUpperCase());
     }
 
     private void discardChanges() {
@@ -294,6 +294,6 @@ public class AccountActivity extends AppCompatActivity implements FirebaseManage
 
     @Override
     public void onError(FirebaseError firebaseError) {
-        Log.d("Updating identifiers via AccountActivity", firebaseError.getMessage());
+
     }
 }

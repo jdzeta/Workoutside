@@ -290,8 +290,9 @@ public class EventDetailsActivity extends ActionBarActivity implements FirebaseM
             bundle.putString("eventUUID", this.eventUUID);
             Intent intent = new Intent(getApplicationContext(), EditEventActivity.class);
             intent.putExtras(bundle);
-            this.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
             startActivity(intent);
+            this.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+
             return true;
         } else if (id == R.id.action_delete_event) {
             showDeleteAlert();

@@ -113,7 +113,7 @@
     <string name="change_password_info">Saisissez l\'email que vous avez utilisé pour vous inscrire.</string>
     <string name="change_password_button">Réinitialiser</string>
     <string name="change_password_title">Mot de passe perdu</string>
-    <string name="account_password">Nouveau mot de passe</string>
+    <string name="account_password">Nouveau\nmot de passe</string>
     <string name="change_password_success">Un e-mail permettant de réinitialiser votre mot de passe vous a été envoyé</string>
     <string name="change_password_email_not_put">Veuillez saisir une adresse e-mail</string>
     <string name="change_password_error">Une erreur est survenue. Veuillez vérifier les données saisies.</string>
