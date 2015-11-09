@@ -107,5 +107,5 @@
     <string name="my_events_activity_title">Mes événements</string>
     <string name="event_detail_button_full">Complet</string>
     <string name="user_does_not_exists">Utilisateur inconnu</string>
-    <string name="participating_label_true">Inscrit</string>
+    <string name="participating_label_true">J\'y participe !</string>
 </resources>

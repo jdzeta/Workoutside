@@ -78,7 +78,7 @@
                     android:id="@+id/login_button"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="10dp"
                     android:background="@color/primary"
                     android:text="@string/login"
                     android:textColor="@color/white" />
@@ -120,7 +120,7 @@
                     android:id="@+id/create_button"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:background="@color/primary"
                     android:text="@string/create_account"
                     android:textColor="@color/white" />
