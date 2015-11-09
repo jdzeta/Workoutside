@@ -1,7 +1,6 @@
 package com.ecolem.workoutside.activities;
 
 
-import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,7 +15,6 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
@@ -25,9 +23,7 @@ import android.widget.Toast;
 
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.WorkoutSide;
-
 import com.ecolem.workoutside.database.FirebaseManager;
-
 import com.ecolem.workoutside.helpers.GeolocHelper;
 import com.ecolem.workoutside.manager.EventManager;
 import com.ecolem.workoutside.manager.UserManager;
@@ -38,6 +34,7 @@ import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
 import com.firebase.geofire.GeoQueryEventListener;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -51,13 +48,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-
-public class HomeActivity extends ActionBarActivity implements FirebaseManager.AuthenticationListener, View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener, LocationListener, EventManager.EventListener, GoogleMap.OnMarkerClickListener {
+// GoogleMap.OnMyLocationChangeListener
+public class HomeActivity extends ActionBarActivity implements FirebaseManager.AuthenticationListener, LocationListener, View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener, EventManager.EventListener, GoogleMap.OnMarkerClickListener {
 
 
     //private static final GeoLocation INITIAL_CENTER = new GeoLocation(37.7789, -122.4017);
     private static final int INITIAL_ZOOM_LEVEL = 14;
-
+    private static final long MIN_TIME = 400;
+    private static final float MIN_DISTANCE = 1000;
 
     private RelativeLayout mAgendaMenuButton;
     private RelativeLayout mTrainingMenuButton;
@@ -75,6 +73,9 @@ public class HomeActivity extends ActionBarActivity implements FirebaseManager.A
 
     private LocationManager mLocationManager;
     private LatLng userLocation;
+
+    private boolean mFirstMoveCamera = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +101,7 @@ public class HomeActivity extends ActionBarActivity implements FirebaseManager.A
         findViewById(R.id.menu_profile).setOnClickListener(this);
 
         initMap();
-        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+       /* mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         if (mLocationManager != null) {
             Criteria criteria = new Criteria();
@@ -111,8 +112,9 @@ public class HomeActivity extends ActionBarActivity implements FirebaseManager.A
             if (location != null) {
                 onLocationChanged(location);
             }
-        }
-
+        }*/
+        this.mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        this.mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, MIN_DISTANCE, this); //You can also use LocationManager.GPS_PROVIDER and LocationManager.PASSIVE_PROVIDER
 
     }
 
@@ -121,15 +123,17 @@ public class HomeActivity extends ActionBarActivity implements FirebaseManager.A
         super.onStart();
         FirebaseManager.getInstance().register(this);
 
-        EventManager.getInstance().startGetEventsComing(this);
         //initMap();
     }
 
 
     private void initMap() {
 
+
         this.mMap = mMapFragment.getMap();
         this.mMap.setMyLocationEnabled(true);
+        // this.mMap.setOnMyLocationChangeListener(this);
+
         // LatLng latLngCenter = new LatLng(INITIAL_CENTER.latitude, INITIAL_CENTER.longitude);
         // this.mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngCenter, INITIAL_ZOOM_LEVEL));
         this.mMap.setOnCameraChangeListener(this);
@@ -147,6 +151,12 @@ public class HomeActivity extends ActionBarActivity implements FirebaseManager.A
         // Getting all events
 
         // this.mMap.addMarker(new MarkerOptions().position(new LatLng(INITIAL_CENTER.latitude, INITIAL_CENTER.longitude)).title("My Home").snippet("Home Address"));
+
+        // init with current position
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+
+        //Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
 
     }
 
@@ -290,47 +300,8 @@ public class HomeActivity extends ActionBarActivity implements FirebaseManager.A
     public void onCameraChange(CameraPosition cameraPosition) {
         LatLng center = cameraPosition.target;
         double radius = zoomLevelToRadius(cameraPosition.zoom);
-        //this.mSearchCircle.setCenter(center);
-        //this.mSearchCircle.setRadius(radius);
-        //this.mGeoQuery.setCenter(new GeoLocation(center.latitude, center.longitude));
-        // radius in km
-        //this.mGeoQuery.setRadius(radius / 1000);
     }
 
-    /**
-     * Location listener
-     */
-
-    @Override
-    public void onLocationChanged(Location location) {
-
-        Log.i("sandra", "location changed");
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-
-        this.userLocation = latLng;
-
-        if (this.mMap != null) {
-            this.mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-            this.mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-        }
-
-        //this.mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(INITIAL_CENTER.latitude,INITIAL_CENTER.longitude), INITIAL_ZOOM_LEVEL));
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
 
     @Override
     public void onBackPressed() {
@@ -387,17 +358,19 @@ public class HomeActivity extends ActionBarActivity implements FirebaseManager.A
             // Getting event location
             GeoLocation to = new GeoLocation(event.getLatitude(), event.getLongitude());
             // Checking if event is within a range of # around the user current position (in km)
-            double range = 0.5;
+            double range = 0.2;
             if (GeolocHelper.withinRange(from, to, range)) {
-                Marker marker = this.mMap.addMarker(new MarkerOptions()
-                                .position(new LatLng(event.getLatitude(), event.getLongitude()))
-                                .title(event.getName())
-                                .snippet(event.getDescription())
-                );
-                this.mMarkers.put(event.getUID(), marker);
-                // Adding event in closests
-                this.closestEvents.add(event);
-                System.out.println(this.closestEvents);
+                if (this.mMap != null) {
+                    Marker marker = this.mMap.addMarker(new MarkerOptions()
+                                    .position(new LatLng(event.getLatitude(), event.getLongitude()))
+                                    .title(event.getName())
+                                    .snippet(event.getDescription())
+                    );
+                    this.mMarkers.put(event.getUID(), marker);
+                    // Adding event in closests
+                    this.closestEvents.add(event);
+                    System.out.println(this.closestEvents);
+                }
             }
         }
     }
@@ -423,4 +396,37 @@ public class HomeActivity extends ActionBarActivity implements FirebaseManager.A
         return true;
 
     }
+
+
+    @Override
+    public void onLocationChanged(Location location) {
+        this.userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(this.userLocation, 15);
+
+        if (mFirstMoveCamera) {
+            mFirstMoveCamera = false;
+            EventManager.getInstance().startGetEventsComing(this);
+        }
+
+        if (this.mMap != null) {
+            this.mMap.animateCamera(cameraUpdate);
+        }
+
+        if (this.mLocationManager != null) {
+            this.mLocationManager.removeUpdates(this);
+        }
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+    }
+
 }
