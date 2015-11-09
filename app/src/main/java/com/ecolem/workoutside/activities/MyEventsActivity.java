@@ -10,9 +10,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.adapter.EventListAdapter;
+import com.ecolem.workoutside.database.FirebaseManager;
 import com.ecolem.workoutside.manager.EventManager;
 import com.ecolem.workoutside.manager.UserManager;
 import com.ecolem.workoutside.model.Event;
@@ -23,7 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MyEventsActivity extends ActionBarActivity implements EventManager.EventListener {
+public class MyEventsActivity extends ActionBarActivity implements FirebaseManager.AuthenticationListener, EventManager.EventListener {
 
     private ListView mListView;
 
@@ -53,6 +55,7 @@ public class MyEventsActivity extends ActionBarActivity implements EventManager.
                 Intent intent = new Intent(getApplicationContext(), EventDetailsActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
+                MyEventsActivity.this.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
             }
         });
 
@@ -63,6 +66,8 @@ public class MyEventsActivity extends ActionBarActivity implements EventManager.
     protected void onStart() {
         super.onStart();
         EventManager.getInstance().startGetEventsComing(this);
+        FirebaseManager.getInstance().register(this);
+
     }
 
     @Override
@@ -79,6 +84,10 @@ public class MyEventsActivity extends ActionBarActivity implements EventManager.
         if (id == R.id.action_add_event) {
             Intent intent = new Intent(getApplication(), NewEventActivity.class);
             startActivity(intent);
+            return true;
+        } else if (id == android.R.id.home) {
+            finish();
+            this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
             return true;
         }
 
@@ -104,7 +113,7 @@ public class MyEventsActivity extends ActionBarActivity implements EventManager.
             } else {
                 if (participants != null) {
                     for (Map.Entry<String, User> entry : participants.entrySet()) {
-                        if (entry.getKey().equals(currentUser.getUID())){
+                        if (entry.getKey().equals(currentUser.getUID())) {
                             myEvents.add(event);
                         }
                     }
@@ -118,5 +127,22 @@ public class MyEventsActivity extends ActionBarActivity implements EventManager.
     @Override
     public void onFail(FirebaseError error) {
 
+    }
+
+    @Override
+    public void onUserIsLogged(boolean isLogged) {
+        if (!isLogged) {
+            Toast.makeText(this, "Vous êtes déconnecté", Toast.LENGTH_LONG).show();
+            Intent newIntent = new Intent(MyEventsActivity.this, StartActivity.class);
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(newIntent);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
     }
 }

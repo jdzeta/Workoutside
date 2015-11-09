@@ -1,6 +1,7 @@
 package com.ecolem.workoutside.activities;
 
 
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,9 +22,13 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.WorkoutSide;
+
+import com.ecolem.workoutside.database.FirebaseManager;
+
 import com.ecolem.workoutside.helpers.GeolocHelper;
 import com.ecolem.workoutside.manager.EventManager;
 import com.ecolem.workoutside.manager.UserManager;
@@ -48,7 +53,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class HomeActivity extends ActionBarActivity implements View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener, LocationListener, EventManager.EventListener, GoogleMap.OnMarkerClickListener {
+public class HomeActivity extends ActionBarActivity implements FirebaseManager.AuthenticationListener, View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener, LocationListener, EventManager.EventListener, GoogleMap.OnMarkerClickListener {
+
 
     //private static final GeoLocation INITIAL_CENTER = new GeoLocation(37.7789, -122.4017);
     private static final int INITIAL_ZOOM_LEVEL = 14;
@@ -101,24 +107,11 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
             Criteria criteria = new Criteria();
             String provider = mLocationManager.getBestProvider(criteria, true);
 
-            // Location location = mLocationManager.getLastKnownLocation(provider);
-
-            // mLocationManager.requestLocationUpdates(provider, 400, 1000, this); //You can also use LocationManager.GPS_PROVIDER and LocationManager.PASSIVE_PROVIDER
-
-
             Location location = mLocationManager.getLastKnownLocation(provider);
-
-            //if (location != null) {
-            // onLocationChanged(location);
-            //}
-            //
-            //mLocationManager.requestLocationUpdates(provider, 20000, 0, this);
-
 
             if (location != null) {
                 onLocationChanged(location);
             }
-            //mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         }
 
 
@@ -127,6 +120,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     protected void onStart() {
         super.onStart();
+        FirebaseManager.getInstance().register(this);
 
         EventManager.getInstance().startGetEventsComing(this);
         //initMap();
@@ -201,8 +195,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
 
         Intent intent = new Intent(HomeActivity.this, c);
         startActivity(intent);
-        this.overridePendingTransition(android.R.anim.slide_in_left,
-                android.R.anim.slide_out_right);
+        this.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
 
     }
 
@@ -357,7 +350,9 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 .setPositiveButton(getResources().getString(R.string.leave), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         UserManager.getInstance().logout();
+                        HomeActivity.this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
                         HomeActivity.this.finish();
+
                     }
                 })
                 .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -371,6 +366,17 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     @Override
+
+    public void onUserIsLogged(boolean isLogged) {
+        if (!isLogged) {
+            Toast.makeText(this, "Vous êtes déconnecté", Toast.LENGTH_LONG).show();
+            Intent newIntent = new Intent(HomeActivity.this, StartActivity.class);
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(newIntent);
+        }
+    }
+
     public void onGetEventSuccess(Event m) {
     }
 
@@ -378,16 +384,16 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
     public void onGetEventsSuccess(ArrayList<Event> events) {
         this.closestEvents = new ArrayList<>();
         GeoLocation from = new GeoLocation(this.userLocation.latitude, this.userLocation.longitude);
-        for (Event event : events){
+        for (Event event : events) {
             // Getting event location
             GeoLocation to = new GeoLocation(event.getLatitude(), event.getLongitude());
             // Checking if event is within a range of # around the user current position (in km)
             double range = 0.5;
-            if (GeolocHelper.withinRange(from, to, range)){
+            if (GeolocHelper.withinRange(from, to, range)) {
                 Marker marker = this.mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(event.getLatitude(), event.getLongitude()))
-                        .title(event.getName())
-                        .snippet(event.getDescription())
+                                .position(new LatLng(event.getLatitude(), event.getLongitude()))
+                                .title(event.getName())
+                                .snippet(event.getDescription())
                 );
                 this.mMarkers.put(event.getUID(), marker);
                 // Adding event in closests
@@ -405,8 +411,8 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     public boolean onMarkerClick(Marker marker) {
         // Browse closest events to start activiy with right event
-        for (Event event : this.closestEvents){
-            if (marker.getTitle().equals(event.getName())){
+        for (Event event : this.closestEvents) {
+            if (marker.getTitle().equals(event.getName())) {
                 Bundle bundle = new Bundle();
                 bundle.putString("eventUUID", event.getUID());
                 Intent intent = new Intent(getApplicationContext(), EventDetailsActivity.class);
@@ -416,5 +422,6 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         }
         //Toast.makeText(getApplicationContext(), marker.getTitle(), Toast.LENGTH_SHORT).show();// display toast
         return true;
+
     }
 }

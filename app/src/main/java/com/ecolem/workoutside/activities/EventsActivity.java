@@ -10,10 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.adapter.EventListAdapter;
 import com.ecolem.workoutside.comparators.EventDateComparator;
+import com.ecolem.workoutside.database.FirebaseManager;
 import com.ecolem.workoutside.manager.EventManager;
 import com.ecolem.workoutside.model.Event;
 import com.firebase.client.FirebaseError;
@@ -23,7 +25,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 
-public class EventsActivity extends ActionBarActivity implements EventManager.EventListener {
+public class EventsActivity extends ActionBarActivity implements FirebaseManager.AuthenticationListener, EventManager.EventListener {
 
     private ListView mListView;
 
@@ -53,6 +55,7 @@ public class EventsActivity extends ActionBarActivity implements EventManager.Ev
                 Intent intent = new Intent(getApplicationContext(), EventDetailsActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
+                EventsActivity.this.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
             }
         });
         //EventManager.getInstance().startGetEventsComing(this);
@@ -62,6 +65,8 @@ public class EventsActivity extends ActionBarActivity implements EventManager.Ev
     @Override
     protected void onStart() {
         super.onStart();
+
+        FirebaseManager.getInstance().register(this);
         EventManager.getInstance().startGetEventsComing(this);
     }
 
@@ -94,6 +99,10 @@ public class EventsActivity extends ActionBarActivity implements EventManager.Ev
             Intent intent = new Intent(getApplication(), NewEventActivity.class);
             startActivity(intent);
             return true;
+        } else if (id == android.R.id.home) {
+            finish();
+            this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -109,8 +118,8 @@ public class EventsActivity extends ActionBarActivity implements EventManager.Ev
     public void onGetEventsSuccess(ArrayList<Event> events) {
         // Checking and getting events which date is not past
         Date now = new Date();
-        for (Event event : events){
-            if (event.getDateStart().after(now)){
+        for (Event event : events) {
+            if (event.getDateStart().after(now)) {
                 mEvents.add(event);
             }
         }
@@ -121,5 +130,22 @@ public class EventsActivity extends ActionBarActivity implements EventManager.Ev
     @Override
     public void onFail(FirebaseError error) {
 
+    }
+
+    @Override
+    public void onUserIsLogged(boolean isLogged) {
+        if (!isLogged) {
+            Toast.makeText(this, "Vous êtes déconnecté", Toast.LENGTH_LONG).show();
+            Intent newIntent = new Intent(EventsActivity.this, StartActivity.class);
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(newIntent);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
     }
 }

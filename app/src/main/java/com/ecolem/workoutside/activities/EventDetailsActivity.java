@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.adapter.UserListAdapter;
+import com.ecolem.workoutside.database.FirebaseManager;
 import com.ecolem.workoutside.helpers.EventHelper;
 import com.ecolem.workoutside.helpers.GeolocHelper;
 import com.ecolem.workoutside.helpers.TimeHelper;
@@ -33,9 +34,8 @@ import com.firebase.client.FirebaseError;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
-public class EventDetailsActivity extends ActionBarActivity implements EventManager.EventListener, View.OnClickListener {
+public class EventDetailsActivity extends ActionBarActivity implements FirebaseManager.AuthenticationListener, EventManager.EventListener, View.OnClickListener {
 
     // Temporary event for testing
     private Event myEvent;
@@ -101,6 +101,12 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
     }
 
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseManager.getInstance().register(this);
+    }
+
     private void openGoogleMap() {
         String uri = "http://maps.google.co.in/maps?q=" + event_detail_location.getText().toString();
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
@@ -117,7 +123,8 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
         this.event_detail_description.setText(description);
 
         // Defining min level
-        event_detail_min_level.setText(EventHelper.convertMinLevelToString(this.myEvent.getMinLevel()));
+        event_detail_min_level.setText(EventHelper.getLevelStr(this, this.myEvent.getMinLevel()));
+
 
         // Turning Time to Datetime
         this.event_detail_date.setText(TimeHelper.getEventDateStr(this.myEvent.getDateStart(), true));
@@ -139,11 +146,11 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
             pSize = this.myEvent.getParticipants().size();
 
             // Disable participate button if maxParticipant and user is not in participant list
-            if (this.myEvent.getParticipants().size() == this.myEvent.getMaxParticipants() && !isParticipate()){
+            if (this.myEvent.getParticipants().size() == this.myEvent.getMaxParticipants() && !isParticipate()) {
+
                 this.event_detail_button_participate.setEnabled(false);
                 this.event_detail_button_participate.setText(getString(R.string.event_detail_button_full));
-            }
-            else {
+            } else {
                 // Setting participation to false, true if user is organizer or participant
                 if (currentUser.getUID().equals(this.myEvent.getCreator().getUID()) || isParticipate()) {
                     this.participate = true;
@@ -281,37 +288,26 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
             bundle.putString("eventUUID", this.eventUUID);
             Intent intent = new Intent(getApplicationContext(), EditEventActivity.class);
             intent.putExtras(bundle);
+            this.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
             startActivity(intent);
             return true;
         } else if (id == R.id.action_delete_event) {
             showDeleteAlert();
             return true;
         }
-        if (id == R.id.action_share_event) {
+       else  if (id == R.id.action_share_event) {
             //TODO
+            return true;
+        }
+        else  if (id == android.R.id.home) {
+            finish();
+            this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    public void sendEmailOnDeletedEvent(Event event, String email){
-        Intent i = new Intent(Intent.ACTION_SENDTO);
-        i.setType("message/rfc822");
-        i.putExtra(Intent.EXTRA_EMAIL  , "no-reply@workout-side.com");
-        i.setData(Uri.parse("mailto:" + email));
-        // Defining reason mail's object
-        // Getting minLevel String
-        String subject = "Annulation de l'événement : " + event.getName();
-        String text = "L'événement prévu le " + TimeHelper.getEventDateStr(event.getDateStart(), false) + " a été annulé.";
-        i.putExtra(Intent.EXTRA_SUBJECT, subject);
-        i.putExtra(Intent.EXTRA_TEXT   , text);
-        try {
-            startActivity(Intent.createChooser(i, "Envoi du mail..."));
-        } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(getApplicationContext(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-        }
-    }
 
     private void showDeleteAlert() {
 
@@ -324,13 +320,11 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
                 .setPositiveButton(getResources().getString(R.string.action_delete), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (myEvent != null) {
-                            EventManager.getInstance().deleteEvent(myEvent.getUID());
-                            // Sending email to each participant
-                            for (Entry<String, User> entry : myEvent.getParticipants().entrySet()){
-                                sendEmailOnDeletedEvent(myEvent, entry.getValue().getEmail());
-                            }
+                            EventManager.getInstance().deleteEvent(EventDetailsActivity.this, myEvent);
                             Toast.makeText(EventDetailsActivity.this, getResources().getString(R.string.delete_event_success), Toast.LENGTH_LONG).show();
+                            EventDetailsActivity.this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
                             finish();
+
                         }
                     }
                 })
@@ -358,4 +352,21 @@ public class EventDetailsActivity extends ActionBarActivity implements EventMana
             }
         }
     }//onActivityResult
+
+    @Override
+    public void onUserIsLogged(boolean isLogged) {
+        if (!isLogged) {
+            Toast.makeText(this, "Vous êtes déconnecté", Toast.LENGTH_LONG).show();
+            Intent newIntent = new Intent(EventDetailsActivity.this, StartActivity.class);
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(newIntent);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+    }
 }

@@ -3,6 +3,7 @@ package com.ecolem.workoutside.activities;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Criteria;
@@ -15,6 +16,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,6 +29,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.ecolem.workoutside.R;
+import com.ecolem.workoutside.database.FirebaseManager;
 import com.ecolem.workoutside.helpers.TimeHelper;
 import com.ecolem.workoutside.manager.EventManager;
 import com.ecolem.workoutside.manager.UserManager;
@@ -53,7 +56,7 @@ import java.util.TimeZone;
 import java.util.UUID;
 
 public class NewEventActivity extends ActionBarActivity
-        implements DatePickerDialog.OnDateSetListener, AdapterView.OnItemSelectedListener, View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener, LocationListener, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
+        implements FirebaseManager.AuthenticationListener, DatePickerDialog.OnDateSetListener, AdapterView.OnItemSelectedListener, View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener, LocationListener, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
 
     private EditText new_event_name = null;
     private EditText new_event_description = null;
@@ -133,6 +136,12 @@ public class NewEventActivity extends ActionBarActivity
             mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         }
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseManager.getInstance().register(this);
     }
 
     private void initMap() {
@@ -436,5 +445,36 @@ public class NewEventActivity extends ActionBarActivity
         } else {
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.missing_fields_warning), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onUserIsLogged(boolean isLogged) {
+        if (!isLogged) {
+            Toast.makeText(this, "Vous êtes déconnecté", Toast.LENGTH_LONG).show();
+            Intent newIntent = new Intent(NewEventActivity.this, StartActivity.class);
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(newIntent);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            finish();
+            this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
     }
 }

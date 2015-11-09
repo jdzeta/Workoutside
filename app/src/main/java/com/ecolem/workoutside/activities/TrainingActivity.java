@@ -1,5 +1,6 @@
 package com.ecolem.workoutside.activities;
 
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,8 +12,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.ecolem.workoutside.R;
+import com.ecolem.workoutside.database.FirebaseManager;
 import com.ecolem.workoutside.fragments.MoveFragment;
 import com.ecolem.workoutside.manager.TrainingManager;
 import com.ecolem.workoutside.model.Movement;
@@ -20,7 +23,7 @@ import com.firebase.client.FirebaseError;
 
 import java.util.ArrayList;
 
-public class TrainingActivity extends ActionBarActivity implements TrainingManager.MoveListener {
+public class TrainingActivity extends ActionBarActivity implements FirebaseManager.AuthenticationListener, TrainingManager.MoveListener {
 
     private ViewPager mViewPager = null;
     private PagerAdapter mPagerAdapter;
@@ -33,7 +36,7 @@ public class TrainingActivity extends ActionBarActivity implements TrainingManag
         setContentView(R.layout.activity_training);
 
         ActionBar actionbar = getSupportActionBar();
-        actionbar.setTitle(getResources().getString(R.string.menu_training));
+        actionbar.setTitle(getResources().getString(R.string.menu_training).toUpperCase());
         actionbar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.primary)));
         actionbar.setDisplayHomeAsUpEnabled(true);
 
@@ -44,7 +47,7 @@ public class TrainingActivity extends ActionBarActivity implements TrainingManag
     @Override
     protected void onStart() {
         super.onStart();
-
+        FirebaseManager.getInstance().register(this);
         TrainingManager.getInstance().startGetMoves(this);
     }
 
@@ -90,5 +93,34 @@ public class TrainingActivity extends ActionBarActivity implements TrainingManag
         }
     }
 
+    @Override
+    public void onUserIsLogged(boolean isLogged) {
+        if (!isLogged) {
+            Toast.makeText(this, "Vous êtes déconnecté", Toast.LENGTH_LONG).show();
+            Intent newIntent = new Intent(TrainingActivity.this, StartActivity.class);
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(newIntent);
+        }
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            finish();
+            this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }

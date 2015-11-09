@@ -39,7 +39,6 @@ public class SplashscreenActivity extends Activity {
 
                 Intent mainIntent = new Intent(SplashscreenActivity.this, StartActivity.class);
                 SplashscreenActivity.this.startActivity(mainIntent);
-                SplashscreenActivity.this.finish();
                 overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
             }
         }, 3000);
@@ -68,16 +67,7 @@ public class SplashscreenActivity extends Activity {
         super.onDestroy();
     }
 
-    private void startSplashAnimation() {
-       /* TranslateAnimation animation = new TranslateAnimation(0.0f, 0.0f, 30.0f, 0.0f);
-        animation.setDuration(2000);
-        animation.setRepeatCount(0);
-        animation.setFillAfter(true);
-        mSlogan.startAnimation(animation);*/
 
-        //mSlogan.setVisibility(View.VISIBLE);
-
-    }
 
 
 }

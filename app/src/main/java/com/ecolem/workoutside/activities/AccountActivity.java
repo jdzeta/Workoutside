@@ -16,8 +16,10 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ecolem.workoutside.R;
+import com.ecolem.workoutside.database.FirebaseManager;
 import com.ecolem.workoutside.manager.UserManager;
 import com.ecolem.workoutside.model.User;
 
@@ -30,7 +32,7 @@ import java.util.Date;
  * !!M
  * todo: handle saveInstanceState
  */
-public class AccountActivity extends AppCompatActivity {
+public class AccountActivity extends AppCompatActivity implements FirebaseManager.AuthenticationListener {
 
     private User mUserCopy;
 
@@ -115,10 +117,16 @@ public class AccountActivity extends AppCompatActivity {
         populateFields(user);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseManager.getInstance().register(this);
+    }
+
     private void initActionBar() {
 
         ActionBar actionbar = getSupportActionBar();
-        actionbar.setTitle(getResources().getString(R.string.menu_profile));
+        actionbar.setTitle(getResources().getString(R.string.menu_profile).toUpperCase());
         actionbar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.primary)));
         actionbar.setDisplayHomeAsUpEnabled(true);
     }
@@ -205,6 +213,10 @@ public class AccountActivity extends AppCompatActivity {
         if (id == R.id.action_logout) {
             showLogoutAlert();
             return true;
+        } else  if (id == android.R.id.home) {
+            finish();
+            this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -237,4 +249,20 @@ public class AccountActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+    @Override
+    public void onUserIsLogged(boolean isLogged) {
+        if (!isLogged) {
+            Toast.makeText(this, "Vous êtes déconnecté", Toast.LENGTH_LONG).show();
+            Intent newIntent = new Intent(AccountActivity.this, StartActivity.class);
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(newIntent);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+    }
 }

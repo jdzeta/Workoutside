@@ -2,6 +2,7 @@ package com.ecolem.workoutside.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
