@@ -110,6 +110,8 @@ public class UserManager {
 
         void onAccountSuccess(String email, String password);
 
+        void onResetPasswordSuccess();
+
         void onFail(FirebaseError error);
     }
 
@@ -125,23 +127,6 @@ public class UserManager {
                 if (listener != null) {
                     listener.onGetUserSuccess(user);
                 }
-
-                /*userFields.get("pseudo").setText(user.getmLogin());
-                userFields.get("nom").setText(user.getName());
-                userFields.get("prenom").setText(user.getPrenom());
-                userFields.get("email").setText(user.getEmail());
-                userFields.get("sexe").setText(user.getSexe());
-                userFields.get("date").setText(user.getDateNaissance().toString());
-                userFields.get("ville").setText(user.getVille());
-                userFields.get("niveau").setText(user.getNiveau());
-
-                userFields.get("description").setText(user.getDescription());
-                userFields.get("taille").setText(user.getTaille() + " cm");
-                userFields.get("poids").setText(user.getPoids() + " kg");*/
-                /**@TODO
-                 * Set liste amis
-                 * Bouton change mdp
-                 **/
             }
 
             @Override
@@ -152,6 +137,25 @@ public class UserManager {
                 }
 
                 // userFields.get("erreur").setText("Utilisateur inconnu");
+            }
+        });
+    }
+
+    public void startResetPassword(String email, final UserListener listener) {
+
+        FirebaseManager.getInstance().getFirebaseRef().resetPassword(email, new Firebase.ResultHandler() {
+            @Override
+            public void onSuccess() {
+                if (listener != null) {
+                    listener.onResetPasswordSuccess();
+                }
+            }
+
+            @Override
+            public void onError(FirebaseError firebaseError) {
+                if (listener != null) {
+                    listener.onFail(firebaseError);
+                }
             }
         });
     }

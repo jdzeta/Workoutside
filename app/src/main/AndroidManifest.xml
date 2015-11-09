@@ -137,7 +137,11 @@
         </activity>
         <activity
             android:name=".activities.ChangePasswordActivity"
-            android:label="@string/title_activity_change_password"></activity>
+            android:label="@string/title_activity_change_password">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.StartActivity" />
+        </activity>
     </application>
 
 </manifest>

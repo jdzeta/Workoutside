@@ -237,9 +237,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
 
     @Override
     public void onLoginSuccess(String uid) {
-        Intent intent = new Intent(getActivity(), HomeActivity.class);
-        startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
+        if(isAdded() && isVisible()) {
+            Intent intent = new Intent(getActivity(), HomeActivity.class);
+            startActivity(intent);
+            getActivity().overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
+        }
     }
 
     @Override
@@ -257,6 +259,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
 
             mParentActivity.nextStep();
         }
+    }
+
+    @Override
+    public void onResetPasswordSuccess() {
+
     }
 
     @Override
@@ -291,13 +298,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    public void onClickChangePassword(){
+    public void onClickChangePassword() {
         Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
         EditText email = (EditText) getView().findViewById(R.id.email);
-        if (email.getText() != null){
+        if (email.getText() != null) {
             intent.putExtra("email", email.getText().toString());
         }
         startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
     }
 
 }

@@ -11,10 +11,6 @@ import com.firebase.client.Firebase;
  */
 public class UserHelper {
 
-    public static void changePassword(String email, Firebase.ResultHandler resultHandler){
-        // Call Firebase method to reset password
-        FirebaseManager.getInstance().getFirebaseRef().resetPassword(email, resultHandler);
-    }
 
     public static boolean currentUserIsCreator(Event event) {
 

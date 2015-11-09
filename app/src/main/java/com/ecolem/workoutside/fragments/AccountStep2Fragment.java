@@ -151,6 +151,11 @@ public class AccountStep2Fragment extends Fragment implements View.OnClickListen
     }
 
     @Override
+    public void onResetPasswordSuccess() {
+
+    }
+
+    @Override
     public void onFail(FirebaseError error) {
         mProgressBar.setVisibility(View.GONE);
         mFinishButton.setVisibility(View.VISIBLE);
