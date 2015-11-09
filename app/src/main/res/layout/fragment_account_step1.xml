@@ -72,7 +72,7 @@
                         android:focusable="false"
                         android:singleLine="true"
                         android:text="@string/account_birthdate_hint"
-                        android:textColor="@color/gray_medium"
+                        android:textColor="@color/gray_dark"
                         android:textSize="8pt" />
 
                     <RelativeLayout
