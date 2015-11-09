@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
 
     <LinearLayout
@@ -64,8 +64,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="20dp">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:id="@+id/login_buttons_panel"
@@ -78,10 +77,10 @@
                     android:id="@+id/reset_password_button"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:theme="@android:style/Theme.Translucent"
-                    android:text="@string/reset_password"
                     android:backgroundTint="@color/white"
-                    android:textColor="@color/primary" />
+                    android:text="@string/reset_password"
+                    android:textColor="@color/primary"
+                    android:theme="@android:style/Theme.Translucent" />
 
                 <Button
                     android:id="@+id/login_button"
