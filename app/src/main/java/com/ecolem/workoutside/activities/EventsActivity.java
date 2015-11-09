@@ -123,9 +123,13 @@ public class EventsActivity extends ActionBarActivity implements FirebaseManager
     public void onGetEventsSuccess(ArrayList<Event> events) {
         // Checking and getting events which date is not past
         Date now = new Date();
-        for (Event event : events) {
-            if (event.getDateStart().after(now)) {
-                mEvents.add(event);
+
+        if(mEvents != null) {
+            mEvents.clear();
+            for (Event event : events) {
+                if (event.getDateStart().after(now)) {
+                    mEvents.add(event);
+                }
             }
         }
         mAdapter = new EventListAdapter(getApplicationContext(), mEvents);
