@@ -14,9 +14,9 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.ecolem.workoutside.R;
-import com.ecolem.workoutside.WorkoutSide;
 import com.ecolem.workoutside.activities.StartActivity;
 import com.ecolem.workoutside.model.User;
 
@@ -109,15 +109,22 @@ public class AccountStep1Fragment extends Fragment implements View.OnClickListen
                 break;
             case R.id.account_next_button:
                 if (mParentActivity != null) {
-                    User user = mParentActivity.getUser();
-                    user.setFirstname(mFirstnameEditText.getText().toString());
-                    user.setLastname(mLastnameEditText.getText().toString());
-                    user.setBirthdate(mBirthDate);
-                    user.setGender(mGender);
-                    user.setCity(mCityEditText.getText().toString());
+                    if ((mFirstnameEditText.getText() == null && mLastnameEditText.getText() == null) ||
+                            mBirthDate == null ||
+                            mCityEditText.getText() == null){
+                        Toast.makeText(getActivity(), "Veuillez remplir tous les champs svp", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        User user = mParentActivity.getUser();
+                        user.setFirstname(mFirstnameEditText.getText().toString());
+                        user.setLastname(mLastnameEditText.getText().toString());
+                        user.setBirthdate(mBirthDate);
+                        user.setGender(mGender);
+                        user.setCity(mCityEditText.getText().toString());
 
-                    mParentActivity.setUser(user);
-                    mParentActivity.nextStep();
+                        mParentActivity.setUser(user);
+                        mParentActivity.nextStep();
+                    }
                 }
                 break;
             default:

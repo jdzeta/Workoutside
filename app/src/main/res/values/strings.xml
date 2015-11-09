@@ -107,5 +107,11 @@
     <string name="my_events_activity_title">Mes événements</string>
     <string name="event_detail_button_full">Complet</string>
     <string name="user_does_not_exists">Utilisateur inconnu</string>
-    <string name="participating_label_true">J\'y participe !</string>
+    <string name="participating_label_true">Inscrit</string>
+    <string name="reset_password">Mot de passe oublié ?</string>
+    <string name="title_activity_change_password">ChangePasswordActivity</string>
+    <string name="change_password_info">Saisissez l\'email que vous avez utilisé pour vous inscrire.</string>
+    <string name="change_password_button">Envoyer</string>
+    <string name="change_password_title">Mot de passe perdu</string>
+    <string name="account_password">Nouveau mot de passe</string>
 </resources>

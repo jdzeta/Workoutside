@@ -84,7 +84,8 @@ public class EventListAdapter extends ArrayAdapter<Event> {
         }
 
         // Showing if user is participating in event
-        if(event.getParticipants() != null) {
+
+        if (event.getParticipants() != null) {
             for (Map.Entry<String, User> entry : event.getParticipants().entrySet()) {
                 if (entry.getKey().equals(currentUser.getUID())) {
                     participation.setVisibility(View.VISIBLE);

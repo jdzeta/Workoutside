@@ -84,6 +84,7 @@ public class HomeActivity extends ActionBarActivity implements FirebaseManager.A
         setContentView(R.layout.activity_home);
 
         Firebase.setAndroidContext(this);
+        FirebaseManager.getInstance().register(this);
 
         ActionBar actionbar = getSupportActionBar();
         actionbar.setTitle(getResources().getString(R.string.action_bar_title));
@@ -101,18 +102,7 @@ public class HomeActivity extends ActionBarActivity implements FirebaseManager.A
         findViewById(R.id.menu_profile).setOnClickListener(this);
 
         initMap();
-       /* mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        if (mLocationManager != null) {
-            Criteria criteria = new Criteria();
-            String provider = mLocationManager.getBestProvider(criteria, true);
-
-            Location location = mLocationManager.getLastKnownLocation(provider);
-
-            if (location != null) {
-                onLocationChanged(location);
-            }
-        }*/
         this.mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         this.mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, MIN_DISTANCE, this); //You can also use LocationManager.GPS_PROVIDER and LocationManager.PASSIVE_PROVIDER
 
@@ -124,6 +114,7 @@ public class HomeActivity extends ActionBarActivity implements FirebaseManager.A
         FirebaseManager.getInstance().register(this);
 
         //initMap();
+
     }
 
 

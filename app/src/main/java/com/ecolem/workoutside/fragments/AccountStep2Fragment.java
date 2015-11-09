@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.activities.HomeActivity;
@@ -88,17 +89,15 @@ public class AccountStep2Fragment extends Fragment implements View.OnClickListen
             User user = mParentActivity.getUser();
             UserManager.getInstance().login(user.getEmail(), user.getPassword(), this);
         }
-
     }
 
     private void createUserWithUID(String uid) {
         if (mParentActivity != null) {
             User user = mParentActivity.getUser();
-            user.setUID(uid);
             user.setLevel(mSelecteLevel);
+            user.setUID(uid);
 
             UserManager.getInstance().saveUser(user);
-
         }
     }
 
@@ -123,7 +122,12 @@ public class AccountStep2Fragment extends Fragment implements View.OnClickListen
                 mLevel3Check.setVisibility(View.VISIBLE);
                 break;
             case R.id.account_finish_button:
-                login();
+                if (mSelecteLevel < 0) {
+                    Toast.makeText(getActivity(), "Veuillez définir un niveau svp", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    login();
+                }
                 break;
         }
     }
