@@ -149,6 +149,8 @@ public class EventDetailsActivity extends ActionBarActivity implements FirebaseM
             if (this.myEvent.getParticipants().size() == this.myEvent.getMaxParticipants() && !isParticipate()) {
 
                 this.event_detail_button_participate.setEnabled(false);
+                this.event_detail_button_participate.setBackgroundColor(getResources().getColor(R.color.gray_light));
+                this.event_detail_button_participate.setTextColor(getResources().getColor(R.color.gray_dark));
                 this.event_detail_button_participate.setText(getString(R.string.event_detail_button_full));
             } else {
                 // Setting participation to false, true if user is organizer or participant
