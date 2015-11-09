@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +23,8 @@ import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.database.FirebaseManager;
 import com.ecolem.workoutside.manager.UserManager;
 import com.ecolem.workoutside.model.User;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -32,7 +35,7 @@ import java.util.Date;
  * !!M
  * todo: handle saveInstanceState
  */
-public class AccountActivity extends AppCompatActivity implements FirebaseManager.AuthenticationListener {
+public class AccountActivity extends AppCompatActivity implements FirebaseManager.AuthenticationListener, Firebase.ResultHandler {
 
     private User mUserCopy;
 
@@ -181,7 +184,7 @@ public class AccountActivity extends AppCompatActivity implements FirebaseManage
     }
 
     private void updateProfile() {
-        // todo: check if modification occured
+        // todo: check if modification occurred
         UserManager userManager = UserManager.getInstance();
         User user = userManager.getUser();
         if (user == null) {
@@ -191,14 +194,27 @@ public class AccountActivity extends AppCompatActivity implements FirebaseManage
         mUserCopy.setUID(user.getUID());
         mUserCopy.setFirstname(mFirstNameEditText.getText().toString());
         mUserCopy.setLastname(mLastNameEditText.getText().toString());
-        mUserCopy.setEmail(mEmailEditText.getText().toString());
         mUserCopy.setGender(
                 mGenderGroup.getCheckedRadioButtonId() == R.id.male ? 0 : 1
         );
 
         mUserCopy.setCity(mCityEditText.getText().toString());
 
-        // todo: chek for fail and do what need to be done
+        // Changing email
+        mUserCopy.setEmail(mEmailEditText.getText().toString());
+        if (!mUserCopy.getEmail().equals(user.getEmail())) {
+            FirebaseManager.getInstance().getFirebaseRef().changeEmail(user.getEmail(),
+                    user.getPassword(), mUserCopy.getEmail(), this);
+        }
+
+        // Changing password
+        mUserCopy.setPassword(mNewPassword.getText().toString());
+        if (!mUserCopy.getPassword().equals(user.getPassword())) {
+            FirebaseManager.getInstance().getFirebaseRef().changePassword(mUserCopy.getEmail(),
+                    user.getPassword(), mUserCopy.getPassword(), this);
+        }
+
+        // todo: check for fail and do what need to be done
         userManager.saveUser(mUserCopy);
         userManager.setUser(mUserCopy);
     }
@@ -269,5 +285,15 @@ public class AccountActivity extends AppCompatActivity implements FirebaseManage
     public void onBackPressed() {
         super.onBackPressed();
         this.overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+    }
+
+    @Override
+    public void onSuccess() {
+        Toast.makeText(getApplicationContext(), "Identifiants mis à jour avec succès", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onError(FirebaseError firebaseError) {
+        Log.d("Updating identifiers via AccountActivity", firebaseError.getMessage());
     }
 }
