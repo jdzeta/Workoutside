@@ -20,7 +20,6 @@ import android.widget.TextView;
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.manager.UserManager;
 import com.ecolem.workoutside.model.User;
-import com.google.android.gms.internal.pi;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -237,4 +236,5 @@ public class AccountActivity extends AppCompatActivity {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
+
 }

@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.WorkoutSide;
+import com.ecolem.workoutside.activities.ChangePasswordActivity;
 import com.ecolem.workoutside.activities.HomeActivity;
 import com.ecolem.workoutside.activities.StartActivity;
 import com.ecolem.workoutside.manager.SharedPreferenceManager;
@@ -39,6 +40,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
     private LinearLayout mAccountButtonsPanel = null;
     private Button mLoginButton = null;
     private Button mCreateAccountButton = null;
+    private Button mChangePassword = null;
     private ProgressBar mProgressBar = null;
 
     private StartActivity mParentActivity = null;
@@ -63,6 +65,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
         mLoginButton.setOnClickListener(this);
         mCreateAccountButton = (Button) view.findViewById(R.id.create_button);
         mCreateAccountButton.setOnClickListener(this);
+        mChangePassword = (Button) view.findViewById(R.id.reset_password_button);
+        mChangePassword.setOnClickListener(this);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
         mLoginButtonsPanel = (LinearLayout) view.findViewById(R.id.login_buttons_panel);
@@ -185,6 +189,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
                 mSelectedTab = Tab.REGISTER;
                 updateDisplay();
                 break;
+            case R.id.reset_password_button:
+                onClickChangePassword();
+                break;
             default:
                 break;
         }
@@ -245,5 +252,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
         updateDisplay();
     }
 
+
+    public void onClickChangePassword(){
+        Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
+        EditText email = (EditText) getView().findViewById(R.id.email);
+        if (email.getText() != null){
+            intent.putExtra("email", email.getText().toString());
+        }
+        startActivity(intent);
+    }
 
 }

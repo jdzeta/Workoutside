@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.ecolem.workoutside.R;

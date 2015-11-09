@@ -1,37 +1,30 @@
 package com.ecolem.workoutside.activities;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ecolem.workoutside.R;
-import com.ecolem.workoutside.WorkoutSide;
 import com.ecolem.workoutside.adapter.StartPageAdapter;
 import com.ecolem.workoutside.fragments.AccountStep1Fragment;
 import com.ecolem.workoutside.fragments.AccountStep2Fragment;
 import com.ecolem.workoutside.fragments.LoginFragment;
-import com.ecolem.workoutside.manager.UserManager;
 import com.ecolem.workoutside.model.User;
 import com.ecolem.workoutside.views.StartViewPager;
 import com.facebook.FacebookSdk;
+import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class StartActivity extends FragmentActivity {
+public class StartActivity extends FragmentActivity implements Firebase.ResultHandler {
 
     private StartViewPager mViewPager = null;
     private StartPageAdapter mPageAdapter = null;
@@ -88,4 +81,13 @@ public class StartActivity extends FragmentActivity {
 
     }
 
+    @Override
+    public void onSuccess() {
+        Toast.makeText(getApplicationContext(), "Un lien pour réinitialiser votre mot de passe vous a été envoyé sur votre boîte mail.", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onError(FirebaseError firebaseError) {
+        Log.d("Reset password", "Failing reseting password from StartActivity");
+    }
 }
