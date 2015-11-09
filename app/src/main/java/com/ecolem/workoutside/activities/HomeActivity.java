@@ -1,7 +1,6 @@
 package com.ecolem.workoutside.activities;
 
 
-import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,15 +19,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.ecolem.workoutside.R;
 import com.ecolem.workoutside.WorkoutSide;
-
 import com.ecolem.workoutside.database.FirebaseManager;
-
 import com.ecolem.workoutside.helpers.GeolocHelper;
 import com.ecolem.workoutside.manager.EventManager;
 import com.ecolem.workoutside.manager.UserManager;
@@ -84,6 +80,7 @@ public class HomeActivity extends ActionBarActivity implements FirebaseManager.A
         setContentView(R.layout.activity_home);
 
         Firebase.setAndroidContext(this);
+        FirebaseManager.getInstance().register(this);
 
         ActionBar actionbar = getSupportActionBar();
         actionbar.setTitle(getResources().getString(R.string.action_bar_title));
@@ -101,6 +98,7 @@ public class HomeActivity extends ActionBarActivity implements FirebaseManager.A
         findViewById(R.id.menu_profile).setOnClickListener(this);
 
         initMap();
+        EventManager.getInstance().startGetEventsComing(this);
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         if (mLocationManager != null) {
@@ -120,10 +118,6 @@ public class HomeActivity extends ActionBarActivity implements FirebaseManager.A
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseManager.getInstance().register(this);
-
-        EventManager.getInstance().startGetEventsComing(this);
-        //initMap();
     }
 
 

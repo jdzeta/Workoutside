@@ -113,4 +113,5 @@
     <string name="change_password_info">Saisissez l\'email que vous avez utilisé pour vous inscrire.</string>
     <string name="change_password_button">Envoyer</string>
     <string name="change_password_title">Mot de passe perdu</string>
+    <string name="account_password">Nouveau mot de passe</string>
 </resources>

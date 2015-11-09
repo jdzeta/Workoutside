@@ -70,6 +70,11 @@ public class EventsActivity extends ActionBarActivity implements FirebaseManager
         EventManager.getInstance().startGetEventsComing(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     private void populateEvents() {
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
@@ -125,6 +130,8 @@ public class EventsActivity extends ActionBarActivity implements FirebaseManager
         }
         mAdapter = new EventListAdapter(getApplicationContext(), mEvents);
         mListView.setAdapter(mAdapter);
+        //change values array with your new data then update the adapter
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override

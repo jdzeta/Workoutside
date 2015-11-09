@@ -46,6 +46,8 @@ public class AccountActivity extends AppCompatActivity implements FirebaseManage
     private EditText mEmailEditText;
     private EditText mCityEditText;
 
+    private EditText mNewPassword;
+
     // To keep reference of dialog showed, to hide them if we quit (or it leaks)
     private Dialog mDialog;
 
@@ -64,6 +66,9 @@ public class AccountActivity extends AppCompatActivity implements FirebaseManage
 
         mEmailEditText = (EditText) findViewById(R.id.edit_email);
         mCityEditText = (EditText) findViewById(R.id.edit_city);
+
+        // New password submitted
+        mNewPassword = (EditText) findViewById(R.id.edit_password);
 
         findViewById(R.id.btn_discard).setOnClickListener(new View.OnClickListener() {
             @Override
