@@ -41,6 +41,7 @@ import com.ecolem.workoutside.model.User;
 import com.firebase.client.FirebaseError;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQueryEventListener;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -57,7 +58,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class EditEventActivity extends ActionBarActivity implements FirebaseManager.AuthenticationListener, DatePickerDialog.OnDateSetListener, EventManager.EventListener, AdapterView.OnItemSelectedListener, View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener, LocationListener, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
+public class EditEventActivity extends ActionBarActivity implements FirebaseManager.AuthenticationListener, DatePickerDialog.OnDateSetListener, EventManager.EventListener, AdapterView.OnItemSelectedListener, View.OnClickListener, GeoQueryEventListener, GoogleMap.OnCameraChangeListener, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
+
+    private static final long MIN_TIME = 400;
+    private static final float MIN_DISTANCE = 1000;
 
     private Event mEvent = null;
 
@@ -76,6 +80,7 @@ public class EditEventActivity extends ActionBarActivity implements FirebaseMana
     private Geocoder geocoder;
     private SupportMapFragment mMapFragment = null;
     private LocationManager mLocationManager;
+    private boolean mFirstMoveCamera = true;
     private Marker mMarker;
     private List<Address> addresses;
 
@@ -130,16 +135,10 @@ public class EditEventActivity extends ActionBarActivity implements FirebaseMana
         this.event_description = (EditText) findViewById(R.id.event_description);
         this.event_max_participants = (EditText) findViewById(R.id.event_max_participants);
 
-        if (mLocationManager != null) {
-            Criteria criteria = new Criteria();
-            String provider = mLocationManager.getBestProvider(criteria, true);
-            Location location = mLocationManager.getLastKnownLocation(provider);
+        initMap();
 
-            if (location != null) {
-                onLocationChanged(location);
-            }
-            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-        }
+
+        this.mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
     }
 
@@ -299,32 +298,6 @@ public class EditEventActivity extends ActionBarActivity implements FirebaseMana
 
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-
-        Log.i("sandra", "location changed");
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-
-        this.mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        this.mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-
-        //this.mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(INITIAL_CENTER.latitude,INITIAL_CENTER.longitude), INITIAL_ZOOM_LEVEL));
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
 
     @Override
     public void onKeyEntered(String key, GeoLocation location) {
@@ -487,7 +460,13 @@ public class EditEventActivity extends ActionBarActivity implements FirebaseMana
 
 
         // Turning location to address
-        // String address = GeolocHelper.getCityFromLatitudeLongitude(this, this.mEvent.getLatitude(), this.mEvent.getLongitude());
+        LatLng latlng = new LatLng(this.mEvent.getLatitude(), this.mEvent.getLongitude());
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latlng, 15);
+
+        if (this.mMap != null) {
+            this.mMap.animateCamera(cameraUpdate);
+        }
+
         addMarker(this.mEvent.getLatitude(), this.mEvent.getLongitude());
     }
 
